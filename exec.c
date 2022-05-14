@@ -1,20 +1,5 @@
 #include "minishell.h"
 
-// void checker(int i)
-// {
-// 	int q;
-
-// 	q = 0;
-// 	while(g.input[i] != 0)
-// 	{
-// 		if (g.input[i] == '\'' || g.input[i] == '\"')
-// 		[
-// 			if (g.input[i] == '\'')
-			
-// 		]
-// 	}
-// }
-
 int ft_echo(int i)
 {
 	int t;
@@ -31,12 +16,16 @@ int ft_echo(int i)
 			if (g.input[i] == '\'')
 			{
 				i ++;
-				while(g.input[i] != '\'')
+				while(g.input[i] != '\'' && g.input[i] != 0)
 					i++;
 				if (g.input[i] == '\'')
 				{
-					while(g.input[++t] != '\'')
+					t++;
+					while(g.input[t] != '\'')
+					{
 						printf("%c", g.input[t]);
+						t++;
+					}
 				}
 				else
 				{
@@ -48,7 +37,7 @@ int ft_echo(int i)
 			else if (g.input[i] == '\"')
 			{
 				i ++;
-				while(g.input[i] != '\"')
+				while(g.input[i] != '\"' && g.input[i] != 0)
 					i++;
 				if (g.input[i] == '\"')
 				{
