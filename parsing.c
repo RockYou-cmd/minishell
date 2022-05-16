@@ -35,12 +35,13 @@ void check()
 {
 	int i;
 	int t;
+	char *command;
 
 	i = 0;
 	t = 0;
 	while(g.input[i] != ' ' && g.input[i] != '\0')
 		i++;
-	char command[i];
+	command = malloc(i * sizeof(char));
 	i = 0;
 	while (g.input[i] != ' ' && g.input[i] != '\0')
 	{

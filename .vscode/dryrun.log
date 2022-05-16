@@ -1,0 +1,10 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/rgatnaou/minishell'
+cc -Wall -Wextra -Werror  -c minishell.c -o minishell.o
+cc -Wall -Wextra -Werror  -c exec.c -o exec.o
+cc -Wall -Wextra -Werror  -c parsing.c -o parsing.o
+cc -Wall -Wextra -Werror  -c exec2.c -o exec2.o
+cc -Wall -Wextra -Werror  -c libft/ft_strncmp.c -o libft/ft_strncmp.o
+cc -Wall -Wextra -Werror   -I /goinfre/ael-korc/.brew/opt/readline/include -L /goinfre/ael-korc/.brew/opt/readline/lib/ -lreadline minishell.o exec.o parsing.o exec2.o libft/ft_strncmp.o -o minishell
+make: Leaving directory `/Users/rgatnaou/minishell'
+ 
