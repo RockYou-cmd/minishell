@@ -27,11 +27,11 @@ all:$(NAME)
 $(NAME):$(OBJ) $(INCL)
 	$(AR) $(NAME) $(OBJ) $(INCL)
 
-bonus: ${BONUSOBJS}
+bonus: ${BONUSOBJS} $(NAME)
 	$(AR) $(NAME) $(BONUSOBJS)
 
 %.o : %.c
-	$(CC) $(FLAGS) -c $<
+	$(CC) $(FLAGS) -c $< -o $@
 
 clean:
 	$(RM) $(OBJ)

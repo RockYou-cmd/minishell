@@ -39,6 +39,10 @@ void check()
 
 	i = 0;
 	t = 0;
+	g.cmd = malloc(sizeof(t_cmd));
+	g.cmd->s_cmd = ft_split(g.input, ' ');
+	get_path();
+	get_bin();
 	while(g.input[i] != ' ' && g.input[i] != '\0')
 		i++;
 	command = malloc(i * sizeof(char));
@@ -58,7 +62,8 @@ void check()
 
 	}
 	if (g.cmnd == -1)
-		printf("%s : command not found\n", g.input);
+		exec();
+		// printf("%s : command not found\n", g.input);
 	which_one(i);
 	
 }

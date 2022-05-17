@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:06:09 by rgatnaou          #+#    #+#             */
-/*   Updated: 2022/05/11 20:25:42 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/05/17 11:41:41 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int	main(int ac, char **av, char **env)
 {
 	(void) av;
 	(void) ac;
-	(void) env;
 
+	g.env = env;
 	g.cmnd = -1;
 	comands();
 	while(1)

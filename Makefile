@@ -6,7 +6,7 @@
 #    By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/11 12:06:40 by rgatnaou          #+#    #+#              #
-#    Updated: 2022/05/16 19:13:51 by rgatnaou         ###   ########.fr        #
+#    Updated: 2022/05/16 20:58:48 by rgatnaou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ READLINE = $(shell brew --prefix readline)
 
 CC = cc -Wall -Wextra -Werror
 
-SRC = minishell.c exec.c parsing.c exec2.c libft/ft_strncmp.c
+SRC = minishell.c exec.c parsing.c exec2.c Sys_Cmd.c
 
 OBJ = $(SRC:.c=.o)
 
