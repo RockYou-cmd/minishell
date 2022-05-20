@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:06:09 by rgatnaou          #+#    #+#             */
-/*   Updated: 2022/05/11 20:25:42 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/05/18 17:35:55 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,23 @@ int	main(int ac, char **av, char **env)
 {
 	(void) av;
 	(void) ac;
-	(void) env;
 
+	g.env = env;
 	g.cmnd = -1;
+	g.i_stdin = dup(0);
+	get_path();
 	comands();
 	while(1)
 	{
 		g.input = readline("type here > : ");
+		// check_pipe();
 		if(!g.input)
 		{
 			printf("\n");
 			continue;
 		}
 		add_history(g.input);
+		ft_init();
 		check();
 		g.cmnd = -1;
 	}

@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-void which_one(int i)
+void which_one()
 {
 	if (g.cmnd == 0)
-		ft_echo(i);
+		ft_echo();
 	if (g.cmnd == 1)
 		ft_cd();
 	if (g.cmnd == 2)
@@ -19,45 +19,85 @@ void which_one(int i)
 	
 }
 
-void comands()
+
+char *rm(char *str)
 {
-	g.command[0] = "echo";
-	g.command[1] = "cd";
-	g.command[2] = "pwd";
-	g.command[3] = "export";
-	g.command[4] = "unset";
-	g.command[5] = "env";
-	g.command[6] = "exit";
-	g.command[7] = 0;
+	int i;
+	int t;
+	int s;
+	char *nstr;
+
+	t = 0;
+	i = 0;
+	s = 0;
+	nstr = ft_calloc(ft_strlen(str), sizeof(char));
+	while (str[i]  != 0)
+	{
+		if (g.input[i] == '\'')
+		{
+			t = i;
+			i ++;
+			while(g.input[i] != '\'' && g.input[i] != 0)
+				i++;
+			if (g.input[i] == '\'')
+			{
+				t++;
+				while(g.input[t] != '\'')
+					nstr[s++] = g.input[t++];
+			}
+			else
+			{
+				printf("quote ' error\n");
+				return 0;
+			}
+		}
+		else if (g.input[i] == '\"')
+		{
+			t = i;
+			i ++;
+			while(g.input[i] != '\"' && g.input[i] != 0)
+				i++;
+			if (g.input[i] == '\"')
+			{
+				t++;
+				while(g.input[t] != '\"')
+					nstr[s++] = g.input[t++];
+			}
+			else
+			{
+				printf("quote \" error\n");
+				return 0;
+			}
+		}
+		else
+			nstr[s++] = g.input[i];
+		i ++;
+	}
+	return (nstr);
 }
 
 void check()
 {
 	int i;
 	int t;
+	int isnt;
 
 	i = 0;
 	t = 0;
-	while(g.input[i] != ' ' && g.input[i] != '\0')
-		i++;
-	char command[i];
-	i = 0;
-	while (g.input[i] != ' ' && g.input[i] != '\0')
+	isnt = 0;
+	if (g.pip == 1)
 	{
-		command[i] = g.input[i];
-		i ++;
-	}
-	command[i] = 0;
-	// printf("%d - %s\n", ft_strncmp(command, g.command[t], i), command);
-	while(g.command[t] != 0)
-	{
-		if (ft_strncmp(command, g.command[t], i) == 0)
-			g.cmnd = t;
-		t ++;
+		while(g.cmd->s_cmd[i + 1] != 0)
+		{
+			// printf("in -%s-\n",rm(g.cmd->s_cmd[i]));
+			exec_v2(rm(g.cmd->s_cmd[i]));
+			i ++;
+		}
+		exec(rm(g.cmd->s_cmd[i]));
+		dup2(g.i_stdin, 0);
 
+		// printf("-%s-\n", rm(g.cmd->s_cmd[0]));
 	}
-	if (g.cmnd == -1)
-		printf("%s : command not found\n", g.input);
-	which_one(i);
-	
+	else
+		exec(g.input);
 }

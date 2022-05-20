@@ -5,9 +5,6 @@ int ft_echo(int i)
 	int t;
 
 	t = 0;
-	// checker(i);
-	while(g.input[i] == ' ')
-		i++;
 	while(g.input[i] != 0)
 	{
 		if (g.input[i] == '\'' || g.input[i] == '\"')
@@ -18,7 +15,7 @@ int ft_echo(int i)
 				i ++;
 				while(g.input[i] != '\'' && g.input[i] != 0)
 					i++;
-				if (g.input[i] == '\'')
+				if (g.input[i] != '\'')
 				{
 					t++;
 					while(g.input[t] != '\'')
@@ -65,7 +62,8 @@ void ft_cd()
 }
 void ft_pwd()
 {
-
+	char *a = NULL;
+	printf("%s\n", getcwd(a, sizeof(a)));
 }
 void ft_export()
 {

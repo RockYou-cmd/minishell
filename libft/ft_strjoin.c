@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/14 22:28:45 by ael-korc          #+#    #+#             */
-/*   Updated: 2021/11/15 18:01:14 by ael-korc         ###   ########.fr       */
+/*   Created: 2021/11/09 20:41:22 by rgatnaou          #+#    #+#             */
+/*   Updated: 2021/11/10 10:37:17 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,28 @@
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
+	char	*join;
 	int		i;
 	int		j;
-	char	*res;
 
 	if (!s1 || !s2)
 		return (NULL);
+	join = (char *)malloc(sizeof(*s1) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!join)
+		return (NULL);
 	i = 0;
 	j = 0;
-	res = (char *)malloc(1 + ft_strlen(s1) + ft_strlen(s2));
-	if (!res)
-		return (NULL);
-	while (s1[i] != 0)
+	while (s1[i])
 	{
-		res[j++] = s1[i++];
+		join[i] = s1[i];
+		i++;
 	}
-	i = 0;
-	while (s2[i] != 0)
+	while (s2[j])
 	{
-		res[j++] = s2[i++];
+		join[i] = s2[j];
+		i++;
+		j++;
 	}
-	res[j] = 0;
-	return (res);
+	join[i] = 0;
+	return (join);
 }

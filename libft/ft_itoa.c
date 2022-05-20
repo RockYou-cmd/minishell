@@ -3,94 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/14 20:08:57 by ael-korc          #+#    #+#             */
-/*   Updated: 2021/12/05 17:44:59 by ael-korc         ###   ########.fr       */
+/*   Created: 2021/11/13 14:28:14 by rgatnaou          #+#    #+#             */
+/*   Updated: 2021/11/15 11:43:09 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	lennbr(int n)
+static int	ft_strln(int nb)
 {
 	int	i;
 
-	i = 0;
-	if (n == 0)
-		return (1);
-	if (n < 0)
-	{
-		n = -n;
+	i = 1;
+	if (nb < 0)
 		i++;
-	}
-	while (n)
+	while (nb / 10)
 	{
-		n = n / 10;
+		nb = nb / 10;
 		i++;
 	}
 	return (i);
 }
 
-static int	stock(long long int a, long int n)
+static void	ft_st(long nb, char *ito, int i)
 {
-	long int	t;
-	int			j;
-	int			len;
-
-	len = lennbr(n);
-	t = 0;
-	j = 0;
-	while (j < len)
+	while (nb)
 	{
-		t = n;
-		t /= a;
-		a /= 10;
-		t %= 10;
-		return (t);
+		i--;
+		ito[i] = (nb % 10) + 48;
+		nb = nb / 10;
 	}
-	return (0);
-}
-
-static long long int	power(int i, int n)
-{
-	int				c;
-	long long int	p;
-
-	p = 1;
-	c = 0;
-	if (n < 0)
-		i -= 1;
-	while (c < i)
-	{
-		p *= 10;
-		c ++;
-	}
-	return (p);
 }
 
 char	*ft_itoa(int n)
 {
-	char			*ptr;
-	int				j;
-	long long int	a;
-	int				len;
-	long int		t;
+	long	nb;
+	char	*ito;
+	int		ln;
 
-	t = n;
-	j = 0;
-	len = lennbr(t);
-	a = power(lennbr(t), t);
-	ptr = (char *)malloc(sizeof(char) * len + 1);
-	if (!ptr)
-		return (0);
-	if (n < 0)
+	nb = n;
+	if (!nb)
+		return (ft_strdup("0"));
+	ln = ft_strln(n);
+	ito = (char *)malloc(sizeof(char) * (1 + ln));
+	if (!ito)
+		return (NULL);
+	if (nb < 0)
 	{
-		t = -t;
-		ptr[j++] = '-';
+		ito[0] = '-';
+		nb = nb * -1;
 	}
-	while (j < len)
-		ptr[j++] = stock((a /= 10), t) + '0';
-	ptr[j] = '\0';
-	return (ptr);
+	ft_st(nb, ito, ln);
+	ito[ln] = 0;
+	return (ito);
 }

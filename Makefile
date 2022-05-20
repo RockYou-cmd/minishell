@@ -3,25 +3,30 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+         #
+#    By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/11 12:06:40 by rgatnaou          #+#    #+#              #
-#    Updated: 2022/05/11 20:08:56 by ael-korc         ###   ########.fr        #
+#    Updated: 2022/05/16 20:58:48 by rgatnaou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 INC = minishell.h 
+
 LIBINC = libft/libft.h
 
-INCLUDE_READLINE = -I /goinfre/ael-korc/.brew/opt/readline/include
+LIBFT = libft/libft.a
 
-LIB_READLINE = -L /goinfre/ael-korc/.brew/opt/readline/lib/ -lreadline
+INCLUDE_READLINE = $(addprefix $(READLINE),/include)
 
-CC = cc -Wall -Wextra -Werror 
+LIB_READLINE = $(addprefix $(READLINE),/lib)
 
-SRC = minishell.c exec.c parsing.c exec2.c libft/ft_strncmp.c
+READLINE = $(shell brew --prefix readline)
+
+CC = cc -Wall -Wextra -Werror
+
+SRC = minishell.c exec.c parsing.c exec2.c Sys_Cmd.c init.c utils.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -30,13 +35,18 @@ OBJ = $(SRC:.c=.o)
 
 all : $(NAME)
 
-$(NAME) : $(INC) $(LIBINC) $(OBJ)
-	$(CC)  $(INCLUDE_READLINE) $(LIB_READLINE) $(OBJ) -o $(NAME)
+$(NAME) : $(INC) $(LIBINC) $(LIBFT) $(OBJ)
+	$(CC)  -I $(INCLUDE_READLINE) -L $(LIB_READLINE) -lreadline $(LIBFT) $(OBJ) -o $(NAME)
+
+$(LIBFT)	:
+	make bonus -C libft
 
 clean :
 	rm -rf $(OBJ)
+	make clean -C libft
 
 fclean : clean
 	rm -rf $(NAME)
+	make fclean -C libft
 
 re : fclean all
