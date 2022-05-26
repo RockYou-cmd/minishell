@@ -41,17 +41,20 @@ typedef struct s_data
 	int			pip;
 	t_cmd		*cmd;
 	char		**env;
+	char		**s_env;
 	t_list	 	**list;
 	char		**path;
-	int			i_stdin;	
+	char		*clr_cmd;
+	int			i_stdin;
+	int			i;
 }t_data;
 
 t_data g;
  
 void	comands();
-void	which_one();
+void	which_one(char *str);
 void 	ft_init();
-int		ft_echo();
+void	ft_echo(char *str);
 void	ft_cd();
 void	ft_pwd();
 void	ft_export();
@@ -64,6 +67,7 @@ char	*get_bin(char *cmd);
 void	exec(char *cmd);
 void	exec_v2(char *read);
 void	ft_free(char **s_cmd);
+char	*v_env(char *str);
 
 
 #endif

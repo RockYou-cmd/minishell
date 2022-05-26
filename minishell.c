@@ -25,7 +25,6 @@ int	main(int ac, char **av, char **env)
 	while(1)
 	{
 		g.input = readline("type here > : ");
-		// check_pipe();
 		if(!g.input)
 		{
 			printf("\n");
@@ -33,6 +32,7 @@ int	main(int ac, char **av, char **env)
 		}
 		add_history(g.input);
 		ft_init();
+		// printf("VALUE : %s\n", v_env(g.input));
 		check();
 		g.cmnd = -1;
 	}

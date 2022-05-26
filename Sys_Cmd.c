@@ -60,7 +60,7 @@ int check_build_command(char *read, char *cmd)
 			if (read[i] == ' ')
 				i++;
 			if (read[i] == '\0')
-				which_one();
+				which_one(NULL);
 			else
 				which_one(&read[i]);
 			return(1);
@@ -147,8 +147,8 @@ void exec_v2(char *read)
 	int		check = 0;
 	t_cmd	cmd;
 	pipe(pipefd);
-	if (!read)
-	printf("** -%s-   **\n",read);
+	if (!read || !read[0])
+		return;
 	cmd.s_cmd = ft_split(read, ' ');
 	check = check_build_command(read, cmd.s_cmd[0]);
 	if(check)
@@ -159,6 +159,7 @@ void exec_v2(char *read)
 		close(pipefd[1]);
 		return ;
 	}
+	printf("** -%s-   **\n",read);
 	cmd.bin = get_bin(cmd.s_cmd[0]);
 	pid = fork();
 	if(!pid)
