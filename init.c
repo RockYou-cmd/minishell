@@ -29,6 +29,7 @@ void comands()
 
 void ft_init()
 {
+	g.i = 0;
 	g.cmd = malloc(sizeof(t_cmd));
 	if (ft_strchr(g.input, '|'))
 	{

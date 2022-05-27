@@ -46,6 +46,7 @@ typedef struct s_data
 	char		**path;
 	char		*clr_cmd;
 	int			i_stdin;
+	int			i_stdout;
 	int			i;
 }t_data;
 

@@ -70,6 +70,7 @@ int check_build_command(char *read, char *cmd)
 }
 void exec(char *read)
 {
+	// printf("cmd last : %s\n", read);
 	int		pid;
 	int		check;
 	t_cmd	cmd;
@@ -141,6 +142,7 @@ void exec(char *read)
 
 void exec_v2(char *read)
 {
+	printf("cmd v2 : %s\n", read);
 	int	pid;
 	int	pipefd[2];
 	int		check = 0;

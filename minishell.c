@@ -20,6 +20,7 @@ int	main(int ac, char **av, char **env)
 	g.env = env;
 	g.cmnd = -1;
 	g.i_stdin = dup(0);
+	g.i_stdout = dup(1);
 	get_path();
 	comands();
 	while(1)

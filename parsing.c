@@ -19,29 +19,64 @@ void which_one(char *str)
 	
 }
 
-int dolar()
+int calc()
+{
+	char *tmp;
+	char *tmp2;
+	int i;
+
+	g.i = 0;
+	i = 0;
+	while(g.clr_cmd[i] != 0)
+	{
+		if (g.clr_cmd[i] != '$')
+		{
+			tmp = *(ft_split(g.clr_cmd + i, ' '));
+			tmp2 = v_env(tmp);
+			g.i += strlen(tmp2);
+		}
+	}
+	return 0;
+}
+
+char *dolar()
 {
 	char *ret;
+	char *tmp;
+	char *tmp2;
 	int p;
 	int i;
-	char *tmp;
 	int t;
 
 	p = 0;
 	i = 0;
 	t = 0;
-	while(g.clr_cmd[i] != '$')
-		i ++;
-	if (g.clr_cmd[i] == '$')
+	while(g.clr_cmd[i] != '\0')
 	{
-		ret = v_env(*(ft_split(g.clr_cmd + i, ' ')));
-		tmp = ft_calloc(ft_strlen(ret) + ft_strlen(g.clr_cmd), sizeof(char));
-		while(g.clr_cmd[p] != '$')
-			tmp[t++] = g.clr_cmd[p];
+		if (g.clr_cmd[i] == '$')
+		{
+			tmp2 = *(ft_split(g.clr_cmd + i, ' '));
+			if ((ret = v_env(tmp2)))
+			{
+				tmp = ft_calloc(ft_strlen(ret) + ft_strlen(g.clr_cmd), sizeof(char));
+				while(g.clr_cmd[t] != '$')
+					tmp[t++] = g.clr_cmd[p];
+			}
+			else
+			{
+				p = 0;
+				i = i + ft_strlen(tmp2);
+				while(g.clr_cmd[p] != '$')
+					tmp[t++] = g.clr_cmd[p++];
+				while(g.clr_cmd[i] != '$' && g.clr_cmd[i] != '\0')
+					tmp[t++] = g.clr_cmd[i++];
+			}
+		}
+		else
+			i++;
 	}
-	return p;
+	return NULL;
 }
-
 int squotes(int s, char *str)
 {
 	int t;
@@ -88,7 +123,7 @@ int dquotes (int s , char *str)
 char *rm(char *str)
 {
 	int s;
-	g.i = 0;
+
 	s = 0;
 	g.clr_cmd = ft_calloc(ft_strlen(str), sizeof(char));
 	while (str[g.i] != 0)
@@ -108,6 +143,7 @@ char *rm(char *str)
 			g.clr_cmd[s++] = str[g.i];
 		g.i ++;
 	}
+	g.clr_cmd[s] = 0;
 	g.i = 0;
 	// dolar();
 	return g.clr_cmd;
@@ -122,21 +158,20 @@ void check()
 	i = 0;
 	t = 0;
 	isnt = 0;
-	// printf("cmd : %s\n", g.clr_cmd);
 	if (g.pip == 1)
 	{
 		while(g.cmd->s_cmd[i + 1] != 0)
 		{
+			// printf("cmd 1 %s\n", rm(g.cmd->s_cmd[i]));
 			exec_v2(rm(g.cmd->s_cmd[i]));
 			i ++;
 		}
-		printf("cmd : %s\n", g.cmd->s_cmd[i]);
+		// printf("cmd  2 : %s\n", rm(g.cmd->s_cmd[i]));
 		exec(rm(g.cmd->s_cmd[i]));
 		dup2(g.i_stdin, 0);
-
-		// printf("-%s-\n", rm(g.cmd->s_cmd[0]));
+		dup2(g.i_stdout, 1);
+		g.pip = 0;
 	}
 	else
 		exec(rm(g.input));
-		// printf("%s\n", rm(g.input));
 }
