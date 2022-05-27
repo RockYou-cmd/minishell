@@ -47,7 +47,6 @@ int check_build_command(char *read, char *cmd)
 	i = 0;
 	g.cmnd = -1;
 
-	printf("check buil-%s-**\n",read);
 	while(g.command[t] != 0)
 	{
 		if (ft_strcmp(cmd , g.command[t]) == 0)
@@ -159,7 +158,6 @@ void exec_v2(char *read)
 		close(pipefd[1]);
 		return ;
 	}
-	printf("** -%s-   **\n",read);
 	cmd.bin = get_bin(cmd.s_cmd[0]);
 	pid = fork();
 	if(!pid)

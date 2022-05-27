@@ -19,40 +19,41 @@ void which_one(char *str)
 	
 }
 
-int dolar(char *str, int s, int t)
+int dolar()
 {
 	char *ret;
 	int p;
+	int i;
+	char *tmp;
+	int t;
 
-	p = 0;		
-	if((ret = v_env(*(ft_split(&str[g.i], ' ')))))
+	p = 0;
+	i = 0;
+	t = 0;
+	while(g.clr_cmd[i] != '$')
+		i ++;
+	if (g.clr_cmd[i] == '$')
 	{
-		printf("ret : %s\n", ret);
-		while(ret[p] != 0 || ret[p] != '"')
-			g.clr_cmd[s++] = ret[p++];
-		while(str[t] != ' ' && str[t] != '\0' && str[t] != '"')
-			t++;
+		ret = v_env(*(ft_split(g.clr_cmd + i, ' ')));
+		tmp = ft_calloc(ft_strlen(ret) + ft_strlen(g.clr_cmd), sizeof(char));
+		while(g.clr_cmd[p] != '$')
+			tmp[t++] = g.clr_cmd[p];
 	}
-	return t;
+	return p;
 }
 
-int squotes(int s)
+int squotes(int s, char *str)
 {
 	int t;
 
 	t = 0;
 	t = ++g.i;
-	while(g.input[g.i] != '\'' && g.input[g.i] != 0)
+	while(str[g.i] != '\'' && str[g.i] != 0)
 		g.i++;
-	if (g.input[g.i] == '\'')
+	if (str[g.i] == '\'')
 	{
-		while(g.input[t] != '\'')
-		{
-			// if (g.input[t] == '$')
-			// 	t = dolar(&g.input[t], s, t);
-			// else
-				g.clr_cmd[s++] = g.input[t++];
-		}
+		while(str[t] != '\'')
+			g.clr_cmd[s++] = str[t++];
 	}
 	else
 	{
@@ -62,19 +63,19 @@ int squotes(int s)
 	return s;
 }
 
-int dquotes (int s)
+int dquotes (int s , char *str)
 {
 	int t;
 
 	t = 0;
 	t = ++g.i;
-	while(g.input[g.i] != '\"' && g.input[g.i] != 0)
+	while(str[g.i] != '\"' && str[g.i] != 0)
 		g.i++;
 	// printf("-%c-\n", g.input[g.i]);
-	if (g.input[g.i] == '\"')
+	if (str[g.i] == '\"')
 	{
-		while(g.input[t] != '\"')
-			g.clr_cmd[s++] = g.input[t++];
+		while(str[t] != '\"')
+			g.clr_cmd[s++] = str[t++];
 	}
 	else
 	{
@@ -87,30 +88,29 @@ int dquotes (int s)
 char *rm(char *str)
 {
 	int s;
-	// int p;
-
 	g.i = 0;
 	s = 0;
-	g.clr_cmd = ft_calloc(100, sizeof(char));
+	g.clr_cmd = ft_calloc(ft_strlen(str), sizeof(char));
 	while (str[g.i] != 0)
 	{
 		if (str[g.i] == '\'')
 		{
-			if ((s = squotes(s)) == -1)
+			if ((s = squotes(s, str)) == -1)
 				return 0;
 		}	
 		else if (str[g.i] == '\"')
 		{
-			if ((s = dquotes(s)) == -1)
+			if ((s = dquotes(s, str)) == -1)
 				return 0;
 		}
 		else if (str[g.i] == ' ' && (str[g.i + 1] == ' ' || str[g.i + 1] == '\0'));
 		else
-			g.clr_cmd[s++] = g.input[g.i];
+			g.clr_cmd[s++] = str[g.i];
 		g.i ++;
 	}
-
-	return (g.clr_cmd);
+	g.i = 0;
+	// dolar();
+	return g.clr_cmd;
 }
 
 void check()
@@ -122,16 +122,16 @@ void check()
 	i = 0;
 	t = 0;
 	isnt = 0;
-
+	// printf("cmd : %s\n", g.clr_cmd);
 	if (g.pip == 1)
 	{
 		while(g.cmd->s_cmd[i + 1] != 0)
 		{
-			// printf("cmd : %s\n", g.cmd->s_cmd[i]);
-			exec_v2(g.cmd->s_cmd[i]);
+			exec_v2(rm(g.cmd->s_cmd[i]));
 			i ++;
 		}
-		exec(g.cmd->s_cmd[i]);
+		printf("cmd : %s\n", g.cmd->s_cmd[i]);
+		exec(rm(g.cmd->s_cmd[i]));
 		dup2(g.i_stdin, 0);
 
 		// printf("-%s-\n", rm(g.cmd->s_cmd[0]));
