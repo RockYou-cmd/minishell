@@ -6,7 +6,7 @@
 /*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:52:08 by rgatnaou          #+#    #+#             */
-/*   Updated: 2022/05/20 12:50:52 by rgatnaou         ###   ########.fr       */
+/*   Updated: 2022/05/27 14:15:20 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <sys/wait.h>
-
-
-
+#include <signal.h>
 
 
 typedef struct s_cmd

@@ -6,11 +6,28 @@
 /*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:06:09 by rgatnaou          #+#    #+#             */
-/*   Updated: 2022/05/18 17:35:55 by rgatnaou         ###   ########.fr       */
+/*   Updated: 2022/05/27 14:15:04 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void handler(int signm)
+{
+	if (signm == SIGINT)
+	{
+		write(1,"\n",1);
+		rl_on_new_line();
+		rl_replace_line("",0);
+		rl_redisplay();
+	}
+	else if (signm == SIGQUIT )
+	{
+		rl_on_new_line();
+		rl_replace_line("",0);
+		rl_redisplay();
+	}	
+}
 
 int	main(int ac, char **av, char **env)
 {
@@ -20,15 +37,17 @@ int	main(int ac, char **av, char **env)
 	g.env = env;
 	g.cmnd = -1;
 	g.i_stdin = dup(0);
+	signal(SIGINT, &handler);
+	signal(SIGQUIT, &handler);
 	get_path();
 	comands();
 	while(1)
 	{
-		g.input = readline("type here > : ");
+		g.input = readline("minishell=>");
 		if(!g.input)
 		{
-			printf("\n");
-			continue;
+			write(1, up("1")right("12")"exit\n",15);
+			exit(1);
 		}
 		add_history(g.input);
 		ft_init();
