@@ -29,53 +29,82 @@ int calc()
 	i = 0;
 	while(g.clr_cmd[i] != 0)
 	{
-		if (g.clr_cmd[i] != '$')
+		if (g.clr_cmd[i] == '$')
 		{
 			tmp = *(ft_split(g.clr_cmd + i, ' '));
 			tmp2 = v_env(tmp);
 			g.i += strlen(tmp2);
 		}
+		i ++;
 	}
-	return 0;
+	return g.i;
 }
+
+// char *dolar()
+// {
+// 	int t;
+// 	int i;
+// 	int p;
+// 	char *ret;
+// 	char *tmp;
+// 	char *tmp2;
+
+// 	t = 0;
+// 	i = 0;
+// 	p = 0;
+// 	while(g.clr_cmd[t] != '\0')
+// 	{
+// 		if (g.clr_cmd[t] == '$')
+// 		{
+// 			ret = ft_calloc(ft_strlen(g.clr_cmd) + calc(), sizeof(char));
+// 			tmp = *(ft_split(g.clr_cmd + t, ' '));
+// 			tmp2 = v_env(tmp);
+// 			while (g.clr_cmd[g.i] != '\0')
+// 			{
+// 				if (g.clr_cmd[g.i] == '$')
+// 				{
+// 					while(tmp2[p] != '\0')
+// 						ret[i ++] = tmp2[p ++];
+// 					g.i += ft_strlen(tmp);
+// 				}
+// 				else
+// 					ret[i ++] = g.clr_cmd[g.i++];
+// 			}
+// 		}
+// 	}
+// }
 
 char *dolar()
 {
+	int t;
+	int i;
+	int p;
 	char *ret;
 	char *tmp;
 	char *tmp2;
-	int p;
-	int i;
-	int t;
 
-	p = 0;
-	i = 0;
 	t = 0;
-	while(g.clr_cmd[i] != '\0')
+	i = 0;
+	p = 0;
+	ret = ft_calloc(ft_strlen(g.clr_cmd) + calc(), sizeof(char));
+	while(g.clr_cmd[t] != '\0')
 	{
-		if (g.clr_cmd[i] == '$')
+		if (g.clr_cmd[t] == '$')
 		{
-			tmp2 = *(ft_split(g.clr_cmd + i, ' '));
-			if ((ret = v_env(tmp2)))
+			tmp = *(ft_split(g.clr_cmd + t, ' '));
+			if ((tmp2 = v_env(tmp)))
 			{
-				tmp = ft_calloc(ft_strlen(ret) + ft_strlen(g.clr_cmd), sizeof(char));
-				while(g.clr_cmd[t] != '$')
-					tmp[t++] = g.clr_cmd[p];
+				printf("*here*\n");
+				while(tmp2[p] != '\0')
+					ret[i ++] = tmp2[p ++];
 			}
-			else
-			{
-				p = 0;
-				i = i + ft_strlen(tmp2);
-				while(g.clr_cmd[p] != '$')
-					tmp[t++] = g.clr_cmd[p++];
-				while(g.clr_cmd[i] != '$' && g.clr_cmd[i] != '\0')
-					tmp[t++] = g.clr_cmd[i++];
-			}
+			t += g.i + 1;
+			p = 0;
 		}
 		else
-			i++;
+			ret[i ++] = g.clr_cmd[t ++];
 	}
-	return NULL;
+	return ret;
 }
 int squotes(int s, char *str)
 {
@@ -145,8 +174,8 @@ char *rm(char *str)
 	}
 	g.clr_cmd[s] = 0;
 	g.i = 0;
-	// dolar();
-	return g.clr_cmd;
+	
+	return dolar();
 }
 
 void check()
@@ -174,4 +203,4 @@ void check()
 	}
 	else
 		exec(rm(g.input));
-}
+	}
