@@ -6,7 +6,7 @@
 /*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:52:08 by rgatnaou          #+#    #+#             */
-/*   Updated: 2022/05/27 14:15:20 by rgatnaou         ###   ########.fr       */
+/*   Updated: 2022/05/29 09:44:34 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <sys/wait.h>
-#include <signal.h>
+#include <termios.h>
+
+
+
 
 
 typedef struct s_cmd
@@ -44,6 +47,7 @@ typedef struct s_data
 	char		**path;
 	char		*clr_cmd;
 	int			i_stdin;
+	int			i_stdout;
 	int			i;
 }t_data;
 

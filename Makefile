@@ -6,7 +6,7 @@
 #    By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/11 12:06:40 by rgatnaou          #+#    #+#              #
-#    Updated: 2022/05/27 12:05:37 by rgatnaou         ###   ########.fr        #
+#    Updated: 2022/05/28 15:53:28 by rgatnaou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRC = minishell.c exec.c parsing.c exec2.c Sys_Cmd.c init.c utils.c
 OBJ = $(SRC:.c=.o)
 
 %.o : %.c
-	$(CC)  -I $(INCLUDE_READLINE)  -c $< -o $@
+	$(CC) -I $(INCLUDE_READLINE) -c $< -o $@
 
 all : $(NAME)
 

@@ -4,14 +4,21 @@ char *v_env(char *str)
 {
 	int i;
 	char *value;
+	char *tmp;
 
+	i = 1;
+	g.i = 0;
+	tmp = ft_calloc(ft_strlen(str), sizeof(char));
+	while(str[i] != 0 && str[i] != '$' && str[i] != '\"' && str[i] != '\'')
+		tmp[g.i ++] = str[i++];
 	i = 0;
 	while(g.env[i])
 	{
 		g.s_env = ft_split(g.env[i++], '=');
-		if (ft_strcmp(g.s_env[0], str + 1) == 0)
+		if (ft_strcmp(g.s_env[0], tmp) == 0)
 			value = g.s_env[1];
 	}
+	free(tmp);
 	return value;
 }
 
@@ -29,6 +36,7 @@ void comands()
 
 void ft_init()
 {
+	g.i = 0;
 	g.cmd = malloc(sizeof(t_cmd));
 	if (ft_strchr(g.input, '|'))
 	{
