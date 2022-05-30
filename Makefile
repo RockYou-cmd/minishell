@@ -31,7 +31,7 @@ SRC = minishell.c exec.c parsing.c exec2.c Sys_Cmd.c init.c utils.c
 OBJ = $(SRC:.c=.o)
 
 %.o : %.c
-	$(CC) -c $< -o $@
+	$(CC) -I $(INCLUDE_READLINE) -c $< -o $@
 
 all : $(NAME)
 

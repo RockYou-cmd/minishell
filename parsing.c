@@ -24,93 +24,95 @@ int calc()
 	char *tmp;
 	char *tmp2;
 	int i;
+	int t;
 
-	g.i = 0;
 	i = 0;
-	while(g.clr_cmd[i] != 0)
+	t = 0;
+	while(g.input[i] != 0)
 	{
-		if (g.clr_cmd[i] == '$')
+		if (g.input[i] == '$')
 		{
-			tmp = *(ft_split(g.clr_cmd + i, ' '));
-			tmp2 = v_env(tmp);
-			g.i += strlen(tmp2);
+			tmp = *(ft_split(g.input + i, ' '));
+			if (!(tmp2 = v_env(tmp)))
+				t += 0;
+			else
+				t += strlen(tmp2);		
 		}
 		i ++;
 	}
-	return g.i;
+	return t;
 }
 
-// char *dolar()
-// {
-// 	int t;
-// 	int i;
-// 	int p;
-// 	char *ret;
-// 	char *tmp;
-// 	char *tmp2;
-
-// 	t = 0;
-// 	i = 0;
-// 	p = 0;
-// 	while(g.clr_cmd[t] != '\0')
-// 	{
-// 		if (g.clr_cmd[t] == '$')
-// 		{
-// 			ret = ft_calloc(ft_strlen(g.clr_cmd) + calc(), sizeof(char));
-// 			tmp = *(ft_split(g.clr_cmd + t, ' '));
-// 			tmp2 = v_env(tmp);
-// 			while (g.clr_cmd[g.i] != '\0')
-// 			{
-// 				if (g.clr_cmd[g.i] == '$')
-// 				{
-// 					while(tmp2[p] != '\0')
-// 						ret[i ++] = tmp2[p ++];
-// 					g.i += ft_strlen(tmp);
-// 				}
-// 				else
-// 					ret[i ++] = g.clr_cmd[g.i++];
-// 			}
-// 		}
-// 	}
-// }
-
-char *dolar()
+int dolar(char *str, int s)
 {
 	int t;
 	int i;
 	int p;
-	char *ret;
 	char *tmp;
 	char *tmp2;
 
 	t = 0;
 	i = 0;
 	p = 0;
-	ret = ft_calloc(ft_strlen(g.clr_cmd) + calc(), sizeof(char));
-	while(g.clr_cmd[t] != '\0')
+	while (str[i] != '\"')
 	{
-		if (g.clr_cmd[t] == '$')
+		if (str[i] == '$' && str[i + 1] != ' ' && str[i + 1] != 0 && str[i + 1] != '\"' && (str[i + 2] != ' '  || str[i + 2] != '\0'))
 		{
-			tmp = *(ft_split(g.clr_cmd + t, ' '));
+			tmp = *(ft_split(str + i, ' '));
 			if ((tmp2 = v_env(tmp)))
 			{
-				printf("*here*\n");
 				while(tmp2[p] != '\0')
-					ret[i ++] = tmp2[p ++];
+					g.clr_cmd[s ++] = tmp2[p ++];
 			}
-			t += g.i + 1;
+			i += g.t + 1;
 			p = 0;
 		}
 		else
-			ret[i ++] = g.clr_cmd[t ++];
+			g.clr_cmd[s ++] = str[i ++];
 	}
-	return ret;
+	return s;
 }
+
+int dolar2(char *str, int s)
+{
+	int t;
+	int i;
+	int p;
+	char *tmp;
+	char *tmp2;
+
+	t = 0;
+	i = 0;
+	p = 0;
+	while (str[g.i] != '\"' && str[g.i] != '\'' && str[g.i] != '\0')
+	{
+		if (str[g.i] == '$' && str[g.i + 1] != ' ' && str[g.i + 1] != 0 && str[g.i + 1] != '\"' && (str[g.i + 2] != ' '  || str[g.i + 2] != '\0'))
+		{
+			tmp = *(ft_split(str + g.i, ' '));
+			if ((tmp2 = v_env(tmp)))
+			{
+				while(tmp2[p] != '\0')
+					g.clr_cmd[s ++] = tmp2[p ++];
+			}
+			g.i += g.t + 1;
+			p = 0;
+		}
+		else if (str[g.i]  == ' ' && (str[g.i + 1] == ' ' || str[g.i + 1] == '\0'))
+			g.i ++;
+		else
+			g.clr_cmd[s ++] = str[g.i ++];
+	}
+	g.i --;
+	return s;
+}
+
 int squotes(int s, char *str)
 {
 	int t;
+	int i;
 
 	t = 0;
+	i = 0;
 	t = ++g.i;
 	while(str[g.i] != '\'' && str[g.i] != 0)
 		g.i++;
@@ -135,11 +137,9 @@ int dquotes (int s , char *str)
 	t = ++g.i;
 	while(str[g.i] != '\"' && str[g.i] != 0)
 		g.i++;
-	// printf("-%c-\n", g.input[g.i]);
 	if (str[g.i] == '\"')
 	{
-		while(str[t] != '\"')
-			g.clr_cmd[s++] = str[t++];
+		s = dolar(str + t , s);
 	}
 	else
 	{
@@ -154,7 +154,8 @@ char *rm(char *str)
 	int s;
 
 	s = 0;
-	g.clr_cmd = ft_calloc(ft_strlen(str), sizeof(char));
+	printf("calc : %lu\n", (calc() + ft_strlen(str)));
+	g.clr_cmd = ft_calloc(ft_strlen(str) + calc(), sizeof(char));
 	while (str[g.i] != 0)
 	{
 		if (str[g.i] == '\'')
@@ -169,13 +170,12 @@ char *rm(char *str)
 		}
 		else if (str[g.i] == ' ' && (str[g.i + 1] == ' ' || str[g.i + 1] == '\0'));
 		else
-			g.clr_cmd[s++] = str[g.i];
+			s = dolar2(str, s);
 		g.i ++;
 	}
 	g.clr_cmd[s] = 0;
 	g.i = 0;
-	
-	return dolar();
+	return g.clr_cmd;
 }
 
 void check()
@@ -195,7 +195,7 @@ void check()
 			exec_v2(rm(g.cmd->s_cmd[i]));
 			i ++;
 		}
-		// printf("cmd  2 : %s\n", rm(g.cmd->s_cmd[i]));
+		// printf("cmd 2 : %s\n", rm(g.cmd->s_cmd[i]));
 		exec(rm(g.cmd->s_cmd[i]));
 		dup2(g.i_stdin, 0);
 		dup2(g.i_stdout, 1);
