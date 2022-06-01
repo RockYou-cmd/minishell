@@ -39,7 +39,7 @@ void ft_init()
 {
 	g.i = 0;
 	g.cmd = malloc(sizeof(t_cmd));
-	if (ft_strchr(g.input, '|'))
+	if (ft_strchr(g.input, '|') )
 	{
 		g.cmd->s_cmd = ft_split(g.input, '|');
 		g.pip = 1;

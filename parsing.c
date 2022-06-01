@@ -97,8 +97,11 @@ int dolar2(char *str, int s)
 			g.i += g.t + 1;
 			p = 0;
 		}
-		else if (str[g.i]  == ' ' && (str[g.i + 1] == ' ' || str[g.i + 1] == '\0'))
+		else if (str[g.i]  == ' ')
+		{
+			g.clr_cmd[s ++] = '*';
 			g.i ++;
+		}
 		else
 			g.clr_cmd[s ++] = str[g.i ++];
 	}
@@ -156,6 +159,7 @@ char *rm(char *str)
 	s = 0;
 	printf("calc : %lu\n", (calc() + ft_strlen(str)));
 	g.clr_cmd = ft_calloc(ft_strlen(str) + calc(), sizeof(char));
+	printf("cmd : %s\n", str);
 	while (str[g.i] != 0)
 	{
 		if (str[g.i] == '\'')
@@ -168,7 +172,8 @@ char *rm(char *str)
 			if ((s = dquotes(s, str)) == -1)
 				return 0;
 		}
-		else if (str[g.i] == ' ' && (str[g.i + 1] == ' ' || str[g.i + 1] == '\0'));
+		else if (str[g.i] == ' ')
+			g.clr_cmd[s ++] = '*';
 		else
 			s = dolar2(str, s);
 		g.i ++;
@@ -176,6 +181,39 @@ char *rm(char *str)
 	g.clr_cmd[s] = 0;
 	g.i = 0;
 	return g.clr_cmd;
+}
+
+int heredoc_check(char *str)
+{
+	int i;
+	int d;
+	int s;
+
+	i = 0;
+	d = 0;
+	s = 0;
+	while (str[i] != 0)
+	{
+		if (str[i] == '\"')
+		{
+			if (d == 0)
+				d = 1;
+			else
+				d = 0;
+		}
+		else if (str[i] == '\'')
+		{
+			if (s == 0)
+				s = 1;
+			else
+				s = 0;
+		}
+		if (str[i] == '<' && str[i + 1] == '<' && d == 0 && s == 0)
+			return 69;
+		i ++;
+	}
+	return 0;
+
 }
 
 void check()
@@ -187,15 +225,17 @@ void check()
 	i = 0;
 	t = 0;
 	isnt = 0;
+	
+	// printf("check : %d\n", heredoc_check(g.input));
 	if (g.pip == 1)
 	{
 		while(g.cmd->s_cmd[i + 1] != 0)
 		{
-			// printf("cmd 1 %s\n", rm(g.cmd->s_cmd[i]));
+			// if (heredoc_check(g.cmd->s_cmd[i]))
+			// 	ft_heredoc();
 			exec_v2(rm(g.cmd->s_cmd[i]));
 			i ++;
 		}
-		// printf("cmd 2 : %s\n", rm(g.cmd->s_cmd[i]));
 		exec(rm(g.cmd->s_cmd[i]));
 		dup2(g.i_stdin, 0);
 		dup2(g.i_stdout, 1);

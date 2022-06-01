@@ -22,6 +22,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <sys/wait.h>
+#include <fcntl.h>
 #include <termios.h>
 
 typedef struct s_cmd
@@ -68,6 +69,7 @@ void	exec_v2(char *read);
 void	ft_free(char **s_cmd);
 char	*v_env(char *str);
 int dolar(char *str, int s);
+void    ft_heredoc();
 
 
 #endif
