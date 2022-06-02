@@ -77,30 +77,34 @@ char	*get_bin(char *cmd)
 	}
 	return(NULL);
 }
-int check_build_command(char *read, char *cmd)
+int check_build_command(char **cmd)
 {
 	int	t;
 	int	i;
+	char *read;
 
 	t = 0;
-	i = 0;
+	i = 1;
 	g.cmnd = -1;
 
 	while(g.command[t] != 0)
 	{
-		if (ft_strcmp(cmd , g.command[t]) == 0)
+		if (ft_strcmp(cmd[0] , g.command[t]) == 0)
 		{
 			g.cmnd = t;
-			while (read[i] == ' ' && read[i] != '\0')
-				i++;
-			while (read[i] != ' ' && read[i] != '\0')
-				i++;
-			if (read[i] == ' ')
-				i++;
-			if (read[i] == '\0')
+			if (!cmd[1])
+			{
 				which_one(NULL);
-			else
-				which_one(&read[i]);
+				return (1);
+			}
+			read = ft_strdup(cmd[i++]);
+			while (cmd[i] != NULL)
+			{
+				read = ft_strjoin(read," ");
+				read = ft_strjoin(read, cmd[i]);
+				i++;
+			}
+			which_one(read);
 			return(1);
 		}    
 		t++;
@@ -118,7 +122,7 @@ void exec(char *read)
 	if (!read || !read[0])
 		return;
 	cmd.s_cmd = ft_split(read,'*');
-	check = check_build_command(read, cmd.s_cmd[0]);
+	check = check_build_command(cmd.s_cmd);
 	if(check)
 	{
 		ft_free(cmd.s_cmd);
@@ -191,7 +195,7 @@ void exec_v2(char *read)
 	if (!read || !read[0])
 		return;
 	cmd.s_cmd = ft_split(read, ' ');
-	check = check_build_command(read, cmd.s_cmd[0]);
+	check = check_build_command(cmd.s_cmd);
 	if(check)
 	{
 		ft_free(cmd.s_cmd);
