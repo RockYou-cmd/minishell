@@ -20,6 +20,12 @@ void which_one(char *str)
 }
 
 int calc()
+<<<<<<< HEAD
+{
+	char *tmp;
+	char *tmp2;
+	int i;
+=======
 {
 	char *tmp;
 	char *tmp2;
@@ -27,6 +33,31 @@ int calc()
 
 	g.i = 0;
 	i = 0;
+	while(g.clr_cmd[i] != 0)
+	{
+		if (g.clr_cmd[i] != '$')
+		{
+			tmp = *(ft_split(g.clr_cmd + i, ' '));
+			tmp2 = v_env(tmp);
+			g.i += strlen(tmp2);
+		}
+	}
+	return 0;
+}
+
+char *dolar()
+{
+	char *ret;
+	char *tmp;
+	char *tmp2;
+	int p;
+	int i;
+	int t;
+>>>>>>> rm function handled
+
+	g.i = 0;
+	i = 0;
+<<<<<<< HEAD
 	while(g.clr_cmd[i] != 0)
 	{
 		if (g.clr_cmd[i] == '$')
@@ -106,6 +137,35 @@ char *dolar()
 	}
 	return ret;
 }
+=======
+	t = 0;
+	while(g.clr_cmd[i] != '\0')
+	{
+		if (g.clr_cmd[i] == '$')
+		{
+			tmp2 = *(ft_split(g.clr_cmd + i, ' '));
+			if ((ret = v_env(tmp2)))
+			{
+				tmp = ft_calloc(ft_strlen(ret) + ft_strlen(g.clr_cmd), sizeof(char));
+				while(g.clr_cmd[t] != '$')
+					tmp[t++] = g.clr_cmd[p];
+			}
+			else
+			{
+				p = 0;
+				i = i + ft_strlen(tmp2);
+				while(g.clr_cmd[p] != '$')
+					tmp[t++] = g.clr_cmd[p++];
+				while(g.clr_cmd[i] != '$' && g.clr_cmd[i] != '\0')
+					tmp[t++] = g.clr_cmd[i++];
+			}
+		}
+		else
+			i++;
+	}
+	return NULL;
+}
+>>>>>>> rm function handled
 int squotes(int s, char *str)
 {
 	int t;
@@ -203,4 +263,8 @@ void check()
 	}
 	else
 		exec(rm(g.input));
+<<<<<<< HEAD
 	}
+=======
+}
+>>>>>>> rm function handled
