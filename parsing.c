@@ -102,6 +102,11 @@ int dolar2(char *str, int s)
 			g.clr_cmd[s ++] = '*';
 			g.i ++;
 		}
+		else if (str[g.i]  == '<')
+		{
+			g.clr_cmd[s ++] = '`';
+			g.i ++;
+		}
 		else
 			g.clr_cmd[s ++] = str[g.i ++];
 	}
@@ -216,6 +221,22 @@ int heredoc_check(char *str)
 
 }
 
+char *heredoc_rm(char **str)
+{
+	int i;
+
+	i = 0;
+	while(str[i + 1] != 0)
+	{
+		str[0] = ft_strjoin(str[0], " ");
+		str[0] = ft_strjoin(str[0], str[i + 1]);
+		i ++;
+	}
+	printf("ret : %s\n", str[0]);
+	return rm(str[0]);
+	
+}
+
 void check()
 {
 	int i;
@@ -231,9 +252,10 @@ void check()
 	{
 		while(g.cmd->s_cmd[i + 1] != 0)
 		{
-			// if (heredoc_check(g.cmd->s_cmd[i]))
-			// 	ft_heredoc();
-			exec_v2(rm(g.cmd->s_cmd[i]));
+			if (heredoc_check(g.cmd->s_cmd[i]))
+				ft_heredoc(heredoc_rm(ft_split(g.cmd->s_cmd[i], '<')));
+			else
+				exec_v2(rm(g.cmd->s_cmd[i]));
 			i ++;
 		}
 		exec(rm(g.cmd->s_cmd[i]));
@@ -242,5 +264,7 @@ void check()
 		g.pip = 0;
 	}
 	else
-		exec(rm(g.input));
+		printf("clr : %d\n", heredoc_check(g.input));
+		// exec(rm(g.input));
+
 	}
