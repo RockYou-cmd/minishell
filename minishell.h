@@ -6,7 +6,7 @@
 /*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:52:08 by rgatnaou          #+#    #+#             */
-/*   Updated: 2022/05/20 12:50:52 by rgatnaou         ###   ########.fr       */
+/*   Updated: 2022/06/03 14:33:37 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	exec(char *cmd);
 void	exec_v2(char *read);
 void	ft_free(char **s_cmd);
 char	*v_env(char *str);
-int dolar(char *str, int s);
+int 	dolar(char *str, int s);
 void    ft_heredoc();
 
 

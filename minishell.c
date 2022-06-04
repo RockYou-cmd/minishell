@@ -6,7 +6,7 @@
 /*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:06:09 by rgatnaou          #+#    #+#             */
-/*   Updated: 2022/05/18 17:35:55 by rgatnaou         ###   ########.fr       */
+/*   Updated: 2022/06/03 14:32:09 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void handler(int signm)
 		rl_on_new_line();
 		rl_replace_line("",0);
 		rl_redisplay();
-
 	}
 }
 
