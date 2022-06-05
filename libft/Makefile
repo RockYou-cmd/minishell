@@ -6,7 +6,7 @@
 #    By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/07 11:36:40 by rgatnaou          #+#    #+#              #
-#    Updated: 2021/11/20 16:47:23 by rgatnaou         ###   ########.fr        #
+#    Updated: 2022/06/04 18:55:32 by rgatnaou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,6 +53,7 @@ SRC =   ft_isalnum.c	\
 		ft_putstr_fd.c	\
 		ft_putendl_fd.c	\
 		ft_split.c		\
+		ft_split2.c		\
 		ft_striteri.c	\
 		ft_strcmp.c
 		

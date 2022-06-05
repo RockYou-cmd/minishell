@@ -1,5 +1,45 @@
 #include "minishell.h"
 
+void    ft_heredoc()
+{
+    int fd;
+    char *limeter;
+    int i;
+
+    i = 0;
+    while (g.input[i] && g.input[i] != '<')
+        i++;
+    i += 2;
+    while (g.input[i] && g.input[i] ==  ' ')
+        i++;
+    limeter = ft_strdup(g.input + i);
+    if (!limeter)
+    {
+        printf("error allocation\n");
+        return ;
+    }
+    printf("delemeter : %s\n",limeter);
+    fd = open(".heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
+    i = 0;
+    while(i >= 0)
+    {
+        g.input = readline("> ");
+        if (!g.input)
+        {
+            write(1, "\033[1A> ",6);
+            break;    
+        }
+        if (!ft_strcmp(limeter,g.input))
+            break;
+        if (i > 0)
+            write(fd , "\n", 1);
+        write(fd, g.input, ft_strlen(g.input));
+        i++;
+    }
+    close(fd);
+    fd = open(".heredoc", O_RDWR, 0644);
+    dup2(fd , 0);
+}
 
 void	get_path()
 {
@@ -35,33 +75,36 @@ char	*get_bin(char *cmd)
 		free(bin);
 		i++;	
 	}
-	printf("*not\n");
 	return(NULL);
 }
-int check_build_command(char *read, char *cmd)
+int check_build_command(char **cmd)
 {
 	int	t;
 	int	i;
+	char *read;
 
 	t = 0;
-	i = 0;
+	i = 1;
 	g.cmnd = -1;
 
 	while(g.command[t] != 0)
 	{
-		if (ft_strcmp(cmd , g.command[t]) == 0)
+		if (ft_strcmp(cmd[0] , g.command[t]) == 0)
 		{
 			g.cmnd = t;
-			while (read[i] == ' ' && read[i] != '\0')
-				i++;
-			while (read[i] != ' ' && read[i] != '\0')
-				i++;
-			if (read[i] == ' ')
-				i++;
-			if (read[i] == '\0')
+			if (!cmd[1])
+			{
 				which_one(NULL);
-			else
-				which_one(&read[i]);
+				return (1);
+			}
+			read = ft_strdup(cmd[i++]);
+			while (cmd[i] != NULL)
+			{
+				read = ft_strjoin(read," ");
+				read = ft_strjoin(read, cmd[i]);
+				i++;
+			}
+			which_one(read);
 			return(1);
 		}    
 		t++;
@@ -75,10 +118,11 @@ void exec(char *read)
 	int		check;
 	t_cmd	cmd;
 
+	printf("++command %s\n",read);
 	if (!read || !read[0])
 		return;
-	cmd.s_cmd = ft_split(read,' ');
-	check = check_build_command(read, cmd.s_cmd[0]);
+	cmd.s_cmd = ft_split(read,'*');
+	check = check_build_command(cmd.s_cmd);
 	if(check)
 	{
 		ft_free(cmd.s_cmd);
@@ -151,7 +195,7 @@ void exec_v2(char *read)
 	if (!read || !read[0])
 		return;
 	cmd.s_cmd = ft_split(read, ' ');
-	check = check_build_command(read, cmd.s_cmd[0]);
+	check = check_build_command(cmd.s_cmd);
 	if(check)
 	{
 		ft_free(cmd.s_cmd);

@@ -37,5 +37,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		j++;
 	}
 	join[i] = 0;
+	free((void *)s1);
 	return (join);
 }

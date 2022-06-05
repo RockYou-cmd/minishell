@@ -6,7 +6,7 @@
 /*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:52:08 by rgatnaou          #+#    #+#             */
-/*   Updated: 2022/05/29 09:44:34 by rgatnaou         ###   ########.fr       */
+/*   Updated: 2022/06/03 14:33:37 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <sys/wait.h>
+#include <fcntl.h>
 #include <termios.h>
-
-
-
-
 
 typedef struct s_cmd
 {
@@ -49,6 +46,7 @@ typedef struct s_data
 	int			i_stdin;
 	int			i_stdout;
 	int			i;
+	int			t;
 }t_data;
 
 t_data g;
@@ -70,6 +68,8 @@ void	exec(char *cmd);
 void	exec_v2(char *read);
 void	ft_free(char **s_cmd);
 char	*v_env(char *str);
+int 	dolar(char *str, int s);
+void    ft_heredoc();
 
 
 #endif

@@ -7,10 +7,11 @@ char *v_env(char *str)
 	char *tmp;
 
 	i = 1;
-	g.i = 0;
+	g.t = 0;
+	value = NULL;
 	tmp = ft_calloc(ft_strlen(str), sizeof(char));
-	while(str[i] != 0 && str[i] != '$' && str[i] != '\"' && str[i] != '\'')
-		tmp[g.i ++] = str[i++];
+	while(str[i] != 0 && str[i] != '$' && str[i] != '\"')
+		tmp[g.t ++] = str[i++];
 	i = 0;
 	while(g.env[i])
 	{
@@ -38,7 +39,7 @@ void ft_init()
 {
 	g.i = 0;
 	g.cmd = malloc(sizeof(t_cmd));
-	if (ft_strchr(g.input, '|'))
+	if (ft_strchr(g.input, '|') )
 	{
 		g.cmd->s_cmd = ft_split(g.input, '|');
 		g.pip = 1;

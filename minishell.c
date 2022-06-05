@@ -6,12 +6,11 @@
 /*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:06:09 by rgatnaou          #+#    #+#             */
-/*   Updated: 2022/05/29 11:03:23 by rgatnaou         ###   ########.fr       */
+/*   Updated: 2022/06/03 14:32:09 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 void handler(int signm)
 {
@@ -51,11 +50,8 @@ int	main(int ac, char **av, char **env)
 	g.cmnd = -1;
 	g.i_stdin = dup(0);
 	g.i_stdout = dup(1);
-<<<<<<< HEAD
 	signal(SIGINT, &handler);
 	signal(SIGQUIT, SIG_IGN);
-=======
->>>>>>> rm function handled
 	get_path();
 	comands();
 	while(1)
@@ -63,7 +59,6 @@ int	main(int ac, char **av, char **env)
 		ft_read_line();
 		add_history(g.input);
 		ft_init();
-		// printf("VALUE : %s\n", v_env(g.input));
 		check();
 		g.cmnd = -1;
 	}
