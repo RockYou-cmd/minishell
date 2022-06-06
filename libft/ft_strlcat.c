@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/05 11:39:54 by ael-korc          #+#    #+#             */
-/*   Updated: 2021/11/15 00:06:51 by ael-korc         ###   ########.fr       */
+/*   Created: 2021/11/02 15:43:13 by rgatnaou          #+#    #+#             */
+/*   Updated: 2021/11/11 18:43:02 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,24 @@
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
 	size_t	i;
-	size_t	j;
-	size_t	t;
+	size_t	lendst;
+	size_t	lensrc;
+	size_t	ldst;
 
+	lensrc = ft_strlen(src);
+	lendst = ft_strlen(dst);
+	ldst = lendst;
 	i = 0;
-	while (dst[i] != 0)
-		i++;
-	t = 0;
-	while (src[t] != 0)
-		t++;
-	if (dstsize <= i)
-		t = t + dstsize;
-	else
-		t = t + i;
-	j = 0;
-	while (src[j] != 0 && i + 1 < dstsize)
+	if (!dst || !src)
+		return (0);
+	if (lendst >= dstsize)
+		return (lensrc + dstsize);
+	while (ldst < dstsize - 1 && src[i])
 	{
-		dst[i] = src[j];
+		dst[ldst] = src[i];
 		i++;
-		j++;
+		ldst++;
 	}
-	dst[i] = 0;
-	return (t);
+	dst[ldst] = '\0';
+	return (lensrc + lendst);
 }

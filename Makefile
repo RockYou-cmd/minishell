@@ -26,12 +26,12 @@ READLINE = $(shell brew --prefix readline)
 
 CC = cc -Wall -Wextra -Werror
 
-SRC = minishell.c exec.c parsing.c exec2.c Sys_Cmd.c
+SRC = minishell.c exec.c parsing.c exec2.c Sys_Cmd.c init.c utils.c
 
 OBJ = $(SRC:.c=.o)
 
 %.o : %.c
-	$(CC) -c $< -o $@
+	$(CC) -I $(INCLUDE_READLINE) -c $< -o $@
 
 all : $(NAME)
 

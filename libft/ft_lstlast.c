@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstlast.c                                       :+:      :+:    :+:   */
+/*   ft_lstlast.C                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/24 19:21:04 by ael-korc          #+#    #+#             */
-/*   Updated: 2021/11/30 14:07:23 by ael-korc         ###   ########.fr       */
+/*   Created: 2021/11/18 18:37:48 by rgatnaou          #+#    #+#             */
+/*   Updated: 2021/11/18 18:52:19 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,9 @@
 
 t_list	*ft_lstlast(t_list *lst)
 {
-	t_list	*ptr;
-
-	ptr = lst;
-	while (ptr != NULL)
-	{
-		if (ptr -> next == NULL)
-			return (ptr);
-		ptr = ptr -> next;
-	}
-	return (ptr);
+	if (!lst)
+		return (NULL);
+	while (lst->next)
+		lst = lst->next;
+	return(lst);
 }

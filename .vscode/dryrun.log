@@ -1,7 +1,0 @@
-make --dry-run --keep-going --print-directory
-make: Entering directory `/Users/rgatnaou/minishell'
-cc -Wall -Wextra -Werror -c Sys_Cmd.c -o Sys_Cmd.o
- 
-cc -Wall -Wextra -Werror  -I /goinfre/rgatnaou/.brew/opt/readline/include -L /goinfre/rgatnaou/.brew/opt/readline/lib -lreadline libft/libft.a minishell.o exec.o parsing.o exec2.o Sys_Cmd.o -o minishell
-make: Leaving directory `/Users/rgatnaou/minishell'
- 
