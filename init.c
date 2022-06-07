@@ -6,11 +6,15 @@ char *v_env(char *str)
 	char *value;
 	char *tmp;
 
-	i = 1;
+	i = 0;
 	g.t = 0;
 	value = NULL;
 	tmp = ft_calloc(ft_strlen(str), sizeof(char));
-	while(str[i] != 0 && str[i] != '$' && str[i] != '\"')
+	while (str[i ++] != '$' && str[i ++] != '\0');
+	printf("str : %s\n", str);
+	if (str[i - 1] != '$')
+		return NULL;
+	while(str[i] != 0 && str[i] != '$' && str[i] != '\"' && str[i] != ' ' && str[i] != '\'')
 		tmp[g.t ++] = str[i++];
 	i = 0;
 	while(g.env[i])

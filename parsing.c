@@ -19,27 +19,18 @@ void which_one(char **str)
 	
 }
 
-int calc()
+int calc(char *str)
 {
-	char *tmp;
 	char *tmp2;
 	int i;
 	int t;
 
 	i = 0;
 	t = 0;
-	while(g.input[i] != 0)
-	{
-		if (g.input[i] == '$')
-		{
-			tmp = *(ft_split(g.input + i, ' '));
-			if (!(tmp2 = v_env(tmp)))
-				t += 0;
-			else
-				t += strlen(tmp2);		
-		}
-		i ++;
-	}
+	if (!(tmp2 = v_env(str)))
+		t += 0;
+	else
+		t += ft_strlen(tmp2);		
 	return t;
 }
 
@@ -48,7 +39,6 @@ int dolar(char *str, int s)
 	int t;
 	int i;
 	int p;
-	char *tmp;
 	char *tmp2;
 
 	t = 0;
@@ -56,14 +46,12 @@ int dolar(char *str, int s)
 	p = 0;
 	while (str[i] != '\"')
 	{
-		printf("prb \n");
 		if (str[i] == '$' && str[i + 1] != ' ' && str[i + 1] != 0 && str[i + 1] != '\"' && (str[i + 2] != ' '  || str[i + 2] != '\0'))
 		{
-			tmp = *(ft_split(str + i, ' '));
-			if ((tmp2 = v_env(tmp)))
+			if ((tmp2 = v_env(str + i)))
 			{
 				while(tmp2[p] != '\0')
-					g.clr_cmd[s ++] = tmp2[p ++];
+					g.clr_cmd[s ++] = tmp2[p ++];                                                                                                                                                          
 			}
 			i += g.t + 1;
 			p = 0;
@@ -76,13 +64,11 @@ int dolar(char *str, int s)
 
 int dolar2(char *str, int s)
 {
-	int t;
 	int i;
 	int p;
 	char *tmp;
 	char *tmp2;
 
-	t = 0;
 	i = 0;
 	p = 0;
 	while (str[g.i] != '\"' && str[g.i] != '\'' && str[g.i] != '\0')
@@ -136,6 +122,7 @@ int dquotes (int s , char *str)
 
 	t = 0;
 	t = ++g.i;
+
 	while(str[g.i] != '\"' && str[g.i] != 0)
 		g.i++;
 	if (str[g.i] == '\"')
@@ -155,7 +142,7 @@ char *rm(char *str)
 	int s;
 
 	s = 0;
-	g.clr_cmd = ft_calloc(ft_strlen(str) + calc(), sizeof(char));
+	g.clr_cmd = ft_calloc(ft_strlen(str) + calc(str), sizeof(char));
 	while (str[g.i] != 0)
 	{
 		if (str[g.i] == '\'')
@@ -203,7 +190,8 @@ int heredoc_check(char *str)
 			else
 				s = 0;
 		}
-		if (str[i] == '<' && str[i + 1] == '<' && d == 0 && s == 0)
+		// if (str[i] == '<' && str[i + 1] != '<' && str[i - 1] != '<' && d << )
+		if (str[i] == '<' && str[i + 1] == '<' && str[i + 2] != '<' && str[i - 2] != '<' && d == 0 && s == 0)
 			return 69;
 		i ++;
 	}
@@ -233,8 +221,7 @@ char **esp_splt(char *str)
 
 	i = 0;
 	tmp = ft_split(str, ' ');
-	while(tmp[i])
-		printf("tmp : %s\n", tmp[i++]);
+	i = 0;
 	while(tmp[i++]);
 	ret = malloc(i * sizeof(char *));
 	i = 0;
@@ -243,7 +230,7 @@ char **esp_splt(char *str)
 		ret[i] = rm(tmp[i]);
 		i ++;
 	}
-	ret[i] = NULL;
+	ret[i] = 0;
 	ft_free(tmp);
 	return (ret);
 }
@@ -266,7 +253,7 @@ void check()
 		if (heredoc_check(g.cmd->s_cmd[i]))
 				ft_heredoc(esp_splt(g.cmd->s_cmd[i]));
 		else
-			exec_v2(esp_splt(g.cmd->s_cmd[i]));
+			exec(esp_splt(g.cmd->s_cmd[i]));
 		dup2(g.i_stdin, 0);
 		dup2(g.i_stdout, 1);
 		g.pip = 0;
