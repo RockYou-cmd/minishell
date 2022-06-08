@@ -2,45 +2,8 @@
 
 void    ft_heredoc()
 {
-    int fd;
-    char *limeter;
-    int i;
-
-    i = 0;
-    while (g.input[i] && g.input[i] != '<')
-        i++;
-    i += 2;
-    while (g.input[i] && g.input[i] ==  ' ')
-        i++;
-    limeter = ft_strdup(g.input + i);
-    if (!limeter)
-    {
-        printf("error allocation\n");
-        return ;
-    }
-    printf("delemeter : %s\n",limeter);
-    fd = open(".heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
-    i = 0;
-    while(i >= 0)
-    {
-        g.input = readline("> ");
-        if (!g.input)
-        {
-            write(1, "\033[1A> ",6);
-            break;    
-        }
-        if (!ft_strcmp(limeter,g.input))
-            break;
-        if (i > 0)
-            write(fd , "\n", 1);
-        write(fd, g.input, ft_strlen(g.input));
-        i++;
-    }
-    close(fd);
-    fd = open(".heredoc", O_RDWR, 0644);
-    dup2(fd , 0);
+    printf("heredoc is ready\n");
 }
-
 void	get_path()
 {
 	int i;

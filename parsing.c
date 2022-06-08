@@ -165,37 +165,62 @@ char *rm(char *str)
 	return g.clr_cmd;
 }
 
+void ooc(char c, int *s, int *d)
+{
+	if (c == '\"')
+	{
+		if (*d == 0)
+			*d = 1; 
+		else
+			*d = 0;
+	}
+	else if (c == '\'')
+	{
+		if (*s == 0)
+			*s = 1;
+		else
+			*s = 0;
+	}
+}
+
 int heredoc_check(char *str)
 {
 	int i;
 	int d;
 	int s;
+	int al;
+	int c;
+	int j;
 
 	i = 0;
+	j = 0;
 	d = 0;
+	c = 0;
 	s = 0;
+	al = 0;
 	while (str[i] != 0)
 	{
-		if (str[i] == '\"')
+		ooc(str[i], &s, &d);
+		if (str[i] != '<' && str[i] != 0 && str[i] != ' ')
 		{
-			if (d == 0)
-				d = 1; 
-			else
-				d = 0;
+			al = 0;
+			c = 1;
 		}
-		else if (str[i] == '\'')
+		if (str[i] == '<' && str[i + 1] == '<' && str[i + 2] != '<' && str[i - 1] != '<' && d == 0 && s == 0)
 		{
-			if (s == 0)
-				s = 1;
-			else
-				s = 0;
-		}
-		// if (str[i] == '<' && str[i + 1] != '<' && str[i - 1] != '<' && d << )
-		if (str[i] == '<' && str[i + 1] == '<' && str[i + 2] != '<' && str[i - 2] != '<' && d == 0 && s == 0)
-			return 69;
+			j = 1;
+			i ++;
+			if (c == 0 && al != 0)
+				return -1;
+			al = 69;
+			c = 0;
+		}	
 		i ++;
 	}
-	return 0;
+	if (al != 0)
+		return -1;
+	else
+		return j;
 
 }
 
@@ -260,6 +285,11 @@ void check()
 	}
 	else
 	{
-		exec(esp_splt(g.input));
+		if(heredoc_check(g.input) == -1)
+			printf("parse error\n");
+		else if (heredoc_check(g.input))
+				ft_heredoc(esp_splt(g.input));
+		else
+			exec(esp_splt(g.input));
 	}
 }
