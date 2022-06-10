@@ -93,8 +93,17 @@ void    ft_heredoc(char **str)
 
 void exec_red_output(char *folder, char **cmd, int i)
 {
-	(void) cmd;
-	printf("folde : %s -|- stil %d\n",folder, i);
+	int		fd;
+
+	fd = open(folder, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (!i)
+	{
+		dup2(fd , 1);
+		exec(cmd);
+		dup2(g.i_stdout , 1);
+	}
+	close (fd);
+	// printf("folde : %s -|- stil %d\n",folder, i);
 }
 
 void red_output(char **str)
