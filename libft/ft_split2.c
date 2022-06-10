@@ -67,7 +67,6 @@ static int	len(char const *s, char c)
 		if (s[i] == c  && (sq == 0 && d == 0))
 			break;
 		i ++;
-
 	}
 	return (i);
 }
@@ -98,8 +97,8 @@ static void	write_sp(char **split, char const *s, char c, int w)
 		
 		while (c == * s && sq == 0 && d == 0)
 		{
-			s++;
 			cote(&d, &sq, *s);
+			s++;
 		}
 		l = len(s, c);
 		split[i] = (char *)malloc(sizeof(char) * l + 1);
@@ -108,9 +107,10 @@ static void	write_sp(char **split, char const *s, char c, int w)
 		j = 0;
 		while (j < l)
 		{
+			cote(&d, &sq, *s);
 			split[i][j++] = *s++;
 		}
-		cote(&d, &sq, split[i][j - 1]);
+		cote(&d, &sq, *s);
 		split[i][j] = '\0';
 	}
 }
@@ -130,3 +130,12 @@ char	**ft_split(char const *s, char c)
 	split[w] = 0;
 	return (split);
 }
+
+// int main ()
+// {
+// 	char *a = "\"al'ae\" a b c";
+// 	char **b = ft_split(a, ' ');
+// 	int i = 0;
+// 	while(b[i])
+// 		printf("splt : %s\n", b[i++]);
+// }

@@ -11,7 +11,6 @@ char *v_env(char *str)
 	value = NULL;
 	tmp = ft_calloc(ft_strlen(str), sizeof(char));
 	while (str[i ++] != '$' && str[i ++] != '\0');
-	printf("str : %s\n", str);
 	if (str[i - 1] != '$')
 		return NULL;
 	while(str[i] != 0 && str[i] != '$' && str[i] != '\"' && str[i] != ' ' && str[i] != '\'')

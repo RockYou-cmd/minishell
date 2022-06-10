@@ -1,8 +1,94 @@
+
 #include "minishell.h"
 
-void    ft_heredoc()
+int    len_heredoc(char **heredoc)
 {
-    printf("heredoc is ready\n");
+    int i;
+    int c;
+
+    i = 0;
+    c = 0;
+    while (heredoc[i])
+    {
+        while (heredoc[i] && ft_strcmp(heredoc[i],"<<"))
+        {
+            c++;
+            i++;
+        }
+        i+=2;
+        while (heredoc[i] && ft_strcmp(heredoc[i],"<<"))
+        {
+            c++;
+            i++;
+        }
+    }
+    return (c);
+}
+
+void	exec_heredoc(char *limeter, char **cmd)
+{
+	int		i;
+	int		fd;
+	char	*doc;
+	
+	printf("is oky %s %s\n",limeter,cmd[0]);
+	if (limeter)
+		fd = open(".heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
+    i = 0;
+    while(i >= 0 && limeter)
+    {
+        doc = readline("> ");
+        if (!doc)
+        {
+            write(1, "\033[1A> ",6);
+            break;    
+        }
+        if (!ft_strcmp(limeter,doc))
+            break;
+        if (i > 0)
+            write(fd , "\n", 1);
+        write(fd, doc, ft_strlen(doc));
+        i++;
+		free(doc);
+    }
+	if (!limeter)
+	{
+		fd = open(".heredoc", O_RDWR, 0644);
+		dup2(fd , 0);
+		exec(cmd);
+	}
+	close(fd);
+}
+
+void    ft_heredoc(char **str)
+{
+	int i;
+	int j;
+	int t;
+	char **cmd;
+	char **tmp;
+
+
+	i = 0;
+	j = 0;
+	t = 0;
+	tmp = esp_splt(*str);
+	cmd = calloc(len_heredoc(ft_split(g.input, ' ')) + 1 ,sizeof(char *));
+	while (tmp[i])
+	{
+		cmd[j++] = tmp[i++];
+	}
+	i = 0;
+	while (str[++i] != 0)
+	{
+		t = 0;
+		tmp = esp_splt(str[i]);
+		exec_heredoc(tmp[t], cmd);
+		while (tmp[++t])
+			cmd[j ++] = tmp [t];
+	}
+	exec_heredoc(NULL, cmd);
+	cmd[j] = 0;
 }
 void	get_path()
 {
@@ -16,6 +102,8 @@ void	get_path()
 		i++;
 	}
 }
+
+
 
 char	*get_bin(char *cmd)
 {

@@ -169,12 +169,12 @@ void ooc(char c, int *s, int *d)
 {
 	if (c == '\"')
 	{
-		if (*d == 0)
+		if (*d == 0 && *s == 0)
 			*d = 1; 
 		else
 			*d = 0;
 	}
-	else if (c == '\'')
+	else if (c == '\'' && *d == 0)
 	{
 		if (*s == 0)
 			*s = 1;
@@ -183,16 +183,14 @@ void ooc(char c, int *s, int *d)
 	}
 }
 
-int heredoc_check(char *str)
+int heredoc_check(char *str, int i)
 {
-	int i;
 	int d;
 	int s;
 	int al;
 	int c;
 	int j;
 
-	i = 0;
 	j = 0;
 	d = 0;
 	c = 0;
@@ -246,6 +244,7 @@ char **esp_splt(char *str)
 
 	i = 0;
 	tmp = ft_split(str, ' ');
+
 	i = 0;
 	while(tmp[i++]);
 	ret = malloc(i * sizeof(char *));
@@ -269,13 +268,13 @@ void check()
 	{
 		while(g.cmd->s_cmd[i + 1] != 0)
 		{
-			if (heredoc_check(g.cmd->s_cmd[i]))
+			if (heredoc_check(g.cmd->s_cmd[i], 0))
 				ft_heredoc(esp_splt(g.cmd->s_cmd[i]));
 			else
 				exec_v2(esp_splt(g.cmd->s_cmd[i]));
 			i ++;
 		}
-		if (heredoc_check(g.cmd->s_cmd[i]))
+		if (heredoc_check(g.cmd->s_cmd[i], 0))
 				ft_heredoc(esp_splt(g.cmd->s_cmd[i]));
 		else
 			exec(esp_splt(g.cmd->s_cmd[i]));
@@ -285,10 +284,10 @@ void check()
 	}
 	else
 	{
-		if(heredoc_check(g.input) == -1)
+		if(heredoc_check(g.input, 0) == -1)
 			printf("parse error\n");
-		else if (heredoc_check(g.input))
-				ft_heredoc(esp_splt(g.input));
+		else if (heredoc_check(g.input, 0))
+				ft_heredoc(ft_split(g.input, '<'));
 		else
 			exec(esp_splt(g.input));
 	}
