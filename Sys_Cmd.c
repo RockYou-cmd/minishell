@@ -30,8 +30,7 @@ void	exec_heredoc(char *limeter, char **cmd)
 	int		i;
 	int		fd;
 	char	*doc;
-	
-	printf("is oky %s %s\n",limeter,cmd[0]);
+
 	if (limeter)
 		fd = open(".heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
     i = 0;
@@ -45,19 +44,20 @@ void	exec_heredoc(char *limeter, char **cmd)
         }
         if (!ft_strcmp(limeter,doc))
             break;
-        if (i > 0)
-            write(fd , "\n", 1);
         write(fd, doc, ft_strlen(doc));
+        write(fd , "\n", 1);
         i++;
 		free(doc);
     }
 	if (!limeter)
 	{
+		close(fd);
 		fd = open(".heredoc", O_RDWR, 0644);
 		dup2(fd , 0);
 		exec(cmd);
+		dup2(g.i_stdin , 0);
+		close(fd);
 	}
-	close(fd);
 }
 
 void    ft_heredoc(char **str)
