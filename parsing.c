@@ -284,11 +284,12 @@ void check()
 	}
 	else
 	{
-		if(heredoc_check(g.input, 0) == -1)
-			printf("parse error\n");
-		else if (heredoc_check(g.input, 0))
-				ft_heredoc(ft_split(g.input, '<'));
-		else
-			exec(esp_splt(g.input));
+		// if(heredoc_check(g.input, 0) == -1)
+		// 	printf("parse error\n");
+		// else if (heredoc_check(g.input, 0))
+		// 		ft_heredoc(ft_split(g.input, '<'));
+		red_output(ft_split(g.input, '>'));
+		// else
+		// 	exec(esp_splt(g.input));
 	}
 }

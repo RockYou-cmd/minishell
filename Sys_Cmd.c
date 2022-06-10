@@ -90,6 +90,42 @@ void    ft_heredoc(char **str)
 	exec_heredoc(NULL, cmd);
 	cmd[j] = 0;
 }
+
+void exec_red_output(char *folder, char **cmd, int i)
+{
+	(void) cmd;
+	printf("folde : %s -|- stil %d\n",folder, i);
+}
+
+void red_output(char **str)
+{
+	int i;
+	int j;
+	int t;
+	char **cmd;
+	char **tmp;
+
+
+	i = 0;
+	j = 0;
+	t = 0;
+	tmp = esp_splt(*str);
+	cmd = calloc(len_heredoc(ft_split(g.input, ' ')) + 1 ,sizeof(char *));
+	while (tmp[i])
+		cmd[j++] = tmp[i++];
+	i = 0;
+	while (str[++i] != 0)
+	{
+		t = 0;
+		tmp = esp_splt(str[i]);
+		exec_red_output(tmp[t], cmd, 1);
+		while (tmp[++t])
+			cmd[j ++] = tmp [t];
+	}
+	exec_red_output(tmp[--t], cmd, 0);
+	cmd[j] = 0;
+}
+
 void	get_path()
 {
 	int i;

@@ -71,6 +71,6 @@ char	*v_env(char *str);
 int dolar(char *str, int s);
 void    ft_heredoc();
 char **esp_splt(char *str);
-
+void red_output(char **str);
 
 #endif

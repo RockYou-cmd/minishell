@@ -2,6 +2,9 @@ Makefile
 Sys_Cmd.c
 Sys_Cmd.o
 a
+a << b
+a.out
+b
 exec.c
 exec.o
 exec2.c
@@ -13,7 +16,7 @@ libft
 minishell
 minishell.c
 minishell.h
-m einishell.o
+minishell.o
 parsing.c
 parsing.o
 utils.c
