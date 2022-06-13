@@ -19,7 +19,7 @@ char *v_env(char *str)
 	while(g.env[i])
 	{
 		g.s_env = ft_split(g.env[i++], '=');
-		if (ft_strcmp(g.s_env[0], tmp) == 0)
+		if (ft_strcmp(g.s_env[0], tmp))
 			value = g.s_env[1];
 	}
 	free(tmp);

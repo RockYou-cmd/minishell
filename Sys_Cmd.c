@@ -10,13 +10,13 @@ int    len_heredoc(char **heredoc)
     c = 0;
     while (heredoc[i])
     {
-        while (heredoc[i] && ft_strcmp(heredoc[i],"<<"))
+        while (heredoc[i] && !ft_strcmp(heredoc[i],"<<"))
         {
             c++;
             i++;
         }
         i+=2;
-        while (heredoc[i] && ft_strcmp(heredoc[i],"<<"))
+        while (heredoc[i] && !ft_strcmp(heredoc[i],"<<"))
         {
             c++;
             i++;
@@ -42,7 +42,7 @@ void	exec_heredoc(char *limeter, char **cmd)
             write(1, "\033[1A> ",6);
             break;    
         }
-        if (!ft_strcmp(limeter,doc))
+        if (ft_strcmp(limeter,doc))
             break;
         write(fd, doc, ft_strlen(doc));
         write(fd , "\n", 1);
@@ -184,7 +184,7 @@ int check_build_command(char **cmd)
 
 	while(g.command[t] != 0)
 	{
-		if (ft_strcmp(cmd[0] , g.command[t]) == 0)
+		if (ft_strcmp(cmd[0] , g.command[t]))
 		{
 			g.cmnd = t;
 			if (!cmd[1])
