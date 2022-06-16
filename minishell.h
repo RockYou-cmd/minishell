@@ -45,6 +45,8 @@ typedef struct s_data
 	char		*clr_cmd;
 	int			i_stdin;
 	int			i_stdout;
+	int			fd_stdin;
+	int			fd_stdout;
 	int			i;
 	int			t;
 }t_data;
@@ -55,10 +57,10 @@ void	comands();
 void	which_one(char **str);
 void 	ft_init();
 int		ft_echo(char **str);
-void	ft_cd(char **str);
-int	ft_pwd(void);
-void	ft_export(char **str);
-void	ft_unset(char **str);
+void	ft_cd();
+void	ft_pwd();
+void	ft_export();
+void	ft_unset();
 void 	check();
 void	ft_env();
 void	ft_exit();
@@ -68,9 +70,17 @@ void	exec(char **cmd);
 void	exec_v2(char **read);
 void	ft_free(char **s_cmd);
 char	*v_env(char *str);
-int dolar(char *str, int s);
+int 	dolar(char *str, int s);
 void    ft_heredoc();
-char **esp_splt(char *str);
-void red_output(char **str);
+char 	**esp_splt(char *str);
+void 	red_output(char **str);
+void 	ooc(char c, int *s, int *d);
+int 	red_check(char *str);
+void 	red_send(char *str);
+void find_red(char **str, int i);
+void	exec_heredoc(char *limeter);
+int 	red(char *str);
+
+
 
 #endif

@@ -1,95 +1,54 @@
 
 #include "minishell.h"
 
-int    len_heredoc(char **heredoc)
+void	exec_heredoc(char *limeter)
 {
-    int i;
-    int c;
+	// int		i;
+	// char	*doc;
 
-    i = 0;
-    c = 0;
-    while (heredoc[i])
-    {
-        while (heredoc[i] && !ft_strcmp(heredoc[i],"<<"))
-        {
-            c++;
-            i++;
-        }
-        i+=2;
-        while (heredoc[i] && !ft_strcmp(heredoc[i],"<<"))
-        {
-            c++;
-            i++;
-        }
-    }
-    return (c);
+	// if (limeter)
+	// 	g.fd_stdin = open(".heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
+    // i = 0;
+    // while(i >= 0 && limeter)
+    // {
+    //     doc = readline("> ");
+    //     if (!doc)
+    //     {
+    //         write(1, "\033[1A> ",6);
+    //         break;    
+    //     }
+    //     if (ft_strcmp(limeter,doc))
+    //        break;
+    //     write(g.fd_stdin, doc, ft_strlen(doc));
+    //     write(g.fd_stdin , "\n", 1);
+    //     i++;
+	// 	free(doc);
+    // }
+	// // if (!limeter)
+	// // {
+	// 	close(g.fd_stdin);
+	// 	g.fd_stdin = open(".heredoc", O_RDWR, 0644);
+	// 	dup2(g.fd_stdin , 0);
+	// // 	exec(cmd);
+
+	// 	close(fd);
+	// }
 }
 
-void	exec_heredoc(char *limeter, char **cmd)
-{
-	int		i;
-	int		fd;
-	char	*doc;
+// void redirection_pars(char **str)
+// {
+// 	int j;
+// 	int i;
 
-	if (limeter)
-		fd = open(".heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
-    i = 0;
-    while(i >= 0 && limeter)
-    {
-        doc = readline("> ");
-        if (!doc)
-        {
-            write(1, "\033[1A> ",6);
-            break;    
-        }
-        if (ft_strcmp(limeter,doc))
-            break;
-        write(fd, doc, ft_strlen(doc));
-        write(fd , "\n", 1);
-        i++;
-		free(doc);
-    }
-	if (!limeter)
-	{
-		close(fd);
-		fd = open(".heredoc", O_RDWR, 0644);
-		dup2(fd , 0);
-		exec(cmd);
-		dup2(g.i_stdin , 0);
-		close(fd);
-	}
-}
+// 	j = 0;
+// 	i = 0;
+// 	while (str[j])
+// 	{
+		
+// 		while(str[j])
+// 	}
+// }
 
-void    ft_heredoc(char **str)
-{
-	int i;
-	int j;
-	int t;
-	char **cmd;
-	char **tmp;
-
-
-	i = 0;
-	j = 0;
-	t = 0;
-	tmp = esp_splt(*str);
-	cmd = calloc(len_heredoc(ft_split(g.input, ' ')) + 1 ,sizeof(char *));
-	while (tmp[i])
-	{
-		cmd[j++] = tmp[i++];
-	}
-	i = 0;
-	while (str[++i] != 0)
-	{
-		t = 0;
-		tmp = esp_splt(str[i]);
-		exec_heredoc(tmp[t], cmd);
-		while (tmp[++t])
-			cmd[j ++] = tmp [t];
-	}
-	exec_heredoc(NULL, cmd);
-	cmd[j] = 0;
-}
 
 void exec_red_output(char *folder, char **cmd, int i)
 {
@@ -98,41 +57,13 @@ void exec_red_output(char *folder, char **cmd, int i)
 	fd = open(folder, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (!i)
 	{
+		while (cmd[i])
+			printf("cmd : %s\n", cmd[i++]);
 		dup2(fd , 1);
 		exec(cmd);
 		dup2(g.i_stdout , 1);
 	}
 	close (fd);
-	// printf("folde : %s -|- stil %d\n",folder, i);
-}
-
-void red_output(char **str)
-{
-	int i;
-	int j;
-	int t;
-	char **cmd;
-	char **tmp;
-
-
-	i = 0;
-	j = 0;
-	t = 0;
-	tmp = esp_splt(*str);
-	cmd = calloc(len_heredoc(ft_split(g.input, ' ')) + 1 ,sizeof(char *));
-	while (tmp[i])
-		cmd[j++] = tmp[i++];
-	i = 0;
-	while (str[++i] != 0)
-	{
-		t = 0;
-		tmp = esp_splt(str[i]);
-		exec_red_output(tmp[t], cmd, 1);
-		while (tmp[++t])
-			cmd[j ++] = tmp [t];
-	}
-	exec_red_output(tmp[--t], cmd, 0);
-	cmd[j] = 0;
 }
 
 void	get_path()
@@ -208,7 +139,12 @@ void exec(char **read)
 	int		pid;
 	int		check;
 	t_cmd	cmd;
+	// int i =0;
 
+	// while (read[i])
+	// {
+	// 	printf("%s ",read[i++]);
+	// }
 	if (!read || !read[0])
 		return;
 	cmd.s_cmd = read;
@@ -219,7 +155,6 @@ void exec(char **read)
 		return ;
 	}
 	cmd.bin = get_bin(cmd.s_cmd[0]);
-	// printf("cmd last : %s\n",cmd.bin);
 	pid = fork();
 	if(!pid)
 	{

@@ -2,19 +2,18 @@
 
 void which_one(char **str)
 {
-	
 	if (g.cmnd == 0)
 		ft_echo(str);
 	if (g.cmnd == 1)
-		ft_cd(str);
+		ft_cd();
 	if (g.cmnd == 2)
 		ft_pwd();
 	if (g.cmnd == 3)
-		ft_export(str);
+		ft_export();
 	if (g.cmnd == 4)
-		ft_unset(str);
+		ft_unset();
 	if (g.cmnd == 5)
-		ft_env(str);
+		ft_env();
 	if (g.cmnd == 6)
 		ft_exit();
 	
@@ -143,6 +142,7 @@ char *rm(char *str)
 	int s;
 
 	s = 0;
+	g.i = 0;
 	g.clr_cmd = ft_calloc(ft_strlen(str) + calc(str), sizeof(char));
 	while (str[g.i] != 0)
 	{
@@ -184,44 +184,48 @@ void ooc(char c, int *s, int *d)
 	}
 }
 
+// int err_check(char *str, int i, int d, int s)
+// {
+// 	i += 2;
+// 	while(str[i] != 0)
+// 	{
+// 		if (str[i] == '<')
+// 			return 44;
+// 	}
+// 	return i;
+// }
+
 int heredoc_check(char *str, int i)
 {
 	int d;
 	int s;
-	int al;
-	int c;
-	int j;
 
-	j = 0;
 	d = 0;
-	c = 0;
+	g.i = 0;
 	s = 0;
-	al = 0;
+	g.t = 0;
 	while (str[i] != 0)
 	{
 		ooc(str[i], &s, &d);
-		if (str[i] != '<' && str[i] != 0 && str[i] != ' ')
-		{
-			al = 0;
-			c = 1;
-		}
 		if (str[i] == '<' && str[i + 1] == '<' && str[i + 2] != '<' && str[i - 1] != '<' && d == 0 && s == 0)
 		{
-			j = 1;
 			i ++;
-			if (c == 0 && al != 0)
-				return -1;
-			al = 69;
-			c = 0;
-		}	
+			g.t = 1;
+		}
 		i ++;
+		if (str[i] == '<')
+			return -1;
 	}
-	if (al != 0)
-		return -1;
-	else
-		return j;
-
+	return 1;
 }
+
+// int redirection_check(char *str)
+// {
+// 	if (heredoc_check(g.input, 0))
+// 	{
+
+// 	}
+// }
 
 char *heredoc_rm(char **str)
 {
@@ -263,29 +267,41 @@ char **esp_splt(char *str)
 void check()
 {
 	int i;
+	int r;
 
 	i = 0;
+	r = 0;
 	if (g.pip == 1)
 	{
-		// while(g.cmd->s_cmd[i + 1] != 0)
-		// {
-	
-		// 		exec_v2(rm(g.cmd->s_cmd[i]));
-			i ++;
-		// }
-		// 	exec(rm(g.cmd->s_cmd[i]));
-		// dup2(g.i_stdin, 0);
-		// dup2(g.i_stdout, 1);
-		// g.pip = 0;
+		while(g.cmd->s_cmd[i + 1] != 0)
+		{
+			r = red(g.cmd->s_cmd[i]);
+			if (r)
+				red_send(g.cmd->s_cmd[i]);
+			else if (r == -1)
+				return ;
+			else
+				exec_v2(esp_splt(g.cmd->s_cmd[i]));
+		}
+		r = red(g.cmd->s_cmd[i]);
+		if (r)
+			red_send(g.cmd->s_cmd[i]);
+		else if (r == -1)
+			return ;
+		else
+			exec(esp_splt(g.cmd->s_cmd[i]));		
+		dup2(g.i_stdin, 0);
+		dup2(g.i_stdout, 1);
+		g.pip = 0;
 	}
 	else
 	{
-		// if(heredoc_check(g.input, 0) == -1)
-		// 	printf("parse error\n");
-		// else if (heredoc_check(g.input, 0))
-		// 		ft_heredoc(ft_split(g.input, '<'));
-		// else
-		
-			exec(esp_splt(g.input));
+		r = red(g.input);
+		if (r)
+			red_send(g.input);
+		else if (r == -1)
+			return ;
+		else
+			exec(esp_splt(g.input));		
 	}
 }
