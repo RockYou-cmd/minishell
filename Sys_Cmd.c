@@ -46,7 +46,10 @@ void exec_red_input(char *file)
 {
 	g.fd_stdin = open(file, O_RDWR , 0644);
 	if ( g.fd_stdin < 0)
-		printf("no such file or directory %s",file);
+	{
+		printf("no such file or directory :%s\n",file);
+	}
+
 }
 
 void	get_path()
@@ -137,13 +140,12 @@ void exec(char **read)
 		return ;
 	}
 	cmd.bin = get_bin(cmd.s_cmd[0]);
-	g.pid_ch = 1337;
 	g.pid_ch = fork();
 	if(!g.pid_ch)
 	{
 		signal(SIGINT, &handler);
 		execve(cmd.bin,cmd.s_cmd,g.env);
-		write(2,"Command not fond \"", 18);
+		write(2,"Command not found \"", 18);
 		write(2,cmd.s_cmd[0], ft_strlen(cmd.s_cmd[0]));
 		write(2,"\"\n",2);
 		ft_free(cmd.s_cmd);
@@ -151,15 +153,15 @@ void exec(char **read)
 		exit(1);
 	}
 	wait(NULL);
+	// g.pid_ch = 1337;
 }
 
 void exec_v2(char **read)
 {
-	int	pid;
-	int	pipefd[2];
 	int		check = 0;
 	t_cmd	cmd;
-	pipe(pipefd);
+
+	pipe(g.pipefd);
 	if (!read || !read[0])
 		return;
 	cmd.s_cmd = read;
@@ -167,17 +169,17 @@ void exec_v2(char **read)
 	if(check)
 	{
 		ft_free(cmd.s_cmd);
-		dup2(pipefd[0],0);
-		close(pipefd[1]);
+		dup2(g.pipefd[0],0);
+		close(g.pipefd[1]);
 		return ;
 	}
 	cmd.bin = get_bin(cmd.s_cmd[0]);
-	pid = fork();
-	if(!pid)
+	g.pid_ch = fork();
+	if(!g.pid_ch)
 	{
-		dup2(pipefd[1],1);
-		close(pipefd[1]);
-		close(pipefd[0]);
+		dup2(g.pipefd[1],1);
+		close(g.pipefd[1]);
+		close(g.pipefd[0]);
 		execve(cmd.bin,cmd.s_cmd,g.env);
 		write(2,"Command not fond \"", 18);
 		if(cmd.s_cmd[0])
@@ -185,9 +187,9 @@ void exec_v2(char **read)
 		write(2,"\"\n",2);
 		exit(1);
 	}
-	dup2(pipefd[0],0);
-	close(pipefd[1]);
-	waitpid(pid, NULL, 0);
+	dup2(g.pipefd[0],0);
+	close(g.pipefd[1]);
+	waitpid(g.pid_ch , NULL, 0);
 }
 // void check_pipe()
 // {

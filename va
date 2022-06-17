@@ -1,0 +1,54 @@
+> Makefile
+> Sys_Cmd.c
+> Sys_Cmd.o
+> a
+> apah
+> cat
+> exec.c
+> exec.o
+> exec2.c
+> exec2.o
+> exit
+> exp.c
+> grep
+> hh
+> ho
+> init.c
+> init.o
+> k
+> kk
+> l
+> libft
+> minishell
+> minishell.c
+> minishell.h
+> minishell.o
+> parsing.c
+> parsing.o
+> redirection_execution.c
+> redirection_find.c
+> redirection_find.o
+> redirection_pars.c
+> redirection_pars.o
+> utils.c
+> utils.o
+> v
+> va
+> wc
+> [1A> Makefile
+exec.c
+exec.o
+exec2.c
+exec2.o
+exit
+exp.c
+grep
+minishell
+minishell.c
+minishell.h
+minishell.o
+redirection_execution.c
+redirection_find.c
+redirection_find.o
+redirection_pars.c
+redirection_pars.o

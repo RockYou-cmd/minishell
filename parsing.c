@@ -277,15 +277,16 @@ void check()
 		{
 			r = red(g.cmd->s_cmd[i]);
 			if (r)
-				red_send(g.cmd->s_cmd[i]);
+				red_send(g.cmd->s_cmd[i],1);
 			else if (r == -1)
 				return ;
 			else
 				exec_v2(esp_splt(g.cmd->s_cmd[i]));
+			i ++;
 		}
 		r = red(g.cmd->s_cmd[i]);
 		if (r)
-			red_send(g.cmd->s_cmd[i]);
+			red_send(g.cmd->s_cmd[i],0);
 		else if (r == -1)
 			return ;
 		else
@@ -298,7 +299,7 @@ void check()
 	{
 		r = red(g.input);
 		if (r)
-			red_send(g.input);
+			red_send(g.input,0);
 		else if (r == -1)
 			return ;
 		else

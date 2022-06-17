@@ -7,8 +7,8 @@ void find_red(char **str, int i)
 		exec_heredoc(str[i + 1]);
 	else if (ft_strcmp(str[i], ">>"))
 		exec_red_output_append(str[i + 1]);
-	// else if (ft_strcmp(str[i], "<"))
-
+	else if (ft_strcmp(str[i], "<"))
+		exec_red_input(str[i + 1]);
 	else if (ft_strcmp(str[i], ">"))
 		exec_red_output(str[i + 1]);
 

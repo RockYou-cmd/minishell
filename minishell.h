@@ -50,6 +50,7 @@ typedef struct s_data
 	int			i;
 	int			t;
 	pid_t		pid_ch;
+	int			pipefd[2];
 }t_data;
 
 t_data g;
@@ -77,12 +78,12 @@ char 	**esp_splt(char *str);
 void 	red_output(char **str);
 void 	ooc(char c, int *s, int *d);
 int 	red_check(char *str);
-void 	red_send(char *str);
-void find_red(char **str, int i);
+void 	red_send(char *str ,int pipe);
+void 	find_red(char **str, int i);
 void	exec_heredoc(char *limeter);
 int 	red(char *str);
-void exec_red_output_append(char *file);
-void exec_red_output(char *file);
-void handler(int signm);
-
+void 	exec_red_output_append(char *file);
+void 	exec_red_output(char *file);
+void	handler(int signm);
+void 	exec_red_input(char *file);
 #endif

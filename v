@@ -32,4 +32,5 @@ redirection_pars.c
 redirection_pars.o
 utils.c
 utils.o
+v
 wc
