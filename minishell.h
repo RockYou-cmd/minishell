@@ -49,6 +49,7 @@ typedef struct s_data
 	int			fd_stdout;
 	int			i;
 	int			t;
+	pid_t		pid_ch;
 }t_data;
 
 t_data g;
@@ -80,7 +81,8 @@ void 	red_send(char *str);
 void find_red(char **str, int i);
 void	exec_heredoc(char *limeter);
 int 	red(char *str);
-
-
+void exec_red_output_append(char *file);
+void exec_red_output(char *file);
+void handler(int signm);
 
 #endif

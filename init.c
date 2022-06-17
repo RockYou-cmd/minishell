@@ -40,6 +40,8 @@ void comands()
 
 void ft_init()
 {
+	g.fd_stdin = 0;
+	g.fd_stdout = 1;
 	g.i = 0;
 	g.cmd = malloc(sizeof(t_cmd));
 	if (ft_strchr(g.input, '|') )

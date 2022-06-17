@@ -114,7 +114,14 @@ void red_send(char *str)
 			cmd[t ++] = red[i];
 		i ++;
 	}
-	// exec(cmd);
-	// dup2(g.i_stdin , 0);
-	// close(g.fd_stdin);
+	dup2(g.fd_stdin , 0);
+	dup2(g.fd_stdout , 1);
+	exec(cmd);
+	dup2(g.i_stdin , 0);
+	dup2(g.i_stdout , 1);
+	if (g.fd_stdin != 0)
+		close(g.fd_stdin);
+	if (g.fd_stdout != 1)
+		close(g.fd_stdout);
+	// printf("cmd : %s\n", cmd[0]);
 }

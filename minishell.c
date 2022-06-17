@@ -14,14 +14,13 @@
 
 void handler(int signm)
 {
-	if (signm == SIGINT)
+	if (signm == SIGINT && g.pid_ch == 1337)
 	{
 		write(1,"\n",1);
-		rl_on_new_line();
 		rl_replace_line("",0);
+		rl_on_new_line();
 		rl_redisplay();
-
-	}
+	}	
 }
 
 void	ft_read_line()
@@ -52,7 +51,6 @@ int	main(int ac, char **av, char **env)
 	g.i_stdin = dup(0);
 	g.i_stdout = dup(1);
 	signal(SIGINT, &handler);
-	signal(SIGQUIT, SIG_IGN);
 	get_path();
 	comands();
 	while(1)
