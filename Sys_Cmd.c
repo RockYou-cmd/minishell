@@ -3,67 +3,50 @@
 
 void	exec_heredoc(char *limeter)
 {
-	// int		i;
-	// char	*doc;
+	char	*doc;
+	// int fd[2];
+	if (limeter)
+		g.fd_stdin = open(".heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
+    while(limeter)
+    {
+        doc = readline("> ");
+        if (!doc)
+        {
+            write(1, "\033[1A> ",6);
+            break;    
+        }
+        if (ft_strcmp(limeter,doc))
+           break;
+        write(g.fd_stdin, doc, ft_strlen(doc));
+        write(g.fd_stdin , "\n", 1);
+		free(doc);
+    }
+	close(g.fd_stdin);
+	g.fd_stdin = open(".heredoc", O_RDWR, 0644);
+	// printf("herdoc : %s\n", limeter);
 
-	// if (limeter)
-	// 	g.fd_stdin = open(".heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
-    // i = 0;
-    // while(i >= 0 && limeter)
-    // {
-    //     doc = readline("> ");
-    //     if (!doc)
-    //     {
-    //         write(1, "\033[1A> ",6);
-    //         break;    
-    //     }
-    //     if (ft_strcmp(limeter,doc))
-    //        break;
-    //     write(g.fd_stdin, doc, ft_strlen(doc));
-    //     write(g.fd_stdin , "\n", 1);
-    //     i++;
-	// 	free(doc);
-    // }
-	// // if (!limeter)
-	// // {
-	// 	close(g.fd_stdin);
-	// 	g.fd_stdin = open(".heredoc", O_RDWR, 0644);
-	// 	dup2(g.fd_stdin , 0);
-	// // 	exec(cmd);
-
-	// 	close(fd);
-	// }
 }
 
-// void redirection_pars(char **str)
-// {
-// 	int j;
-// 	int i;
-
-// 	j = 0;
-// 	i = 0;
-// 	while (str[j])
-// 	{
-		
-// 		while(str[j])
-// 	}
-// }
-
-
-void exec_red_output(char *folder, char **cmd, int i)
+void exec_red_output(char *file)
 {
-	int		fd;
+	g.fd_stdout = open(file, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if ( g.fd_stdin < 0)
+		printf("no such file or directory %s",file);
 
-	fd = open(folder, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (!i)
-	{
-		while (cmd[i])
-			printf("cmd : %s\n", cmd[i++]);
-		dup2(fd , 1);
-		exec(cmd);
-		dup2(g.i_stdout , 1);
-	}
-	close (fd);
+}
+
+void exec_red_output_append(char *file)
+{
+	g.fd_stdout = open(file, O_CREAT | O_RDWR | O_APPEND, 0644);
+	if ( g.fd_stdin < 0)
+		printf("no such file or directory %s",file);
+	// printf("append : %s\n", file);
+}
+void exec_red_input(char *file)
+{
+	g.fd_stdin = open(file, O_RDWR , 0644);
+	if ( g.fd_stdin < 0)
+		printf("no such file or directory %s",file);
 }
 
 void	get_path()
@@ -136,7 +119,6 @@ int check_build_command(char **cmd)
 }
 void exec(char **read)
 {
-	int		pid;
 	int		check;
 	t_cmd	cmd;
 	// int i =0;
@@ -155,9 +137,11 @@ void exec(char **read)
 		return ;
 	}
 	cmd.bin = get_bin(cmd.s_cmd[0]);
-	pid = fork();
-	if(!pid)
+	g.pid_ch = 1337;
+	g.pid_ch = fork();
+	if(!g.pid_ch)
 	{
+		signal(SIGINT, &handler);
 		execve(cmd.bin,cmd.s_cmd,g.env);
 		write(2,"Command not fond \"", 18);
 		write(2,cmd.s_cmd[0], ft_strlen(cmd.s_cmd[0]));
