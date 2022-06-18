@@ -47,6 +47,7 @@ int	main(int ac, char **av, char **env)
 	g.cmnd = -1;
 	g.i_stdin = dup(0);
 	g.i_stdout = dup(1);
+	fill_export();
 	signal(SIGINT, &handler);
 	signal(SIGQUIT, SIG_IGN);
 	get_path();

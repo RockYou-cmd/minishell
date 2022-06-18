@@ -28,11 +28,12 @@ void ft_pwd()
 	char *a = NULL;
 	printf("%s\n", getcwd(a, sizeof(a)));
 }
-void ft_export()
+void ft_exit()
 {
-
+	
 }
-void ft_unset()
+
+void ft_env()
 {
 
 }

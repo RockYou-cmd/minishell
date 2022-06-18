@@ -40,6 +40,7 @@ typedef struct s_data
 	t_cmd		*cmd;
 	char		**env;
 	char		**s_env;
+	char		**exp;
 	t_list	 	**list;
 	char		**path;
 	char		*clr_cmd;
@@ -61,7 +62,7 @@ void 	ft_init();
 int		ft_echo(char **str);
 void	ft_cd();
 void	ft_pwd();
-void	ft_export();
+int	ft_export();
 void	ft_unset();
 void 	check();
 void	ft_env();
@@ -86,4 +87,10 @@ void 	exec_red_output_append(char *file);
 void 	exec_red_output(char *file);
 void	handler(int signm);
 void 	exec_red_input(char *file);
+char 	**ft_realloc(char **str, int t);
+void 	fill_export();
+char 	*ft_rrealloc(char *str, int t);
+int 	exp_sign(char **str);
+int is_iq(char *str, int j);
+
 #endif

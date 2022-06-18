@@ -38,6 +38,23 @@ void comands()
 	g.command[7] = 0;
 }
 
+void fill_export()
+{
+	int i;
+
+	i = 0;
+	while(g.env[i])
+		i ++;
+	g.exp = malloc((i + 1) * sizeof(char *));
+	i = 0;
+	while(g.env[i])
+	{
+		g.exp[i] = g.env[i];
+		i ++;		
+	}
+	g.exp[i] = 0;
+}
+
 void ft_init()
 {
 	g.fd_stdin = 0;

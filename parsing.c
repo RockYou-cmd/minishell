@@ -271,6 +271,7 @@ void check()
 
 	i = 0;
 	r = 0;
+	// printf("%s\n", g.input);
 	if (g.pip == 1)
 	{
 		while(g.cmd->s_cmd[i + 1] != 0)
