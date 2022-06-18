@@ -44,7 +44,6 @@ void set_export(char *str)
 	while(g.exp[i])
 		i ++;
 	g.exp[i] = ft_strdup(str);
-	printf("%s\n", g.exp[i]);
 }
 
 int var_check(char *var)
@@ -53,11 +52,11 @@ int var_check(char *var)
 	char *tmp;
 
 	i = 0;
-	while(var[i] != '=')
+	while(var[i] != '=' && var[i] != 0)
 		i ++;
 	tmp = malloc(i * sizeof(char));
 	i = 0;
-	while(var[i] != '=' && var[i] != '+')
+	while(var[i] != '=' && var[i] != '+' && var[i] != 0)
 	{
 		tmp[i] = var[i];
 		i ++;

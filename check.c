@@ -21,7 +21,7 @@ int is_iq(char *str, int j)
 	if (ft_isalpha(str[j]) == 0 && str[j] != '_')
 		return 0;
 	j ++;
-	while(str[j] != '=')
+	while(str[j] != '=' && str[j] != 0)
 	{
 		if (!ft_isalpha(str[j]) && !ft_isdigit(str[j]) && str[j] != '_' && str[j] != '+')
 		{
