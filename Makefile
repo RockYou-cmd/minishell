@@ -26,7 +26,7 @@ READLINE = $(shell brew --prefix readline)
 
 CC = cc -Wall -Wextra -Werror
 
-SRC = minishell.c exec.c parsing.c exec2.c Sys_Cmd.c init.c utils.c
+SRC = minishell.c exec.c parsing.c exec2.c Sys_Cmd.c init.c utils.c redirection_pars.c redirection_find.c check.c
 
 OBJ = $(SRC:.c=.o)
 

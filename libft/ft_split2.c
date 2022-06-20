@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split2.c                                        :+:      :+:    :+:   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 14:48:18 by rgatnaou          #+#    #+#             */
-/*   Updated: 2022/06/04 18:54:51 by rgatnaou         ###   ########.fr       */
+/*   Updated: 2021/11/17 14:41:03 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 void	cote(int *d,int *sq, char c)
 {
-	if (c == '\"')
+	if (c == '\"' && *sq == 0)
 	{
 		if (*d == 0)
 			*d = 1;
 		else
 			*d = 0;
 	}
-	else if (c == '\'')
+	else if (c == '\'' && *d == 0)
 	{
 		if (*sq == 0)
 			*sq = 1;
@@ -66,7 +67,6 @@ static int	len(char const *s, char c)
 		if (s[i] == c  && (sq == 0 && d == 0))
 			break;
 		i ++;
-
 	}
 	return (i);
 }
@@ -97,8 +97,8 @@ static void	write_sp(char **split, char const *s, char c, int w)
 		
 		while (c == * s && sq == 0 && d == 0)
 		{
-			s++;
 			cote(&d, &sq, *s);
+			s++;
 		}
 		l = len(s, c);
 		split[i] = (char *)malloc(sizeof(char) * l + 1);
@@ -106,12 +106,16 @@ static void	write_sp(char **split, char const *s, char c, int w)
 			leak(split, i);
 		j = 0;
 		while (j < l)
+		{
+			cote(&d, &sq, *s);
 			split[i][j++] = *s++;
+		}
+		cote(&d, &sq, *s);
 		split[i][j] = '\0';
 	}
 }
 
-char	**ft_split_v2(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	int		w;
 	char	**split;
@@ -126,3 +130,12 @@ char	**ft_split_v2(char const *s, char c)
 	split[w] = 0;
 	return (split);
 }
+
+// int main ()
+// {
+// 	char *a = "\"al'ae\" a b c";
+// 	char **b = ft_split(a, ' ');
+// 	int i = 0;
+// 	while(b[i])
+// 		printf("splt : %s\n", b[i++]);
+// }

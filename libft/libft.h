@@ -60,6 +60,7 @@ void	ft_putendl_fd(char *s, int fd);
 char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f)(unsigned	int, char));
 char	**ft_split(char const *s, char c);
+// char	**ft_split_v2(char const *s, char c);
 int	ft_strcmp(const char *s1, const char *s2);
 
 

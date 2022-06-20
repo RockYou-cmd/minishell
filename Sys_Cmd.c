@@ -1,44 +1,55 @@
+
 #include "minishell.h"
 
-void    ft_heredoc()
+void	exec_heredoc(char *limeter)
 {
-    int fd;
-    char *limeter;
-    int i;
-
-    i = 0;
-    while (g.input[i] && g.input[i] != '<')
-        i++;
-    i += 2;
-    while (g.input[i] && g.input[i] ==  ' ')
-        i++;
-    limeter = ft_strdup(g.input + i);
-    if (!limeter)
+	char	*doc;
+	// int fd[2];
+	if (limeter)
+		g.fd_stdin = open(".heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
+    while(limeter)
     {
-        printf("error allocation\n");
-        return ;
-    }
-    printf("delemeter : %s\n",limeter);
-    fd = open(".heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
-    i = 0;
-    while(i >= 0)
-    {
-        g.input = readline("> ");
-        if (!g.input)
+        doc = readline("> ");
+        if (!doc)
         {
             write(1, "\033[1A> ",6);
             break;    
         }
-        if (!ft_strcmp(limeter,g.input))
-            break;
-        if (i > 0)
-            write(fd , "\n", 1);
-        write(fd, g.input, ft_strlen(g.input));
-        i++;
+        if (ft_strcmp(limeter,doc))
+           break;
+        write(g.fd_stdin, doc, ft_strlen(doc));
+        write(g.fd_stdin , "\n", 1);
+		free(doc);
     }
-    close(fd);
-    fd = open(".heredoc", O_RDWR, 0644);
-    dup2(fd , 0);
+	close(g.fd_stdin);
+	g.fd_stdin = open(".heredoc", O_RDWR, 0644);
+	// printf("herdoc : %s\n", limeter);
+
+}
+
+void exec_red_output(char *file)
+{
+	g.fd_stdout = open(file, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if ( g.fd_stdin < 0)
+		printf("no such file or directory %s",file);
+
+}
+
+void exec_red_output_append(char *file)
+{
+	g.fd_stdout = open(file, O_CREAT | O_RDWR | O_APPEND, 0644);
+	if ( g.fd_stdin < 0)
+		printf("no such file or directory %s",file);
+	// printf("append : %s\n", file);
+}
+void exec_red_input(char *file)
+{
+	g.fd_stdin = open(file, O_RDWR , 0644);
+	if ( g.fd_stdin < 0)
+	{
+		printf("no such file or directory :%s\n",file);
+	}
+
 }
 
 void	get_path()
@@ -54,6 +65,8 @@ void	get_path()
 	}
 }
 
+
+
 char	*get_bin(char *cmd)
 {
 	int i;
@@ -67,9 +80,9 @@ char	*get_bin(char *cmd)
 		return(cmd);
 	while (g.path[i])
 	{
-		pat = ft_strjoin(g.path[i],"/");
+		pat = ft_strdup(g.path[i]);
+		pat = ft_strjoin(pat,"/");
 		bin = ft_strjoin(pat,cmd);
-		free(pat);
 		if (!access(bin,X_OK))
 			return(bin);
 		free(bin);
@@ -81,7 +94,6 @@ int check_build_command(char **cmd)
 {
 	int	t;
 	int	i;
-	char *read;
 
 	t = 0;
 	i = 1;
@@ -89,7 +101,7 @@ int check_build_command(char **cmd)
 
 	while(g.command[t] != 0)
 	{
-		if (ft_strcmp(cmd[0] , g.command[t]) == 0)
+		if (ft_strcmp(cmd[0] , g.command[t]))
 		{
 			g.cmnd = t;
 			if (!cmd[1])
@@ -97,120 +109,77 @@ int check_build_command(char **cmd)
 				which_one(NULL);
 				return (1);
 			}
-			read = ft_strdup(cmd[i++]);
-			while (cmd[i] != NULL)
+			i++;
+			if (cmd[1] != NULL)
 			{
-				read = ft_strjoin(read," ");
-				read = ft_strjoin(read, cmd[i]);
-				i++;
+				which_one(&cmd[1]);
+				return(1);
 			}
-			which_one(read);
-			return(1);
 		}    
 		t++;
 	}
 	return(0);
 }
-void exec(char *read)
+void exec(char **read)
 {
-	// printf("cmd last : %s\n", read);
-	int		pid;
 	int		check;
 	t_cmd	cmd;
+	// int i =0;
 
-	printf("++command %s\n",read);
+	// while (read[i])
+	// {
+	// 	printf("%s ",read[i++]);
+	// }
 	if (!read || !read[0])
 		return;
-	cmd.s_cmd = ft_split(read,'*');
+	cmd.s_cmd = read;
 	check = check_build_command(cmd.s_cmd);
 	if(check)
 	{
 		ft_free(cmd.s_cmd);
-		free(read);
 		return ;
 	}
 	cmd.bin = get_bin(cmd.s_cmd[0]);
-	pid = fork();
-	if(!pid)
+	g.pid_ch = fork();
+	if(!g.pid_ch)
 	{
+		signal(SIGINT, &handler);
 		execve(cmd.bin,cmd.s_cmd,g.env);
-		write(2,"Command not fond \"", 18);
+		write(2,"Command not found \"", 18);
 		write(2,cmd.s_cmd[0], ft_strlen(cmd.s_cmd[0]));
 		write(2,"\"\n",2);
 		ft_free(cmd.s_cmd);
 		free(cmd.bin);
-		free(read);
 		exit(1);
 	}
 	wait(NULL);
+	// g.pid_ch = 1337;
 }
 
-
-// void exec_v2()
-// {
-// 	int	pid;
-// 	int	pipefd[2];
-// 	int d_stdin;
-// 	t_cmd *cmd;	
-// 	t_list *list;
-
-// 	list = *g.list;
-// 	pipe(pipefd);
-
-// 	d_stdin = dup(0);
-// 	while(list->next)
-// 	{
-// 		cmd = (t_cmd *)list->content;
-// 		pid = fork();
-// 		if(!pid)
-// 		{
-// 			printf("*bin: %s, cmd: %s\n", cmd->bin, cmd->s_cmd[0]);
-// 			dup2(pipefd[1],1);
-// 			close(pipefd[1]);
-// 			close(pipefd[0]);
-// 			execve(cmd->bin,cmd->s_cmd,g.env);
-// 			write(2,"Command not fond \"", 18);
-// 			if(cmd->s_cmd[0])
-// 				write(2,cmd->s_cmd[0], ft_strlen(cmd->s_cmd[0]));
-// 			write(2,"\"\n",2);
-// 			exit(1);
-// 		}
-// 		dup2(pipefd[0],0);
-// 		close(pipefd[1]);
-// 		waitpid(pid, NULL, 0);
-// 		list = list->next;
-// 	}
-// 	exec((t_cmd*) list->content);
-// 	dup2(d_stdin, 0);
-// }
-
-void exec_v2(char *read)
+void exec_v2(char **read)
 {
-	printf("cmd v2 : %s\n", read);
-	int	pid;
-	int	pipefd[2];
 	int		check = 0;
 	t_cmd	cmd;
-	pipe(pipefd);
+
+	pipe(g.pipefd);
 	if (!read || !read[0])
 		return;
-	cmd.s_cmd = ft_split(read, ' ');
+	cmd.s_cmd = read;
 	check = check_build_command(cmd.s_cmd);
 	if(check)
 	{
 		ft_free(cmd.s_cmd);
-		free(read);
-		dup2(pipefd[0],0);
-		close(pipefd[1]);
+		dup2(g.pipefd[0],0);
+		close(g.pipefd[1]);
 		return ;
 	}
 	cmd.bin = get_bin(cmd.s_cmd[0]);
-	pid = fork();
-	if(!pid)
+	g.pid_ch = fork();
+	if(!g.pid_ch)
 	{
-		dup2(pipefd[1],1);
-		close(pipefd[1]);
-		close(pipefd[0]);
+		dup2(g.pipefd[1],1);
+		close(g.pipefd[1]);
+		close(g.pipefd[0]);
 		execve(cmd.bin,cmd.s_cmd,g.env);
 		write(2,"Command not fond \"", 18);
 		if(cmd.s_cmd[0])
@@ -218,9 +187,9 @@ void exec_v2(char *read)
 		write(2,"\"\n",2);
 		exit(1);
 	}
-	dup2(pipefd[0],0);
-	close(pipefd[1]);
-	waitpid(pid, NULL, 0);
+	dup2(g.pipefd[0],0);
+	close(g.pipefd[1]);
+	waitpid(g.pid_ch , NULL, 0);
 }
 // void check_pipe()
 // {

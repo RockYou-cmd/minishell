@@ -1,16 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/10 14:48:18 by rgatnaou          #+#    #+#             */
-/*   Updated: 2022/06/04 18:54:58 by rgatnaou         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "libft.h"
+# include<stddef.h>
+# include <stdlib.h>
+#include <stdio.h>
 
 static int	count(char const *s, char c)
 {
@@ -85,3 +75,8 @@ char	**ft_split(char const *s, char c)
 	split[w] = 0;
 	return (split);
 }
+
+// int main()
+// {
+
+// }

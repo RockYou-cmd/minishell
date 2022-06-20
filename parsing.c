@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void which_one(char *str)
+void which_one(char **str)
 {
 	if (g.cmnd == 0)
 		ft_echo(str);
@@ -19,27 +19,18 @@ void which_one(char *str)
 	
 }
 
-int calc()
+int calc(char *str)
 {
-	char *tmp;
 	char *tmp2;
 	int i;
 	int t;
 
 	i = 0;
 	t = 0;
-	while(g.input[i] != 0)
-	{
-		if (g.input[i] == '$')
-		{
-			tmp = *(ft_split(g.input + i, ' '));
-			if (!(tmp2 = v_env(tmp)))
-				t += 0;
-			else
-				t += strlen(tmp2);		
-		}
-		i ++;
-	}
+	if (!(tmp2 = v_env(str)))
+		t += 0;
+	else
+		t += ft_strlen(tmp2);		
 	return t;
 }
 
@@ -48,7 +39,6 @@ int dolar(char *str, int s)
 	int t;
 	int i;
 	int p;
-	char *tmp;
 	char *tmp2;
 
 	t = 0;
@@ -58,11 +48,10 @@ int dolar(char *str, int s)
 	{
 		if (str[i] == '$' && str[i + 1] != ' ' && str[i + 1] != 0 && str[i + 1] != '\"' && (str[i + 2] != ' '  || str[i + 2] != '\0'))
 		{
-			tmp = *(ft_split(str + i, ' '));
-			if ((tmp2 = v_env(tmp)))
+			if ((tmp2 = v_env(str + i)))
 			{
 				while(tmp2[p] != '\0')
-					g.clr_cmd[s ++] = tmp2[p ++];
+					g.clr_cmd[s ++] = tmp2[p ++];                                                                                                                                                          
 			}
 			i += g.t + 1;
 			p = 0;
@@ -75,13 +64,11 @@ int dolar(char *str, int s)
 
 int dolar2(char *str, int s)
 {
-	int t;
 	int i;
 	int p;
 	char *tmp;
 	char *tmp2;
 
-	t = 0;
 	i = 0;
 	p = 0;
 	while (str[g.i] != '\"' && str[g.i] != '\'' && str[g.i] != '\0')
@@ -97,16 +84,8 @@ int dolar2(char *str, int s)
 			g.i += g.t + 1;
 			p = 0;
 		}
-		else if (str[g.i]  == ' ')
-		{
-			g.clr_cmd[s ++] = '*';
+		else if (str[g.i] == ' ' && str[g.i + 1] == ' ')
 			g.i ++;
-		}
-		else if (str[g.i]  == '<')
-		{
-			g.clr_cmd[s ++] = '`';
-			g.i ++;
-		}
 		else
 			g.clr_cmd[s ++] = str[g.i ++];
 	}
@@ -143,6 +122,7 @@ int dquotes (int s , char *str)
 
 	t = 0;
 	t = ++g.i;
+
 	while(str[g.i] != '\"' && str[g.i] != 0)
 		g.i++;
 	if (str[g.i] == '\"')
@@ -162,9 +142,8 @@ char *rm(char *str)
 	int s;
 
 	s = 0;
-	printf("calc : %lu\n", (calc() + ft_strlen(str)));
-	g.clr_cmd = ft_calloc(ft_strlen(str) + calc(), sizeof(char));
-	printf("cmd : %s\n", str);
+	g.i = 0;
+	g.clr_cmd = ft_calloc(ft_strlen(str) + calc(str), sizeof(char));
 	while (str[g.i] != 0)
 	{
 		if (str[g.i] == '\'')
@@ -177,8 +156,7 @@ char *rm(char *str)
 			if ((s = dquotes(s, str)) == -1)
 				return 0;
 		}
-		else if (str[g.i] == ' ')
-			g.clr_cmd[s ++] = '*';
+		else if (str[g.i] == ' ' && str[g.i + 1] == ' ');
 		else
 			s = dolar2(str, s);
 		g.i ++;
@@ -188,38 +166,66 @@ char *rm(char *str)
 	return g.clr_cmd;
 }
 
-int heredoc_check(char *str)
+void ooc(char c, int *s, int *d)
 {
-	int i;
+	if (c == '\"')
+	{
+		if (*d == 0 && *s == 0)
+			*d = 1; 
+		else
+			*d = 0;
+	}
+	else if (c == '\'' && *d == 0)
+	{
+		if (*s == 0)
+			*s = 1;
+		else
+			*s = 0;
+	}
+}
+
+// int err_check(char *str, int i, int d, int s)
+// {
+// 	i += 2;
+// 	while(str[i] != 0)
+// 	{
+// 		if (str[i] == '<')
+// 			return 44;
+// 	}
+// 	return i;
+// }
+
+int heredoc_check(char *str, int i)
+{
 	int d;
 	int s;
 
-	i = 0;
 	d = 0;
+	g.i = 0;
 	s = 0;
+	g.t = 0;
 	while (str[i] != 0)
 	{
-		if (str[i] == '\"')
+		ooc(str[i], &s, &d);
+		if (str[i] == '<' && str[i + 1] == '<' && str[i + 2] != '<' && str[i - 1] != '<' && d == 0 && s == 0)
 		{
-			if (d == 0)
-				d = 1;
-			else
-				d = 0;
+			i ++;
+			g.t = 1;
 		}
-		else if (str[i] == '\'')
-		{
-			if (s == 0)
-				s = 1;
-			else
-				s = 0;
-		}
-		if (str[i] == '<' && str[i + 1] == '<' && d == 0 && s == 0)
-			return 69;
 		i ++;
+		if (str[i] == '<')
+			return -1;
 	}
-	return 0;
-
+	return 1;
 }
+
+// int redirection_check(char *str)
+// {
+// 	if (heredoc_check(g.input, 0))
+// 	{
+
+// 	}
+// }
 
 char *heredoc_rm(char **str)
 {
@@ -232,39 +238,72 @@ char *heredoc_rm(char **str)
 		str[0] = ft_strjoin(str[0], str[i + 1]);
 		i ++;
 	}
-	printf("ret : %s\n", str[0]);
 	return rm(str[0]);
-	
+}
+
+char **esp_splt(char *str)
+{
+	char **tmp;
+	char **ret;
+	int i;
+
+	i = 0;
+	tmp = ft_split(str, ' ');
+
+	i = 0;
+	while(tmp[i++]);
+	ret = malloc(i * sizeof(char *));
+	i = 0;
+	while(tmp[i])
+	{
+		ret[i] = rm(tmp[i]);
+		i ++;
+	}
+	ret[i] = 0;
+	ft_free(tmp);
+	return (ret);
 }
 
 void check()
 {
 	int i;
-	int t;
-	int isnt;
+	int r;
 
 	i = 0;
-	t = 0;
-	isnt = 0;
-	
-	// printf("check : %d\n", heredoc_check(g.input));
+	r = 0;
+	// printf("%s\n", g.input);
 	if (g.pip == 1)
 	{
 		while(g.cmd->s_cmd[i + 1] != 0)
 		{
-			if (heredoc_check(g.cmd->s_cmd[i]))
-				ft_heredoc(heredoc_rm(ft_split(g.cmd->s_cmd[i], '<')));
+			r = red(g.cmd->s_cmd[i]);
+			if (r)
+				red_send(g.cmd->s_cmd[i],1);
+			else if (r == -1)
+				return ;
 			else
-				exec_v2(rm(g.cmd->s_cmd[i]));
+				exec_v2(esp_splt(g.cmd->s_cmd[i]));
 			i ++;
 		}
-		exec(rm(g.cmd->s_cmd[i]));
+		r = red(g.cmd->s_cmd[i]);
+		if (r)
+			red_send(g.cmd->s_cmd[i],0);
+		else if (r == -1)
+			return ;
+		else
+			exec(esp_splt(g.cmd->s_cmd[i]));		
 		dup2(g.i_stdin, 0);
 		dup2(g.i_stdout, 1);
 		g.pip = 0;
 	}
 	else
-		printf("clr : %d\n", heredoc_check(g.input));
-		// exec(rm(g.input));
-
+	{
+		r = red(g.input);
+		if (r)
+			red_send(g.input,0);
+		else if (r == -1)
+			return ;
+		else
+			exec(esp_splt(g.input));		
 	}
+}
