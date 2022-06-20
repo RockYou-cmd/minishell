@@ -5,6 +5,8 @@ void	exec_heredoc(char *limeter)
 {
 	char	*doc;
 	// int fd[2];
+	dup2(g.i_stdout, 1);
+	dup2(g.i_stdin, 0);
 	if (limeter)
 		g.fd_stdin = open(".heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
     while(limeter)
@@ -23,33 +25,42 @@ void	exec_heredoc(char *limeter)
     }
 	close(g.fd_stdin);
 	g.fd_stdin = open(".heredoc", O_RDWR, 0644);
+	dup2(g.fd_stdin, 0);
+	close(g.fd_stdin);
 	// printf("herdoc : %s\n", limeter);
-
 }
 
-void exec_red_output(char *file)
+void exec_red_output(char *file, int *pipe)
 {
+	*pipe = 0;
 	g.fd_stdout = open(file, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if ( g.fd_stdin < 0)
 		printf("no such file or directory %s",file);
+	dup2(g.fd_stdout , 1);
+	close(g.fd_stdout);
 
 }
 
-void exec_red_output_append(char *file)
+void exec_red_output_append(char *file, int *pipe)
 {
+	*pipe = 0;
 	g.fd_stdout = open(file, O_CREAT | O_RDWR | O_APPEND, 0644);
 	if ( g.fd_stdin < 0)
 		printf("no such file or directory %s",file);
+	dup2(g.fd_stdout , 1);
+	close(g.fd_stdout);
 	// printf("append : %s\n", file);
 }
 void exec_red_input(char *file)
 {
 	g.fd_stdin = open(file, O_RDWR , 0644);
 	if ( g.fd_stdin < 0)
-	{
 		printf("no such file or directory :%s\n",file);
+	else
+	{
+		dup2(g.fd_stdin, 0);
+		close(g.fd_stdin);
 	}
-
 }
 
 void	get_path()
@@ -189,6 +200,7 @@ void exec_v2(char **read)
 	}
 	dup2(g.pipefd[0],0);
 	close(g.pipefd[1]);
+	close(g.pipefd[0]);
 	waitpid(g.pid_ch , NULL, 0);
 }
 // void check_pipe()

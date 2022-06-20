@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+t_data g;
+
 void handler(int signm)
 {
 	if (signm == SIGINT && g.pid_ch == 1337)

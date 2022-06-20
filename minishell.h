@@ -54,7 +54,7 @@ typedef struct s_data
 	int			pipefd[2];
 }t_data;
 
-t_data g;
+extern t_data g;
  
 void	comands();
 void	which_one(char **str);
@@ -80,11 +80,11 @@ void 	red_output(char **str);
 void 	ooc(char c, int *s, int *d);
 int 	red_check(char *str);
 void 	red_send(char *str ,int pipe);
-void 	find_red(char **str, int i);
+void 	find_red(char **str, int i, int *pipe);
 void	exec_heredoc(char *limeter);
 int 	red(char *str);
-void 	exec_red_output_append(char *file);
-void 	exec_red_output(char *file);
+void 	exec_red_output_append(char *file, int *pipe);
+void 	exec_red_output(char *file, int *pipe);
 void	handler(int signm);
 void 	exec_red_input(char *file);
 char 	**ft_realloc(char **str, int t);

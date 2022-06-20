@@ -95,45 +95,47 @@ int    cmd_len(char **str)
     return (l);
 }
 
-void red_send(char *str, int pipe)
+void red_send(char *str, int pip)
 {
+	char **red;
+	char **cmd;
 	int i;
 	int t;
+	int output;
 
 	i = 0;
 	t = 0;
-	char **red;
-	char **cmd;
-	(void)pipe;
+	output = 1;
 	red = ft_split(add_spaces(str), ' ');
 	cmd = malloc((cmd_len(red) + 1) * sizeof(char *));
 	while(red[i])
 	{
 		if (ft_strcmp(red[i], "<<") || ft_strcmp(red[i], ">>") || ft_strcmp(red[i], "<") || ft_strcmp(red[i], ">"))
 		{
-			find_red(red, i++);
+			find_red(red, i++,&output);
 		}
 		else
-			cmd[t ++] = red[i];
+			cmd[t ++] = ft_strdup(red[i]);
 		i++;
 	}
 	if(g.fd_stdin != -1 && g.fd_stdout != -1)
 	{
-		dup2(g.fd_stdin , 0);
-		dup2(g.fd_stdout , 1);
-		if (pipe)
-		{
+		if (pip && output)
 			exec_v2(cmd);
-			return;
-		}
 		else
+		{
 			exec(cmd);
-		dup2(g.i_stdin , 0);
-		dup2(g.i_stdout , 1);
-		if (g.fd_stdin != 0)
-			close(g.fd_stdin);
-		if (g.fd_stdout != 1)
-			close(g.fd_stdout);
+			if (!output && pip)
+			{
+				pipe(g.pipefd);
+				dup2(g.pipefd[0],0);
+				close(g.pipefd[1]);
+				close(g.pipefd[0]);
+			}
+			else
+				dup2(g.i_stdin, 0);
+			dup2(g.i_stdout, 1);
+		}
 	}
 	// printf("cmd : ****************%s\n", cmd[0]);
 }

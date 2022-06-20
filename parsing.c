@@ -22,10 +22,8 @@ void which_one(char **str)
 int calc(char *str)
 {
 	char *tmp2;
-	int i;
 	int t;
 
-	i = 0;
 	t = 0;
 	if (!(tmp2 = v_env(str)))
 		t += 0;
@@ -36,12 +34,10 @@ int calc(char *str)
 
 int dolar(char *str, int s)
 {
-	int t;
 	int i;
 	int p;
 	char *tmp2;
 
-	t = 0;
 	i = 0;
 	p = 0;
 	while (str[i] != '\"')
@@ -64,12 +60,10 @@ int dolar(char *str, int s)
 
 int dolar2(char *str, int s)
 {
-	int i;
 	int p;
 	char *tmp;
 	char *tmp2;
 
-	i = 0;
 	p = 0;
 	while (str[g.i] != '\"' && str[g.i] != '\'' && str[g.i] != '\0')
 	{
@@ -96,10 +90,8 @@ int dolar2(char *str, int s)
 int squotes(int s, char *str)
 {
 	int t;
-	int i;
 
 	t = 0;
-	i = 0;
 	t = ++g.i;
 	while(str[g.i] != '\'' && str[g.i] != 0)
 		g.i++;
