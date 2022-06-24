@@ -3,20 +3,19 @@
 void which_one(char **str)
 {
 	if (g.cmnd == 0)
-		ft_echo(str);
+		g.state = ft_echo(str);
 	if (g.cmnd == 1)
-		ft_cd();
+		g.state = ft_cd(str);
 	if (g.cmnd == 2)
-		ft_pwd();
+		g.state = ft_pwd();
 	if (g.cmnd == 3)
-		ft_export();
+		g.state = ft_export(str);
 	if (g.cmnd == 4)
-		ft_unset();
+		g.state = ft_unset(str);
 	if (g.cmnd == 5)
-		ft_env();
+		g.state = ft_env();
 	if (g.cmnd == 6)
 		ft_exit();
-	
 }
 
 int calc(char *str)

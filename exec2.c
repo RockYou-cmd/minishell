@@ -106,7 +106,7 @@ int ft_export(char **str)
 	return 0;
 }
 
-void ft_unset()
+int ft_unset()
 {
-
+	return(0);
 }

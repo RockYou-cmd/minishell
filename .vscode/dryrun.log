@@ -1,0 +1,52 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/rgatnaou/Desktop/minishell'
+make bonus -C libft
+ 
+Error: No available formula with the name "readline".
+
+cc -Wall -Wextra -Werror -I /include -c minishell.c -o minishell.o
+ 
+Error: No available formula with the name "readline".
+
+cc -Wall -Wextra -Werror -I /include -c exec.c -o exec.o
+ 
+Error: No available formula with the name "readline".
+
+cc -Wall -Wextra -Werror -I /include -c parsing.c -o parsing.o
+ 
+Error: No available formula with the name "readline".
+
+cc -Wall -Wextra -Werror -I /include -c exec2.c -o exec2.o
+ 
+Error: No available formula with the name "readline".
+
+cc -Wall -Wextra -Werror -I /include -c Sys_Cmd.c -o Sys_Cmd.o
+ 
+Error: No available formula with the name "readline".
+
+cc -Wall -Wextra -Werror -I /include -c init.c -o init.o
+ 
+Error: No available formula with the name "readline".
+
+cc -Wall -Wextra -Werror -I /include -c utils.c -o utils.o
+ 
+Error: No available formula with the name "readline".
+
+cc -Wall -Wextra -Werror -I /include -c redirection_pars.c -o redirection_pars.o
+ 
+Error: No available formula with the name "readline".
+
+cc -Wall -Wextra -Werror -I /include -c redirection_find.c -o redirection_find.o
+ 
+Error: No available formula with the name "readline".
+
+cc -Wall -Wextra -Werror -I /include -c check.c -o check.o
+ 
+Error: No available formula with the name "readline".
+
+Error: No available formula with the name "readline".
+
+cc -Wall -Wextra -Werror minishell.o exec.o parsing.o exec2.o Sys_Cmd.o init.o utils.o redirection_pars.o redirection_find.o check.o -I /include  -L /lib  libft/libft.a -o minishell -lreadline
+ 
+make: Leaving directory `/Users/rgatnaou/Desktop/minishell'
+ 

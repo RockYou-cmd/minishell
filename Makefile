@@ -31,12 +31,12 @@ SRC = minishell.c exec.c parsing.c exec2.c Sys_Cmd.c init.c utils.c redirection_
 OBJ = $(SRC:.c=.o)
 
 %.o : %.c $(INC) $(LIBINC)
-	$(CC) -c $< -o $@
+	$(CC) -I $(INCLUDE_READLINE) -c $< -o $@
 
 all : $(NAME)
 
 $(NAME) : $(INC) $(LIBINC) $(LIBFT) $(OBJ)
-	$(CC) $(OBJ)  $(LIBFT) -o $(NAME)  -lreadline 
+	$(CC) $(OBJ) -I $(INCLUDE_READLINE)  -L $(LIB_READLINE)  $(LIBFT) -o $(NAME) -lreadline
 
 $(LIBFT)	:
 	make bonus -C libft

@@ -48,24 +48,25 @@ typedef struct s_data
 	int			i_stdout;
 	int			fd_stdin;
 	int			fd_stdout;
+	int			state;
 	int			i;
 	int			t;
 	pid_t		pid_ch;
 	int			pipefd[2];
 }t_data;
 
-extern t_data g;
+t_data g;
  
 void	comands();
 void	which_one(char **str);
 void 	ft_init();
 int		ft_echo(char **str);
-void	ft_cd();
-void	ft_pwd();
-int	ft_export();
-void	ft_unset();
+int		ft_cd(char **str);
+int		ft_pwd();
+int		ft_export(char **str);
+int		ft_unset(char **str);
 void 	check();
-void	ft_env();
+int		ft_env();
 void	ft_exit();
 void	get_path();
 char	*get_bin(char *cmd);
