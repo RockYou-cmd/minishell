@@ -172,7 +172,6 @@ void exec_v2(char **s_cmd)
 	g.pid_ch = fork();
 	if(!g.pid_ch)
 	{
-		// signal(SIGINT, SIG_DFL);
 		dup2(g.pipefd[1],1);
 		close(g.pipefd[1]);
 		close(g.pipefd[0]);

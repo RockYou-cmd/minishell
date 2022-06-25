@@ -2,6 +2,7 @@
 
 void which_one(char **str)
 {
+	g.state = 0;
 	if (g.cmnd == 0)
 		g.state = ft_echo(str);
 	if (g.cmnd == 1)
@@ -16,6 +17,7 @@ void which_one(char **str)
 		g.state = ft_env();
 	if (g.cmnd == 6)
 		ft_exit();
+	ft_free(str);
 }
 
 int calc(char *str)

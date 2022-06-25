@@ -33,7 +33,7 @@ void comands()
 	g.command[2] = "pwd";
 	g.command[3] = "export";
 	g.command[4] = "unset";
-	g.command[5] = "ent";
+	g.command[5] = "env";
 	g.command[6] = "exit";
 	g.command[7] = 0;
 }
