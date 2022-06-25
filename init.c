@@ -10,7 +10,7 @@ char *v_env(char *str)
 	g.t = 0;
 	value = NULL;
 	tmp = ft_calloc(ft_strlen(str), sizeof(char));
-	while (str[i ++] != '$' && str[i ++] != '\0');
+	while (str[i ++] != '$' && str[i + 1] != '\0');
 	if (str[i - 1] != '$')
 		return NULL;
 	while(str[i] != 0 && str[i] != '$' && str[i] != '\"' && str[i] != ' ' && str[i] != '\'')
@@ -33,26 +33,29 @@ void comands()
 	g.command[2] = "pwd";
 	g.command[3] = "export";
 	g.command[4] = "unset";
-	g.command[5] = "ent";
+	g.command[5] = "env";
 	g.command[6] = "exit";
 	g.command[7] = 0;
 }
 
-void fill_export()
+void fill_env_exp(char **env)
 {
 	int i;
 
 	i = 0;
-	while(g.env[i])
+	while(env[i])
 		i ++;
 	g.exp = malloc((i + 1) * sizeof(char *));
+	g.env = malloc((i + 1) * sizeof(char *));
 	i = 0;
-	while(g.env[i])
+	while(env[i])
 	{
-		g.exp[i] = g.env[i];
+		g.exp[i] = env[i];
+		g.env[i] = env[i];
 		i ++;		
 	}
 	g.exp[i] = 0;
+	g.env[i] = 0;
 }
 
 void ft_init()

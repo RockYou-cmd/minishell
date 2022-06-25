@@ -17,13 +17,13 @@ void handler(int signm)
 	if (signm == SIGINT && g.pid_ch == 1337)
 	{
 		write(1,"\n",1);
-		rl_replace_line("",0);
+		// rl_replace_line("",0);
 		rl_on_new_line();
 		rl_redisplay();
 	}
 	else if (signm == SIGINT)
 	{
-		rl_replace_line("",0);
+		// rl_replace_line("",0);
 		rl_redisplay();
 	}
 }
@@ -43,11 +43,10 @@ int	main(int ac, char **av, char **env)
 	(void) av;
 	(void) ac;
 
-	g.env = env;
 	g.cmnd = -1;
 	g.i_stdin = dup(0);
 	g.i_stdout = dup(1);
-	fill_export();
+	fill_env_exp(env);
 	signal(SIGINT, &handler);
 	signal(SIGQUIT, SIG_IGN);
 	get_path();

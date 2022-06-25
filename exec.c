@@ -35,5 +35,9 @@ void ft_exit()
 
 void ft_env()
 {
+	int i;
 
+	i = 0;
+	while(g.env[i])
+		printf("%s\n", g.env[i ++]);
 }

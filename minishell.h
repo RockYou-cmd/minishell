@@ -88,9 +88,10 @@ void 	exec_red_output(char *file);
 void	handler(int signm);
 void 	exec_red_input(char *file);
 char 	**ft_realloc(char **str, int t);
-void 	fill_export();
+void 	fill_env_exp(char **env);
 char 	*ft_rrealloc(char *str, int t);
 int 	exp_sign(char **str);
 int is_iq(char *str, int j);
+void exp_to_env();
 
 #endif

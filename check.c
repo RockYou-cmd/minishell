@@ -18,6 +18,7 @@ int is_iq(char *str, int j)
 	int plus;
 
 	plus = 1;
+	g.i = 0;
 	if (ft_isalpha(str[j]) == 0 && str[j] != '_')
 		return 0;
 	j ++;
@@ -37,6 +38,8 @@ int is_iq(char *str, int j)
 		}
 		j ++;
 	}
+	if (str[j] == '=')
+		g.i = 2;
 	return plus;
 }
 
