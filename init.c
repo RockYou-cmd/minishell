@@ -38,32 +38,31 @@ void comands()
 	g.command[7] = 0;
 }
 
-void fill_export()
-{
-	int i;
+// void fill_export()
+// {
+// 	int i;
 
-	i = 0;
-	while(g.env[i])
-		i ++;
-	g.exp = malloc((i + 1) * sizeof(char *));
-	i = 0;
-	while(g.env[i])
-	{
-		g.exp[i] = g.env[i];
-		i ++;		
-	}
-	g.exp[i] = 0;
-}
+// 	i = 0;
+// 	while(g.env[i])
+// 		i ++;
+// 	g.exp = malloc((i + 1) * sizeof(char *));
+// 	i = 0;
+// 	while(g.env[i])
+// 	{
+// 		g.exp[i] = g.env[i];
+// 		i ++;		
+// 	}
+// 	g.exp[i] = 0;
+// }
 
 void ft_init()
 {
 	g.fd_stdin = 0;
 	g.fd_stdout = 1;
 	g.i = 0;
-	g.cmd = malloc(sizeof(t_cmd));
 	if (ft_strchr(g.input, '|') )
 	{
-		g.cmd->s_cmd = ft_split(g.input, '|');
+		g.s_cmd = ft_split(g.input, '|');
 		g.pip = 1;
 	}
 }

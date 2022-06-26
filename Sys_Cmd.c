@@ -95,7 +95,7 @@ char	*get_bin(char *cmd)
 	if (!cmd)
 		return(NULL);
 	if (!access(cmd,X_OK))
-		return(cmd);
+		return(ft_strdup(cmd));
 	while (g.path[i])
 	{
 		pat = ft_strdup(g.path[i]);
@@ -143,9 +143,9 @@ void exec(char **s_cmd)
 	{
 		signal(SIGINT, &handler);
 		execve(bin,s_cmd,g.env);
-		write(2,"Command not found \"", 19);
+		write(2,"minishell: ", 11);
 		write(2,s_cmd[0], ft_strlen(s_cmd[0]));
-		write(2,"\"\n",2);
+		write(2,": command not found\n",20);
 		ft_free(s_cmd);
 		free(bin);
 		exit(1);
@@ -176,9 +176,9 @@ void exec_v2(char **s_cmd)
 		close(g.pipefd[1]);
 		close(g.pipefd[0]);
 		execve(bin,s_cmd,g.env);
-		write(2,"Command not found \"", 19);
+		write(2,"minishell :", 11);
 		write(2,s_cmd[0], ft_strlen(s_cmd[0]));
-		write(2,"\"\n",2);
+		write(2,": command not found\n",20);
 		exit(1);
 	}
 	dup2(g.pipefd[0],0);

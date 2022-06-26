@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+
 void handler(int signm)
 {
 	if (signm == SIGINT && g.pid_ch == 1337)
@@ -31,10 +32,10 @@ void handler(int signm)
 
 void	ft_read_line()
 {
-	g.input = readline("type here > : ");
+	g.input = readline("minishell-3.2$ ");
 	if(!g.input)
 	{
-		write(1, "\033[1A\033[14Cexit\n",14);
+		write(1, "\033[1A\033[15Cexit\n",14);
 		exit(1);
 	}
 }
@@ -81,9 +82,10 @@ int	main(int ac, char **av, char **env)
 	build_env(env);
 	g.cmnd = -1;
 	g.state = 0;
+	rl_catch_signals = 0;
 	g.i_stdin = dup(0);
 	g.i_stdout = dup(1);
-	fill_export();
+	// fill_env_exp(env);
 	signal(SIGINT, &handler);
 	signal(SIGQUIT, SIG_IGN);
 	get_path();

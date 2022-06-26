@@ -37,11 +37,9 @@ typedef struct s_data
 	char 		*input;
 	int 		cmnd;
 	int			pip;
-	t_cmd		*cmd;
+	char		**s_cmd;
 	char		**env;
 	char		**s_env;
-	char		**exp;
-	t_list	 	**list;
 	char		**path;
 	char		*clr_cmd;
 	int			i_stdin;
@@ -64,7 +62,7 @@ int		ft_echo(char **str);
 int		ft_cd(char **str);
 int		ft_pwd();
 int		ft_export(char **str);
-int		ft_unset(char **str);
+void	ft_unset(char **str);
 void 	check();
 int		ft_env();
 void	ft_exit();
@@ -93,5 +91,6 @@ void 	fill_export();
 char 	*ft_rrealloc(char *str, int t);
 int 	exp_sign(char **str);
 int is_iq(char *str, int j);
+void	exp_to_env();
 
 #endif

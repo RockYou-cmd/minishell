@@ -12,12 +12,11 @@ void which_one(char **str)
 	if (g.cmnd == 3)
 		g.state = ft_export(str);
 	if (g.cmnd == 4)
-		g.state = ft_unset(str);
+		ft_unset(str);
 	if (g.cmnd == 5)
 		g.state = ft_env();
 	if (g.cmnd == 6)
 		ft_exit();
-	ft_free(str);
 }
 
 int calc(char *str)
@@ -242,10 +241,14 @@ char **esp_splt(char *str)
 
 	i = 0;
 	tmp = ft_split(str, ' ');
-
-	i = 0;
+	if (!tmp[0])
+	{
+		ft_free(tmp);
+		printf("minishell : syntax error \n");
+		return 0;
+	}
 	while(tmp[i++]);
-	ret = malloc(i * sizeof(char *));
+	ret = malloc((i + 1 )* sizeof(char *));
 	i = 0;
 	while(tmp[i])
 	{
@@ -267,24 +270,24 @@ void check()
 	// printf("%s\n", g.input);
 	if (g.pip == 1)
 	{
-		while(g.cmd->s_cmd[i + 1] != 0)
+		while(g.s_cmd[i + 1] != 0)
 		{
-			r = red(g.cmd->s_cmd[i]);
+			r = red(g.s_cmd[i]);
 			if (r)
-				red_send(g.cmd->s_cmd[i],1);
+				red_send(g.s_cmd[i],1);
 			else if (r == -1)
 				return ;
 			else
-				exec_v2(esp_splt(g.cmd->s_cmd[i]));
+				exec_v2(esp_splt(g.s_cmd[i]));
 			i ++;
 		}
-		r = red(g.cmd->s_cmd[i]);
+		r = red(g.s_cmd[i]);
 		if (r)
-			red_send(g.cmd->s_cmd[i],0);
+			red_send(g.s_cmd[i],0);
 		else if (r == -1)
 			return ;
 		else
-			exec(esp_splt(g.cmd->s_cmd[i]));		
+			exec(esp_splt(g.s_cmd[i]));		
 		dup2(g.i_stdin, 0);
 		dup2(g.i_stdout, 1);
 		g.pip = 0;
@@ -297,6 +300,7 @@ void check()
 		else if (r == -1)
 			return ;
 		else
-			exec(esp_splt(g.input));		
+			exec(esp_splt(g.input));
 	}
+	free(g.input);
 }

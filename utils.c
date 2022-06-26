@@ -25,10 +25,11 @@ char **ft_realloc(char **str, int t)
 	i = 0;
 	while (str[i])
 	{
-		ret[i] = str[i];
+		ret[i] = ft_strdup(str[i]);
 		i ++;
 	}
-
+	ret[i] = 0;
+	ft_free(str);
 	return ret;
 }
 
@@ -49,5 +50,6 @@ char *ft_rrealloc(char *str, int t)
 		i ++;
 	}
 	ret[i] = 0;
+	free(str);
 	return ret;
 }
