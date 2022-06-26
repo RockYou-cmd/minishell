@@ -96,15 +96,8 @@ int squotes(int s, char *str)
 	while(str[g.i] != '\'' && str[g.i] != 0)
 		g.i++;
 	if (str[g.i] == '\'')
-	{
 		while(str[t] != '\'')
 			g.clr_cmd[s++] = str[t++];
-	}
-	else
-	{
-		printf("quote ' error\n");
-		return -1;
-	}
 	return s;
 }
 
@@ -118,14 +111,7 @@ int dquotes (int s , char *str)
 	while(str[g.i] != '\"' && str[g.i] != 0)
 		g.i++;
 	if (str[g.i] == '\"')
-	{
 		s = dolar(str + t , s);
-	}
-	else
-	{
-		printf("quote \" error\n");
-		return -1;
-	}
 	return s;
 }
 
@@ -241,12 +227,6 @@ char **esp_splt(char *str)
 
 	i = 0;
 	tmp = ft_split(str, ' ');
-	if (!tmp[0])
-	{
-		ft_free(tmp);
-		printf("minishell : syntax error \n");
-		return 0;
-	}
 	while(tmp[i++]);
 	ret = malloc((i + 1 )* sizeof(char *));
 	i = 0;

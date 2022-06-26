@@ -53,7 +53,9 @@ void exec_red_output_append(char *file, int *pipe)
 	*pipe = 0;
 	g.fd_stdout = open(file, O_CREAT | O_RDWR | O_APPEND, 0644);
 	if ( g.fd_stdin < 0)
+	{
 		printf("no such file or directory %s",file);
+	}
 	dup2(g.fd_stdout , 1);
 	close(g.fd_stdout);
 	// printf("append : %s\n", file);
@@ -62,12 +64,12 @@ void exec_red_input(char *file)
 {
 	g.fd_stdin = open(file, O_RDWR , 0644);
 	if ( g.fd_stdin < 0)
-		printf("no such file or directory :%s\n",file);
-	else
 	{
-		dup2(g.fd_stdin, 0);
-		close(g.fd_stdin);
+		printf("no such file or directory :%s\n",file);
 	}
+	dup2(g.fd_stdin, 0);
+	close(g.fd_stdin);
+
 }
 
 void	get_path()
