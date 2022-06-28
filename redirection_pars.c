@@ -56,6 +56,7 @@ int red_check(char *str)
 	g.i = 0;
 	tmp = add_spaces(str);
 	ptp = ft_split(tmp , ' ');
+	free(tmp);
 	while (ptp[i])
 	{
 		if ((ft_strchr(ptp[i], '>') || ft_strchr(ptp[i], '<')) && (!(ft_strchr(ptp[i], '\'')) && !(ft_strchr(ptp[i], '\"'))))
@@ -66,14 +67,16 @@ int red_check(char *str)
 				g.t = 1;	
 			}
 			else
+			{
+				ft_free(ptp);
 				return -1;
+			}
 		}
 		else
 			g.t = 0;
 		i ++;
 	}
 	ft_free(ptp);
-	free(tmp);
 	if (g.t == 1)
 		return -1;
 	return g.i;
@@ -105,11 +108,14 @@ void red_send(char *str, int pip)
 	int i;
 	int t;
 	int output;
+	char *tmp;
 
 	i = 0;
 	t = 0;
 	output = 1;
-	red = ft_split(add_spaces(str), ' ');
+	tmp = add_spaces(str);
+	red = ft_split(tmp, ' ');
+	free(tmp);
 	cmd = malloc((cmd_len(red) + 1) * sizeof(char *));
 	while(red[i])
 	{
@@ -140,5 +146,7 @@ void red_send(char *str, int pip)
 			dup2(g.i_stdout, 1);
 		}
 	}
+	free(cmd);
+	ft_free(red);	
 	// printf("cmd : ****************%s\n", cmd[0]);
 }
