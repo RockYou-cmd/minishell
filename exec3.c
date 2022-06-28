@@ -4,6 +4,7 @@ int var2_check(char *var)
 {
 	int i;
 	char *tmp;
+    char **s_env;
 
 	i = 0;
 	while(var[i] != '=' && var[i] != 0)
@@ -19,14 +20,14 @@ int var2_check(char *var)
 	i = 0;
 	while(g.env[i])
 	{
-		g.s_env = ft_split(g.env[i++], '=');
-		if (ft_strcmp(g.s_env[0], tmp))
+		s_env = ft_split(g.env[i++], '=');
+		if (ft_strcmp(s_env[0], tmp))
         {
             free(tmp);
-            ft_free(g.s_env);
+            ft_free(s_env);
 			return (--i);
         }
-		ft_free(g.s_env);
+		ft_free(s_env);
 	}
     free(tmp);
 	return (-1);
@@ -61,29 +62,8 @@ void rm_var(int j)
 }
 
 void ft_unset(char **str)
-{   
-    // int i;
-    // int j;
+{
 
-    // i = 0;
-    // j = 0;
-    // if (!str)
-    //     return ;
-    // while (str[i])
-	// 	if (var2_check(str[i ++]) != -1)
-	// 		j++;
-    // i = 0;
-    // while(g.env[i])
-    //     i ++;
-    // g.exp = ft_calloc(i - j + 1, sizeof(char *));
-    // i = 0;
-    // while(str[i])
-    // {
-    //     if ((j = var2_check(str[i])) != -1)
-    //         rm_var(j);
-    //     exp_to_env();
-    //     i ++;
-    // }
     int i;
     int j;
 

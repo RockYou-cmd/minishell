@@ -49,11 +49,13 @@ int red_check(char *str)
 {
 	int i;
 	char **ptp;
+	char *tmp;
 
 	i = 0;
 	g.t = 0;
 	g.i = 0;
-	ptp = ft_split(add_spaces(str) , ' ');
+	tmp = add_spaces(str);
+	ptp = ft_split(tmp , ' ');
 	while (ptp[i])
 	{
 		if ((ft_strchr(ptp[i], '>') || ft_strchr(ptp[i], '<')) && (!(ft_strchr(ptp[i], '\'')) && !(ft_strchr(ptp[i], '\"'))))
@@ -71,6 +73,7 @@ int red_check(char *str)
 		i ++;
 	}
 	ft_free(ptp);
+	free(tmp);
 	if (g.t == 1)
 		return -1;
 	return g.i;

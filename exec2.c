@@ -17,24 +17,16 @@ void updt_export (char *str, int t)
 
 	i = 0;
 	j = 0;
-	g.t = 0;
 	if (is_iq(str, 0) != 9 && g.i == 2)
-	{
-		free(g.env[t]);
 		g.env[t] = ft_strdup(str);
-	}
 	else if (g.i != 2)
 		return ;
 	else
 	{
 		while(g.env[t][i])
 			i ++;
-		while(str[j])
-			j ++;
-		while(str[--j] != '=')
-			g.t ++;
-		j++;
-		g.env[t] = ft_rrealloc(g.env[t], g.t);
+		while(str[j++] != '=');
+		g.env[t] = ft_rrealloc(g.env[t], ft_strlen(str + j));
 		if (!ft_strchr(g.env[t], '='))
 			g.env[t][i ++] = '=';
 		while(str[j])
@@ -47,6 +39,7 @@ void set_export(char *str)
 {
 	int i;
 	int j;
+	char **tmp;
 
 	i = 0;
 	j = 0;
@@ -54,7 +47,8 @@ void set_export(char *str)
 	g.t = 0;
 	while(g.env[i])
 		i ++;
-	if (ft_strchr(*ft_split(str, '='), '+'))
+	tmp = ft_split(str, '=');
+	if (ft_strchr(tmp[0], '+'))
 	{
 		g.env[i] = malloc((ft_strlen(str) + 1) * sizeof(char));
 		while(str[j])
@@ -71,6 +65,7 @@ void set_export(char *str)
 	else
 		g.env[i] = ft_strdup(str);
 	g.env[i + 1] = 0;
+	ft_free(tmp);
 }
 
 
@@ -78,6 +73,7 @@ int var_check(char *var)
 {
 	int i;
 	char *tmp;
+	char **s_env;
 
 	i = 0;
 	while(var[i] != '=' && var[i] != 0)
@@ -93,14 +89,16 @@ int var_check(char *var)
 	i = 0;
 	while(g.env[i])
 	{
-		g.s_env = ft_split(g.env[i++], '=');
-		if (ft_strcmp(g.s_env[0], tmp))
+		s_env = ft_split(g.env[i++], '=');
+		if (ft_strcmp(s_env[0], tmp))
 		{
-			ft_free(g.s_env);
+			ft_free(s_env);
+			free(tmp);
 			return --i;
 		}
-		ft_free(g.s_env);
+		ft_free(s_env);
 	}
+	free(tmp);
 	return -1;
 }
 

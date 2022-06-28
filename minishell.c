@@ -12,20 +12,26 @@
 
 #include "minishell.h"
 
+void free_all()
+{
+	ft_free(g.path);
+	ft_free(g.env);
+	// free(g.clr_cmd);
+}
 
 void handler(int signm)
 {
 	if (signm == SIGINT && g.pid_ch == 1337)
 	{
 		write(1,"\n",1);
-		rl_replace_line("",0);
+		// rl_replace_line("",0);
 		rl_on_new_line();
 		rl_redisplay();
 	}
 	else if (signm == SIGINT)
 	{
 		write(1,"\n",1);
-		rl_replace_line("",0);
+		// rl_replace_line("",0);
 		rl_redisplay();
 	}
 }
@@ -36,6 +42,7 @@ void	ft_read_line()
 	if(!g.input)
 	{
 		write(1, "\033[1A\033[15Cexit\n",14);
+		free_all();
 		exit(1);
 	}
 }
@@ -72,8 +79,12 @@ void build_env(char **env)
 		}
 		i++;
 	}
+	if (!env[0])
+	{
+		ft_free(g.env);
+		g.env = NULL;
+	}
 }
-
 int	main(int ac, char **av, char **env)
 {
 	(void) av;
@@ -82,10 +93,9 @@ int	main(int ac, char **av, char **env)
 	build_env(env);
 	g.cmnd = -1;
 	g.state = 0;
-	rl_catch_signals = 0;
+	// rl_catch_signals = 0;
 	g.i_stdin = dup(0);
 	g.i_stdout = dup(1);
-	// fill_env_exp(env);
 	signal(SIGINT, &handler);
 	signal(SIGQUIT, SIG_IGN);
 	get_path();
@@ -95,20 +105,11 @@ int	main(int ac, char **av, char **env)
 		g.pid_ch = 1337;
 		ft_read_line();
 		add_history(g.input);
-		ft_init();
+		if(!ft_init())
+			continue;
 		check();
 		g.cmnd = -1;
+		// free(g.input);
 	}
 	return (0);
 }
-// func get env while prompt 
-/*
-unset remove var
-env lisrt var
-export > with arg >> add variable | no arg env  declare -x var = val
-cd >> old pwd  pwd
-
-*/
-
-//chdir = cd
-// getcwd = pwd

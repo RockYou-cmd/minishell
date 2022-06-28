@@ -26,5 +26,4 @@ int red(char *str)
 	}
 	else
 		return 0;
-	// 7ayid hadi
 }

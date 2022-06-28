@@ -24,7 +24,7 @@ LIB_READLINE = $(addprefix $(READLINE),/lib)
 
 READLINE = $(shell brew --prefix readline)
 
-CC = cc -Wall -Wextra -Werror
+CC = cc -Wall -Wextra -Werror -g
 
 SRC = minishell.c exec.c parsing.c exec2.c exec3.c Sys_Cmd.c init.c utils.c redirection_pars.c redirection_find.c check.c
 

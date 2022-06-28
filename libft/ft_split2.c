@@ -48,6 +48,11 @@ static int	count(char const *s, char c )
 			w++;
 		i++;
 	}
+	if (d || sq)
+	{
+		printf("minishell: syntax error\n");
+		return (-1);
+	}
 	return (w);
 }
 
@@ -123,19 +128,13 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	w = count(s, c);
+	if (w == -1)
+		return (NULL);
 	split = (char **)malloc(sizeof(char *) * w + 1);
 	if (!split)
 		return (NULL);
 	write_sp(split, s, c, w);
 	split[w] = 0;
+	
 	return (split);
 }
-
-// int main ()
-// {
-// 	char *a = "\"al'ae\" a b c";
-// 	char **b = ft_split(a, ' ');
-// 	int i = 0;
-// 	while(b[i])
-// 		printf("splt : %s\n", b[i++]);
-// }

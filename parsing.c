@@ -23,12 +23,13 @@ int calc(char *str)
 {
 	char *tmp2;
 	int t;
-
 	t = 0;
 	if (!(tmp2 = v_env(str)))
 		t += 0;
 	else
-		t += ft_strlen(tmp2);		
+		t += ft_strlen(tmp2);	
+	free(tmp2);
+
 	return t;
 }
 
@@ -51,6 +52,7 @@ int dolar(char *str, int s)
 			}
 			i += g.t + 1;
 			p = 0;
+			free(tmp2);
 		}
 		else
 			g.clr_cmd[s ++] = str[i ++];
@@ -61,20 +63,21 @@ int dolar(char *str, int s)
 int dolar2(char *str, int s)
 {
 	int p;
-	char *tmp;
+	char **tmp;
 	char *tmp2;
-
 	p = 0;
 	while (str[g.i] != '\"' && str[g.i] != '\'' && str[g.i] != '\0')
 	{
 		if (str[g.i] == '$' && str[g.i + 1] != ' ' && str[g.i + 1] != 0 && str[g.i + 1] != '\"' && (str[g.i + 2] != ' '  || str[g.i + 2] != '\0'))
 		{
-			tmp = *(ft_split(str + g.i, ' '));
-			if ((tmp2 = v_env(tmp)))
+			tmp = ft_split(str + g.i, ' ');
+			if ((tmp2 = v_env(tmp[0])))
 			{
 				while(tmp2[p] != '\0')
 					g.clr_cmd[s ++] = tmp2[p ++];
 			}
+			ft_free(tmp);
+			free(tmp2);
 			g.i += g.t + 1;
 			p = 0;
 		}
@@ -125,15 +128,9 @@ char *rm(char *str)
 	while (str[g.i] != 0)
 	{
 		if (str[g.i] == '\'')
-		{
-			if ((s = squotes(s, str)) == -1)
-				return 0;
-		}	
+			s = squotes(s, str);
 		else if (str[g.i] == '\"')
-		{
-			if ((s = dquotes(s, str)) == -1)
-				return 0;
-		}
+			s = dquotes(s, str);
 		else if (str[g.i] == ' ' && str[g.i + 1] == ' ');
 		else
 			s = dolar2(str, s);
@@ -283,4 +280,5 @@ void check()
 			exec(esp_splt(g.input));
 	}
 	free(g.input);
+	ft_free(g.s_cmd);
 }

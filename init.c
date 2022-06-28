@@ -5,6 +5,7 @@ char *v_env(char *str)
 	int i;
 	char *value;
 	char *tmp;
+	char **s_env;
 
 	i = 0;
 	g.t = 0;
@@ -12,15 +13,19 @@ char *v_env(char *str)
 	tmp = ft_calloc(ft_strlen(str), sizeof(char));
 	while (str[i ++] != '$' && str[i ++] != '\0');
 	if (str[i - 1] != '$')
+	{
+		free(tmp);
 		return NULL;
+	}
 	while(str[i] != 0 && str[i] != '$' && str[i] != '\"' && str[i] != ' ' && str[i] != '\'')
 		tmp[g.t ++] = str[i++];
 	i = 0;
 	while(g.env[i])
 	{
-		g.s_env = ft_split(g.env[i++], '=');
-		if (ft_strcmp(g.s_env[0], tmp))
-			value = g.s_env[1];
+		s_env = ft_split(g.env[i++], '=');
+		if (ft_strcmp(s_env[0], tmp))
+			value = ft_strdup(s_env[1]);
+		ft_free(s_env);
 	}
 	free(tmp);
 	return value;
@@ -38,31 +43,24 @@ void comands()
 	g.command[7] = 0;
 }
 
-// void fill_export()
-// {
-// 	int i;
-
-// 	i = 0;
-// 	while(g.env[i])
-// 		i ++;
-// 	g.exp = malloc((i + 1) * sizeof(char *));
-// 	i = 0;
-// 	while(g.env[i])
-// 	{
-// 		g.exp[i] = g.env[i];
-// 		i ++;		
-// 	}
-// 	g.exp[i] = 0;
-// }
-
-void ft_init()
+int ft_init()
 {
 	g.fd_stdin = 0;
 	g.fd_stdout = 1;
 	g.i = 0;
-	if (ft_strchr(g.input, '|') )
+	g.s_cmd = ft_split(g.input, '|');
+	if (!g.s_cmd )
 	{
-		g.s_cmd = ft_split(g.input, '|');
-		g.pip = 1;
+		free(g.input);
+		return 0;
 	}
+	if (!g.s_cmd[0])
+	{
+		free(g.input);
+		ft_free(g.s_cmd);
+		return 0;
+	}
+	if (ft_strchr(g.input, '|'))
+		g.pip = 1;
+	return 1;
 }

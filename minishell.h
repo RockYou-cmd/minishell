@@ -25,12 +25,6 @@
 #include <fcntl.h>
 #include <termios.h>
 
-typedef struct s_cmd
-{
-	char	**s_cmd;
-	char	*bin;
-}t_cmd;
-
 typedef struct s_data
 {
 	char 		*command[8];
@@ -39,7 +33,6 @@ typedef struct s_data
 	int			pip;
 	char		**s_cmd;
 	char		**env;
-	char		**s_env;
 	char		**path;
 	char		*clr_cmd;
 	int			i_stdin;
@@ -57,7 +50,7 @@ t_data g;
  
 void	comands();
 void	which_one(char **str);
-void 	ft_init();
+int 	ft_init();
 int		ft_echo(char **str);
 int		ft_cd(char **str);
 int		ft_pwd();
@@ -90,7 +83,7 @@ char 	**ft_realloc(char **str, int t);
 void 	fill_export();
 char 	*ft_rrealloc(char *str, int t);
 int 	exp_sign(char **str);
-int is_iq(char *str, int j);
+int 	is_iq(char *str, int j);
 void	exp_to_env();
 
 #endif

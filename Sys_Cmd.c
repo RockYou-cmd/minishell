@@ -71,12 +71,17 @@ void exec_red_input(char *file)
 	close(g.fd_stdin);
 
 }
-
 void	get_path()
 {
 	int i;
 
 	i = 0;
+	if (!g.env)
+	{
+		g.env = malloc(sizeof(char *)*2);
+		g.env[0] = ft_strdup("PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki");
+		g.env[1] = 0;
+	}
 	while(g.env[i])
 	{
 		if (!ft_strncmp(g.env[i], "PATH=", 5))
@@ -134,6 +139,7 @@ void exec(char **s_cmd)
 	int		check;
 	char 	*bin;
 
+
 	if (!s_cmd  || !s_cmd [0])
 		return;
 	check = check_build_command(s_cmd);
@@ -148,28 +154,22 @@ void exec(char **s_cmd)
 		write(2,"minishell: ", 11);
 		write(2,s_cmd[0], ft_strlen(s_cmd[0]));
 		write(2,": command not found\n",20);
-		ft_free(s_cmd);
-		free(bin);
 		exit(1);
 	}
+	ft_free(s_cmd);
+	free(bin);
 	waitpid(g.pid_ch , &(g.state), 0);
 }
 
 void exec_v2(char **s_cmd)
 {
-	int		check = 0;
+	int		check;
 	char 	*bin;
 
 	pipe(g.pipefd);
 	if (!s_cmd || !s_cmd[0])
 		return;
-	check = check_build_command(s_cmd);
-	if(check)
-	{
-		dup2(g.pipefd[0],0);
-		close(g.pipefd[1]);
-		return ;
-	}
+
 	bin = get_bin(s_cmd[0]);
 	g.pid_ch = fork();
 	if(!g.pid_ch)
@@ -177,12 +177,21 @@ void exec_v2(char **s_cmd)
 		dup2(g.pipefd[1],1);
 		close(g.pipefd[1]);
 		close(g.pipefd[0]);
+		check = check_build_command(s_cmd);
+		if(check)
+		{
+			dup2(g.pipefd[0],0);
+			close(g.pipefd[1]);
+			exit(1);
+		}
 		execve(bin,s_cmd,g.env);
 		write(2,"minishell :", 11);
 		write(2,s_cmd[0], ft_strlen(s_cmd[0]));
 		write(2,": command not found\n",20);
 		exit(1);
 	}
+	ft_free(s_cmd);
+	free(bin);
 	dup2(g.pipefd[0],0);
 	close(g.pipefd[1]);
 	close(g.pipefd[0]);
