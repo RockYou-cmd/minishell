@@ -30,13 +30,13 @@ SRC = minishell.c exec.c parsing.c exec2.c exec3.c Sys_Cmd.c init.c utils.c redi
 
 OBJ = $(SRC:.c=.o)
 
-%.o : %.c
+%.o : %.c $(INC) $(LIBINC)
 	$(CC) -I $(INCLUDE_READLINE) -c $< -o $@
 
 all : $(NAME)
 
 $(NAME) : $(INC) $(LIBINC) $(LIBFT) $(OBJ)
-	$(CC)  -I $(INCLUDE_READLINE) -L $(LIB_READLINE) -lreadline $(LIBFT) $(OBJ) -o $(NAME)
+	$(CC) $(OBJ) -I $(INCLUDE_READLINE)  -L $(LIB_READLINE)  $(LIBFT) -o $(NAME) -lreadline
 
 $(LIBFT)	:
 	make bonus -C libft

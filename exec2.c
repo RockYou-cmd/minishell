@@ -5,9 +5,8 @@ int print_exp()
 	int i;
 
 	i = 0;
-	while(g.exp[i])
-		printf("%s\n", g.exp[i++]);
-	printf("%d\n", i);
+	while(g.env[i])
+		printf("%s\n", g.env[i++]);
 	return 1;
 }
 
@@ -18,26 +17,24 @@ void updt_export (char *str, int t)
 
 	i = 0;
 	j = 0;
-	g.t = 0;
 	if (is_iq(str, 0) != 9 && g.i == 2)
-		g.exp[t] = ft_strdup(str);
+	{
+		free(g.env[t]);
+		g.env[t] = ft_strdup(str);
+	}
 	else if (g.i != 2)
 		return ;
 	else
 	{
-		while(g.exp[t][i])
+		while(g.env[t][i])
 			i ++;
+		while(str[j++] != '=');
+		g.env[t] = ft_rrealloc(g.env[t], ft_strlen(str + j));
+		if (!ft_strchr(g.env[t], '='))
+			g.env[t][i ++] = '=';
 		while(str[j])
-			j ++;
-		while(str[--j] != '=')
-			g.t ++;
-		j++;
-		g.exp[t] = ft_rrealloc(g.exp[t], g.t);
-		if (!ft_strchr(g.exp[t], '='))
-			g.exp[t][i ++] = '=';
-		while(str[j])
-			g.exp[t][i ++] = str[j ++];
-		g.exp[t][i + 1] = 0;
+			g.env[t][i ++] = str[j ++];
+		g.env[t][i + 1] = 0;
 	}
 }
 
@@ -45,16 +42,18 @@ void set_export(char *str)
 {
 	int i;
 	int j;
+	char **tmp;
 
 	i = 0;
 	j = 0;
 	g.i = 0;
 	g.t = 0;
-	while(g.exp[i])
+	while(g.env[i])
 		i ++;
-	if (ft_strchr(*ft_split(str, '='), '+'))
+	tmp = ft_split(str, '=');
+	if (ft_strchr(tmp[0], '+'))
 	{
-		g.exp[i] = malloc(ft_strlen(str) * sizeof(char));
+		g.env[i] = malloc((ft_strlen(str) + 1) * sizeof(char));
 		while(str[j])
 		{
 			if (str[j] == '+' && g.i != 1)
@@ -62,24 +61,27 @@ void set_export(char *str)
 				g.i = 1;
 				j ++;
 			}
-			g.exp[i][g.t ++] = str[j ++];
+			g.env[i][g.t ++] = str[j ++];
 		}
-		g.exp[i][g.t] = 0;
+		g.env[i][g.t] = 0;
 	}
 	else
-		g.exp[i] = ft_strdup(str);
-	g.exp[i + 1] = 0;
+		g.env[i] = ft_strdup(str);
+	g.env[i + 1] = 0;
+	ft_free(tmp);
 }
+
 
 int var_check(char *var)
 {
 	int i;
 	char *tmp;
+	char **s_env;
 
 	i = 0;
 	while(var[i] != '=' && var[i] != 0)
 		i ++;
-	tmp = malloc(i * sizeof(char));
+	tmp = malloc((i + 1) * sizeof(char));
 	i = 0;
 	while(var[i] != '=' && var[i] != '+' && var[i] != 0)
 	{
@@ -88,13 +90,18 @@ int var_check(char *var)
 	}
 	tmp[i] = 0;
 	i = 0;
-	while(g.exp[i])
+	while(g.env[i])
 	{
-		g.s_env = ft_split(g.exp[i++], '=');
-		if (ft_strcmp(g.s_env[0], tmp))
+		s_env = ft_split(g.env[i++], '=');
+		if (ft_strcmp(s_env[0], tmp))
+		{
+			ft_free(s_env);
+			free(tmp);
 			return --i;
-		ft_free(g.s_env);
+		}
+		ft_free(s_env);
 	}
+	free(tmp);
 	return -1;
 }
 
@@ -106,7 +113,7 @@ int ft_export(char **str)
 
 	j = 0;
 	i = 0;
-	if (!str)
+	if (!(*str))
 		return (print_exp());
 	if (!(p = exp_sign(str)))
 	{
@@ -119,9 +126,9 @@ int ft_export(char **str)
 			j++;
 	}
 	i = 0;
-	while(g.exp[i])
+	while(g.env[i])
 		i ++;
-	g.exp = ft_realloc(g.exp, j);
+	g.env = ft_realloc(g.env, j);
 	i = 0;
 	while (str[i])
 	{
@@ -130,6 +137,5 @@ int ft_export(char **str)
 		else
 			set_export(str[i++]);
 	}
-	exp_to_env();
 	return 0;
 }

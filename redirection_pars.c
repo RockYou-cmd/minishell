@@ -49,11 +49,13 @@ int red_check(char *str)
 {
 	int i;
 	char **ptp;
+	char *tmp;
 
 	i = 0;
 	g.t = 0;
 	g.i = 0;
-	ptp = ft_split(add_spaces(str) , ' ');
+	tmp = add_spaces(str);
+	ptp = ft_split(tmp , ' ');
 	while (ptp[i])
 	{
 		if ((ft_strchr(ptp[i], '>') || ft_strchr(ptp[i], '<')) && (!(ft_strchr(ptp[i], '\'')) && !(ft_strchr(ptp[i], '\"'))))
@@ -71,6 +73,7 @@ int red_check(char *str)
 		i ++;
 	}
 	ft_free(ptp);
+	free(tmp);
 	if (g.t == 1)
 		return -1;
 	return g.i;
@@ -95,45 +98,60 @@ int    cmd_len(char **str)
     return (l);
 }
 
-void red_send(char *str, int pipe)
+void red_send(char *str, int pip)
 {
+	char **red;
+	char **cmd;
+	char *tmp;
 	int i;
 	int t;
+	int output;
 
 	i = 0;
 	t = 0;
-	char **red;
-	char **cmd;
-	(void)pipe;
-	red = ft_split(add_spaces(str), ' ');
+	output = 1;
+	tmp = add_spaces(str);
+	red = ft_split(tmp, ' ');
+	free(tmp);
 	cmd = malloc((cmd_len(red) + 1) * sizeof(char *));
 	while(red[i])
 	{
 		if (ft_strcmp(red[i], "<<") || ft_strcmp(red[i], ">>") || ft_strcmp(red[i], "<") || ft_strcmp(red[i], ">"))
-		{
-			find_red(red, i++);
-		}
+			find_red(red, i++,&output);
 		else
-			cmd[t ++] = red[i];
+			cmd[t ++] = ft_strdup(red[i]);
 		i++;
 	}
+	cmd[t] = 0;
 	if(g.fd_stdin != -1 && g.fd_stdout != -1)
 	{
 		dup2(g.fd_stdin , 0);
 		dup2(g.fd_stdout , 1);
-		if (pipe)
-		{
+		if (pip && output)
 			exec_v2(cmd);
-			return;
-		}
 		else
+		{
 			exec(cmd);
-		dup2(g.i_stdin , 0);
-		dup2(g.i_stdout , 1);
-		if (g.fd_stdin != 0)
-			close(g.fd_stdin);
-		if (g.fd_stdout != 1)
-			close(g.fd_stdout);
+			if (!output && pip)
+			{
+				pipe(g.pipefd);
+				dup2(g.pipefd[0],0);
+				close(g.pipefd[1]);
+				close(g.pipefd[0]);
+			}
+			else
+				dup2(g.i_stdin, 0);
+			dup2(g.i_stdout, 1);
+		}
 	}
+	else
+	{
+		dup2(g.i_stdin, 0);
+		dup2(g.i_stdout, 1);
+		close(g.fd_stdin);
+		printf("Error: no file descriptor : %s\n", g.file);
+		ft_free(cmd);
+	}
+	ft_free(red);
 	// printf("cmd : ****************%s\n", cmd[0]);
 }
