@@ -151,7 +151,6 @@ void red_send(char *str, int pip)
 		close(g.fd_stdin);
 		printf("Error: no file descriptor : %s\n", g.file);
 		ft_free(cmd);
-		free(g.file);
 	}
 	ft_free(red);
 	// printf("cmd : ****************%s\n", cmd[0]);
