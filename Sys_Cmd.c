@@ -4,26 +4,24 @@ char	*get_bin(char	*cmd)
 {
 	int		i;
 	char	*bin;
-	char	*pat;
 
 	i = -1;
-	if (!cmd || !g.env)
+	if (!g.env)
 		return (NULL);
 	if (!access(cmd, X_OK))
 		return (ft_strdup(cmd));
 	while (g.env[++i])
 		if (!ft_strncmp(g.env[i], "PATH=", 5))
 			g.path = ft_split(g.env[i] + 5, ':');
-	i = 0;
-	while (g.path[i])
+	if (!g.path)
+		return (NULL);
+	i = -1;
+	while (g.path[++i])
 	{
-		pat = ft_strdup(g.path[i]);
-		pat = ft_strjoin(pat, "/");
-		bin = ft_strjoin(pat, cmd);
+		bin = ft_strjoin(ft_strjoin(ft_strdup(g.path[i]), "/"), cmd);
 		if (!access(bin, X_OK))
 			return (bin);
 		free(bin);
-		i++;
 	}
 	return (NULL);
 }
@@ -79,13 +77,14 @@ void	exec(char	**s_cmd)
 	if (check)
 		return ;
 	bin = get_bin(s_cmd[0]);
+	ft_free(g.path);
 	g.pid_ch = fork();
 	if (!g.pid_ch)
 	{
 		signal(SIGINT, &handler);
 		ft_execve(bin, s_cmd, 0);
 	}
-	// ft_free(s_cmd);
+	ft_free(s_cmd);
 	free(bin);
 	waitpid(g.pid_ch, &(g.state), 0);
 	g.pid_ch = 1337;
@@ -99,6 +98,7 @@ void	exec_v2(char	**s_cmd)
 		return ;
 	pipe(g.pipefd);
 	bin = get_bin(s_cmd[0]);
+	ft_free(g.path);
 	g.pid_ch = fork();
 	if (!g.pid_ch)
 	{
@@ -107,7 +107,7 @@ void	exec_v2(char	**s_cmd)
 		close(g.pipefd[0]);
 		ft_execve(bin, s_cmd, 1);
 	}
-	// ft_free(s_cmd);
+	ft_free(s_cmd);
 	free(bin);
 	dup2(g.pipefd[0], 0);
 	close(g.pipefd[1]);

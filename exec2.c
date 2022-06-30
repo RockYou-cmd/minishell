@@ -1,15 +1,63 @@
 #include "minishell.h"
 
+
+char **sort_tab(void)
+{
+	int i;
+	int n;
+	int j;
+	char *tmp;
+	char **export;
+
+	i = -1;
+	while (g.env[++i]);
+	export = ft_calloc(i + 1, sizeof(char *));
+	n = -1;
+	while (g.env[++n])
+		export[n] = ft_strdup(g.env[n]);
+	i = 0;
+	while (i < n)
+	{
+		j = i + 1;
+		while(j < n)
+		{
+			if (ft_strncmp(export[i] , export[j] , ft_strlen(export[i])) > 0)
+			{
+				tmp = export[i];
+				export[i] = export[j];
+				export[j] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
+	return (export);
+}
+
 int print_exp()
 {
 	int i;
+	int j;
+	char **export;
 
 	i = 0;
-	while(g.env[i])
-		printf("%s\n", g.env[i++]);
+	export = sort_tab();
+	while(export[i])
+	{
+		j = 0;
+		printf("declare -x ");
+		while (export[i][j] && export[i][j] != '=' )
+			printf("%c",export[i][j++]);
+		if (export[i][j] == '=' )
+			printf("%c",export[i][j++]);
+		if (export[i][j])
+			printf("\"%s\"",&export[i][j]);
+		printf("\n");
+		i++;
+	}
+	ft_free(export);
 	return 1;
 }
-
 void updt_export (char *str, int t)
 {
 	int i;
@@ -121,10 +169,9 @@ int ft_export(char **str)
 		return 0;
 	}
 	while (str[i])
-	{
+
 		if (var_check(str[i ++]) == -1)
 			j++;
-	}
 	i = 0;
 	while(g.env[i])
 		i ++;

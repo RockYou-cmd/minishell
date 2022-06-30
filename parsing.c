@@ -251,7 +251,7 @@ void check()
 		{
 			r = red(g.s_cmd[i]);
 			if (r == -1)
-				return ;
+				break ;
 			else if (r)
 				red_send(g.s_cmd[i],1);
 			else
@@ -259,11 +259,9 @@ void check()
 			i ++;
 		}
 		r = red(g.s_cmd[i]);
-		if (r == -1)
-			return ;
-		else if (r)
+		if (r && r != -1)
 			red_send(g.s_cmd[i],0);
-		else
+		else if(r != -1)
 			exec(esp_splt(g.s_cmd[i]));		
 		dup2(g.i_stdin, 0);
 		dup2(g.i_stdout, 1);
@@ -272,11 +270,9 @@ void check()
 	else
 	{
 		r = red(g.input);
-		if (r == -1)
-			return ;
-		else if (r)
+		if (r && r != -1)
 			red_send(g.input,0);
-		else
+		else if (r != -1)
 			exec(esp_splt(g.input));
 	}
 	free(g.input);
