@@ -56,17 +56,28 @@ int pipe_check()
 	int j;
 
 	i = 0;
-	j = 0;
+	j = 1;
+	g.i = 0;
+	g.t = 0;
 	while(g.input[i])
 	{
 		if (g.input[i] != '|' && g.input[i] != ' ')
 			j = 0;
 		if (g.input[i] == '|' && j == 0)
+		{
+			g.i ++;
 			j = 1;
+		}
 		else if (g.input[i] == '|' && j == 1 && g.input[i - 1] != '|')
 			return 0;
 		else if (g.input[i] == '|' && j == 1 && g.input[i - 1] == '|' && g.input[i - 2] == '|')
 			return 0;
+		else if (g.input[i] == '|' && j == 1 && g.input[i - 1] == '|')
+		{
+			if (!g.t)
+				g.t = g.i;
+		}
+		
 		i++;
 	}
 	if (!g.input[i] && j == 1)
