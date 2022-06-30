@@ -6,7 +6,7 @@ void	ft_free(char **split)
 
 	i = 0;
 	if (!split)
-		return;
+		return ;
 	while (split[i])
 	{
 		free(split[i]);
@@ -15,15 +15,15 @@ void	ft_free(char **split)
 	free(split);
 }
 
-char **ft_realloc(char **str, int t)
+char	**ft_realloc(char **str, int t)
 {
-	int i;
-	char **ret;
+	int		i;
+	char	**ret;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 		i ++;
-	ret = ft_calloc((i + t + 1) , sizeof(char *));
+	ret = ft_calloc((i + t + 1), sizeof(char *));
 	i = 0;
 	while (str[i])
 	{
@@ -32,18 +32,18 @@ char **ft_realloc(char **str, int t)
 	}
 	ret[i] = 0;
 	ft_free(str);
-	return ret;
+	return (ret);
 }
 
-char *ft_rrealloc(char *str, int t)
+char	*ft_rrealloc(char *str, int t)
 {
-	int i;
-	char *ret;
+	int		i;
+	char	*ret;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 		i ++;
-	ret = ft_calloc((i + t + 1) , sizeof(char *));
+	ret = ft_calloc((i + t + 1), sizeof(char *));
 	t += i;
 	i = 0;
 	while (i < t)
@@ -53,5 +53,5 @@ char *ft_rrealloc(char *str, int t)
 	}
 	ret[i] = 0;
 	free(str);
-	return ret;
+	return (ret);
 }

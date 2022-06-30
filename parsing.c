@@ -281,5 +281,4 @@ void check()
 	}
 	free(g.input);
 	ft_free(g.s_cmd);
-	ft_free(g.path);
 }

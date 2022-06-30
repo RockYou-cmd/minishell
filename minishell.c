@@ -14,7 +14,6 @@
 
 void free_all()
 {
-
 	ft_free(g.env);
 }
 

@@ -31,7 +31,7 @@ char *v_env(char *str)
 	return value;
 }
 
-void comands()
+void	comands(void)
 {
 	g.command[0] = "echo";
 	g.command[1] = "cd";
@@ -49,7 +49,6 @@ int ft_init()
 	g.fd_stdout = 1;
 	g.i = 0;
 	g.s_cmd = ft_split(g.input, '|');
-	get_path();
 	if (!g.s_cmd )
 	{
 		free(g.input);
