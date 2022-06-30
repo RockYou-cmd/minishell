@@ -33,23 +33,6 @@ int var2_check(char *var)
 	return (-1);
 }
 
-// void exp_to_env()
-// {
-//     int i;
-
-//     i = 0;
-//     while(g.exp[i])
-//         i ++;
-//     g.env = ft_calloc(i + 1, sizeof(char *));
-//     i = 0;
-//     while(g.exp[i])
-//     {
-//         g.env[i] = ft_strdup(g.exp[i]);
-//         i ++;
-//     }
-//     g.env[i] = 0;
-// }
-
 void rm_var(int j)
 {
     int i;

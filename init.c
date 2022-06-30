@@ -17,7 +17,7 @@ char *v_env(char *str)
 		free(tmp);
 		return NULL;
 	}
-	if (!ft_isdigit(str[i]))
+	if (!ft_isdigit(str[i]) && str[i] != '?')
 	{
 		while(str[i] && (ft_isalpha(str[i]) || ft_isdigit(str[i]) || str[i] == '_'))
 			tmp[g.t ++] = str[i++];
@@ -30,6 +30,8 @@ char *v_env(char *str)
 		s_env = ft_split(g.env[i++], '=');
 		if (ft_strcmp(s_env[0], tmp))
 			value = ft_strdup(s_env[1]);
+		else if (ft_strcmp("?", tmp))
+			value = ft_itoa(g.state);
 		ft_free(s_env);
 	}
 	free(tmp);
@@ -63,6 +65,8 @@ int pipe_check()
 			j = 1;
 		else if (g.input[i] == '|' && j == 1 && g.input[i - 1] != '|')
 			return 0;
+		else if (g.input[i] == '|' && j == 1 && g.input[i - 1] == '|' && g.input[i - 2] == '|')
+			return 0;
 		i++;
 	}
 	if (!g.input[i] && j == 1)
@@ -81,12 +85,6 @@ int ft_init()
 		free(g.input);
 		return 0;
 	}
-	if (!g.s_cmd[0])
-	{
-		free(g.input);
-		ft_free(g.s_cmd);
-		return 0;
-	}
 	if (ft_strchr(g.input, '|'))
 	{
 		if (!pipe_check())
@@ -94,9 +92,16 @@ int ft_init()
 			free(g.input);
 			ft_free(g.s_cmd);
 			printf("minishell: syntax error: unexpected '|'\n");
+			g.state = 258;
 			return 0;
 		}
 		g.pip = 1;
+	}
+	if (!g.s_cmd[0])
+	{
+		free(g.input);
+		ft_free(g.s_cmd);
+		return 0;
 	}
 	return 1;
 }

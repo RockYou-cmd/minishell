@@ -155,6 +155,7 @@ void exec(char **s_cmd)
 	}
 	ft_free(s_cmd);
 	free(bin);
+		g.state = 1;
 	waitpid(g.pid_ch , &(g.state), 0);
 }
 
@@ -193,35 +194,3 @@ void exec_v2(char **s_cmd)
 	close(g.pipefd[1]);
 	close(g.pipefd[0]);
 }
-// void check_pipe()
-// {
-// 	t_list	*list;
-// 	t_cmd	*cmd;
-// 	char	**read;
-// 	int		i;
-
-
-// 	if (ft_strchr(g.input, '|'))
-// 	{
-// 		i = 0;
-// 		read = ft_split(g.input, '|');
-// 		while(read[i])
-// 		{
-// 			cmd = malloc(sizeof(t_cmd));
-// 			cmd->s_cmd = ft_split(read[i], ' ');
-// 			cmd->bin = get_bin(cmd->s_cmd[0]);
-// 			ft_lstadd_back(&list,ft_lstnew(cmd));
-// 			i++;
-// 		}
-// 		g.list = &list;
-// 		exec_v2();
-// 	}
-	// else
-	// {
-	// 	g.cmd = malloc(sizeof(t_cmd));
-	// 	g.cmd->s_cmd = ft_split(g.input, ' ');
-	// 	get_path();
-	// 	g.cmd->bin = get_bin(g.cmd->s_cmd[0]);
-	// 	exec(g.cmd);
-	// }
-// }

@@ -33,6 +33,7 @@ void handler(int signm)
 		rl_replace_line("",0);
 		rl_redisplay();
 	}
+	g.state = 1;
 }
 
 void	ft_read_line()
@@ -92,7 +93,7 @@ int	main(int ac, char **av, char **env)
 	build_env(env);
 	g.cmnd = -1;
 	g.state = 0;
-	// rl_catch_signals = 0;
+	rl_catch_signals = 0;
 	g.i_stdin = dup(0);
 	g.i_stdout = dup(1);
 	signal(SIGINT, &handler);

@@ -257,7 +257,6 @@ void check()
 				exec_v2(esp_splt(g.s_cmd[i]));
 			i ++;
 		}
-			printf("|%s\n", g.s_cmd[i]);
 		r = red(g.s_cmd[i]);
 		if (r == -1)
 			return ;

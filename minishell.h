@@ -86,5 +86,6 @@ char 	*ft_rrealloc(char *str, int t);
 int 	exp_sign(char **str);
 int 	is_iq(char *str, int j);
 void	exp_to_env();
+int q_mark();
 
 #endif
