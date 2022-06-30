@@ -244,7 +244,6 @@ void check()
 
 	i = 0;
 	r = 0;
-	// printf("%s\n", g.input);
 	if (g.pip == 1)
 	{
 		while(g.s_cmd[i + 1] != 0)
@@ -258,6 +257,7 @@ void check()
 				exec_v2(esp_splt(g.s_cmd[i]));
 			i ++;
 		}
+			printf("|%s\n", g.s_cmd[i]);
 		r = red(g.s_cmd[i]);
 		if (r == -1)
 			return ;
