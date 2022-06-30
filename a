@@ -10,8 +10,6 @@ exec2.c
 exec2.o
 exec3.c
 exec3.o
-exp.c
-gnl.c
 init.c
 init.o
 libft

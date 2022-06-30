@@ -241,13 +241,14 @@ void check()
 {
 	int i;
 	int r;
+	int t;
 
 	i = 0;
 	r = 0;
-	// printf("%s\n", g.input);
+	t = g.t;
 	if (g.pip == 1)
 	{
-		while(g.s_cmd[i + 1] != 0)
+		while(g.s_cmd[i + 1] != 0 && t != 1 && (i + 1) != t)
 		{
 			r = red(g.s_cmd[i]);
 			if (r == -1)

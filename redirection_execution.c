@@ -30,6 +30,8 @@ void	ft_herdoc(char *limeter)
 
 void	exec_heredoc(char *limeter)
 {
+	dup2(g.i_stdout, 1);
+	dup2(g.i_stdin, 0);
 	if (g.fd_stdin != -1 && g.fd_stdout != -1)
 		g.fd_stdin = open("/tmp/.heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	ft_herdoc(limeter);
