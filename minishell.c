@@ -14,7 +14,6 @@
 
 void free_all()
 {
-	ft_free(g.path);
 	ft_free(g.env);
 }
 
@@ -33,7 +32,6 @@ void handler(int signm)
 		rl_replace_line("",0);
 		rl_redisplay();
 	}
-	g.state = 1;
 }
 
 void	ft_read_line()
@@ -41,7 +39,10 @@ void	ft_read_line()
 	g.input = readline("minishell-3.2$ ");
 	if(!g.input)
 	{
+		if (g.env)
 		write(1, "\033[1A\033[15Cexit\n",14);
+		else
+		write(1, " exit\n",6);
 		free_all();
 		exit(1);
 	}
@@ -98,7 +99,6 @@ int	main(int ac, char **av, char **env)
 	g.i_stdout = dup(1);
 	signal(SIGINT, &handler);
 	signal(SIGQUIT, SIG_IGN);
-	get_path();
 	comands();
 	while(1)
 	{
