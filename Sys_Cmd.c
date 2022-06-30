@@ -163,7 +163,6 @@ void exec_v2(char **s_cmd)
 	int		check;
 	char 	*bin;
 
-	write(2, "exec2\n", 6);
 	pipe(g.pipefd);
 	if (!s_cmd || !s_cmd[0])
 		return;
