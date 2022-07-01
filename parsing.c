@@ -4,13 +4,13 @@ void which_one(char **str)
 {
 	g.state = 0;
 	if (g.cmnd == 0)
-		g.state = ft_echo(str);
+		g.state = ft_echo(str, 0, 0, 0);
 	if (g.cmnd == 1)
 		g.state = ft_cd(str);
 	if (g.cmnd == 2)
 		g.state = ft_pwd();
 	if (g.cmnd == 3)
-		g.state = ft_export(str);
+		g.state = ft_export(str, 0, 0, 0);
 	if (g.cmnd == 4)
 		ft_unset(str);
 	if (g.cmnd == 5)

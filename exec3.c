@@ -73,7 +73,7 @@ void ft_unset(char **str)
         return ;
     while (str[i])
     {
-        if ((j = var2_check(str[i ++])) != -1)
+        if ((j = var_check(str[i ++], 0)) != -1)
             rm_var(j);
     }
 

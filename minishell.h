@@ -34,7 +34,6 @@ typedef struct s_data
 	int			pip;
 	char		**s_cmd;
 	char		**env;
-	char		**path;
 	char		*clr_cmd;
 	int			i_stdin;
 	int			i_stdout;
@@ -52,10 +51,9 @@ t_data	g;
 void	comands(void);
 void	which_one(char **str);
 int		ft_init(void);
-int		ft_echo(char **str);
+int		ft_echo(char **str, int i, int j, int s);
 int		ft_cd(char **str);
 int		ft_pwd(void);
-int		ft_export(char **str);
 void	ft_unset(char **str);
 void	check(void);
 int		ft_env(void);
@@ -84,6 +82,13 @@ char	*ft_rrealloc(char *str, int t);
 int		exp_sign(char **str);
 int		is_iq(char *str, int j);
 void	exp_to_env(void);
-void exit_status();
+void	exit_status(void);
+
+/* export */
+int		ft_export(char **str, int i, int j, int p);
+int		print_exp(void);
+void	updt_export(char *str, int t);
+void	set_export(char	*str, int i, int j);
+int		var_check(char *var, int i);
 
 #endif

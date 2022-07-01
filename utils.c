@@ -56,7 +56,7 @@ char	*ft_rrealloc(char *str, int t)
 	return (ret);
 }
 
-void exit_status()
+void	exit_status(void)
 {
 	if (g.state == 0)
 		g.state = 0;
@@ -66,5 +66,4 @@ void exit_status()
 		g.state = 127;
 	else if (g.state == 512)
 		g.state = 2;
-
 }

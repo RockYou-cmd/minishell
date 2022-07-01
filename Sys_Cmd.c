@@ -3,6 +3,7 @@
 char	*get_bin(char *cmd, int i)
 {
 	char	*bin;
+	char	**path;
 
 	if (!g.env)
 		return (NULL);
@@ -10,21 +11,21 @@ char	*get_bin(char *cmd, int i)
 		return (ft_strdup(cmd));
 	while (g.env[++i])
 		if (!ft_strncmp(g.env[i], "PATH=", 5))
-			g.path = ft_split(g.env[i] + 5, ':');
-	if (!g.path)
+			path = ft_split(g.env[i] + 5, ':');
+	if (!path)
 		return (NULL);
 	i = -1;
-	while (g.path[++i])
+	while (path[++i])
 	{
-		bin = ft_strjoin(ft_strjoin(ft_strdup(g.path[i]), "/"), cmd);
+		bin = ft_strjoin(ft_strjoin(ft_strdup(path[i]), "/"), cmd);
 		if (!access(bin, X_OK))
 		{
-			ft_free(g.path);
+			ft_free(path);
 			return (bin);
 		}
 		free(bin);
 	}
-	ft_free(g.path);
+	ft_free(path);
 	return (NULL);
 }
 
@@ -77,7 +78,7 @@ void	exec(char	**s_cmd)
 	check = check_build_command(s_cmd);
 	if (check)
 		return ;
-	bin = get_bin(s_cmd[0] , -1);
+	bin = get_bin(s_cmd[0], -1);
 	g.pid_ch = fork();
 	if (!g.pid_ch)
 	{
