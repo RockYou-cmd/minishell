@@ -57,18 +57,12 @@ int exp_sign(char **str)
 		if (ft_strchr(str[i], '='))
 		{
 			if (!(j = is_iq(str[i],  j)))
-			{
-				printf("is_iq\n");
 				return 0;
-			}
 		}
 		else
 		{
 			if (!(j = nrml_var(str[i], j)))
-			{
-				printf("is_iq\n");
 				return 0;
-			}
 		}
 
 		i ++;

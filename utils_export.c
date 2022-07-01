@@ -51,7 +51,7 @@ int	print_exp(void)
 		i++;
 	}
 	ft_free(export);
-	return (1);
+	return (0);
 }
 
 void	updt_export(char *str, int t)
@@ -66,7 +66,7 @@ void	updt_export(char *str, int t)
 		free(g.env[t]);
 		g.env[t] = ft_strdup(str);
 	}
-	else if (g.i != 2)
+	else if (g.i != 2 || (str[0] == '_' && str[1] == '='))
 		return ;
 	else
 	{

@@ -68,7 +68,7 @@ void	exit_status(void)
 		g.state = 2;
 }
 
-int	not_arguments(char *str)
+int	no_arguments(char *str)
 {
 	if (str)
 	{
@@ -79,5 +79,5 @@ int	not_arguments(char *str)
 			return (1);
 		}
 	}
-	return (1);
+	return (0);
 }

@@ -84,13 +84,13 @@ int		is_iq(char *str, int j);
 void	exp_to_env(void);
 void	exit_status(void);
 char	*add_spaces(char *str);
-int		not_arguments(char *str);
 
 /* export */
 int		ft_export(char **str, int i, int j);
-int		print_exp(void);
-void	updt_export(char *str, int t);
 void	set_export(char	*str, int i, int j);
+void	updt_export(char *str, int t);
 int		var_check(char *var, int i);
+int		print_exp(void);
+int		no_arguments(char *str);
 
 #endif

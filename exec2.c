@@ -2,13 +2,13 @@
 
 int	ft_export(char **str, int i, int j)
 {
-	if (not_arguments(*str))
+	if (no_arguments(*str))
 		return (1);
-	else
-		print_exp(); 
+	if (!str[0])
+		return (print_exp()); 
 	if (!exp_sign(str))
 	{
-		printf("not valid identifier\n");
+		printf("minishell: export: not valid identifier\n");
 		return (0);
 	}
 	while (str[i])
