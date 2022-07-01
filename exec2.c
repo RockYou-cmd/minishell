@@ -51,3 +51,31 @@ int	ft_env(void)
 	}
 	return (0);
 }
+
+void	rm_var(int j)
+{
+	int	i;
+
+	i = j + 1;
+	free(g.env[j]);
+	while (g.env[i])
+		g.env[j++] = g.env[i++];
+	g.env[j] = 0;
+}
+
+void	ft_unset(char	**str)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	if (!str)
+		return ;
+	while (str[i])
+	{
+		j = var_check(str[i ++], 0);
+		if (j != -1)
+			rm_var(j);
+	}
+}
