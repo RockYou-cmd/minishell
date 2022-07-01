@@ -76,5 +76,4 @@ void	red_send(char *str, int pip)
 		ft_free(cmd);
 	}
 	ft_free(red);
-	// printf("cmd : ****************%s\n", cmd[0]);
 }

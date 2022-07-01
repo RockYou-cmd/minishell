@@ -1,11 +1,12 @@
 #include "minishell.h"
 
-int	ft_export(char **str, int i, int j, int p)
+int	ft_export(char **str, int i, int j)
 {
-	if (!(*str))
-		return (print_exp());
-	p = exp_sign(str);
-	if (!p)
+	if (not_arguments(*str))
+		return (1);
+	else
+		print_exp(); 
+	if (!exp_sign(str))
 	{
 		printf("not valid identifier\n");
 		return (0);
@@ -29,17 +30,43 @@ int	ft_export(char **str, int i, int j, int p)
 	return (0);
 }
 
-void	ft_exit(void)
-{
-	/*free_all();*/
-	printf("exit\n");
-	exit(0);
-}
-
-int	ft_env(void)
+void	ft_exit(char **str)
 {
 	int	i;
 
+	i = -1;
+	ft_free(g.env);
+	printf("exit\n");
+	if (!str[0])
+		exit(1);
+	if (str[1])
+	{
+		printf("minishell : exit: too many arguments\n");
+		exit(1);
+	}
+	if (str[0][0] == '-' || str[0][0] == '+')
+		i++;
+	while (str[0][++i])
+	{
+		if (str[0][i] < '0' || str[0][i] > '9')
+		{
+			printf("minishell: exit: illegal number: %s\n", str[0]);
+			exit(1);
+		}
+	}
+	exit(ft_atoi(str[0]));
+	exit(0);
+}
+
+int	ft_env(char **str)
+{
+	int	i;
+
+	if (str[0])
+	{
+		printf("minishell: env: %s: No such file or directory\n", str[0]);
+		return (1);
+	}
 	i = 0;
 	if (!g.env)
 		return (1);
@@ -63,19 +90,29 @@ void	rm_var(int j)
 	g.env[j] = 0;
 }
 
-void	ft_unset(char	**str)
+int	ft_unset(char	**str)
 {
 	int	i;
 	int	j;
 
 	i = 0;
 	j = 0;
+	if (str[0])
+	{
+		if (str[0][0] == '-' && ((str[0][1] != '\0' && str[0][1] != '-')
+			|| (str[0][1] == '-' && str[0][2] != '\0')))
+		{
+			printf("minishell: pwd: %s: invalid option\n", str[0]);
+			return (1);
+		}
+	}
 	if (!str)
-		return ;
+		return (0);
 	while (str[i])
 	{
 		j = var_check(str[i ++], 0);
 		if (j != -1)
 			rm_var(j);
 	}
+	return (0);
 }

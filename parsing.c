@@ -8,15 +8,15 @@ void which_one(char **str)
 	if (g.cmnd == 1)
 		g.state = ft_cd(str);
 	if (g.cmnd == 2)
-		g.state = ft_pwd();
+		g.state = ft_pwd(str);
 	if (g.cmnd == 3)
-		g.state = ft_export(str, 0, 0, 0);
+		g.state = ft_export(str, 0, 0);
 	if (g.cmnd == 4)
-		ft_unset(str);
+		g.state = ft_unset(str);
 	if (g.cmnd == 5)
-		g.state = ft_env();
+		g.state = ft_env(str);
 	if (g.cmnd == 6)
-		ft_exit();
+		ft_exit(str);
 }
 
 int calc(char *str)

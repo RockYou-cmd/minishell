@@ -83,9 +83,9 @@ int	red_check(char *str)
 	return (g.i);
 }
 
-void find_red(char **str, int i, int *pipe)
+void	find_red(char **str, int i, int *pipe)
 {
-	if(ft_strcmp(str[i], "<<"))
+	if (ft_strcmp(str[i], "<<"))
 		exec_heredoc(str[i + 1]);
 	else if (ft_strcmp(str[i], ">>"))
 		exec_red_output_append(str[i + 1], pipe);
@@ -93,20 +93,18 @@ void find_red(char **str, int i, int *pipe)
 		exec_red_input(str[i + 1]);
 	else if (ft_strcmp(str[i], ">"))
 		exec_red_output(str[i + 1], pipe);
-
 }
 
-int red(char *str)
+int	red(char *str)
 {
-
 	if (red_check(str) == 1)
-		return 1;
+		return (1);
 	else if (red_check(str) == -1)
 	{
 		printf("parse error\n");
 		g.state = 258;
-		return -1;
+		return (-1);
 	}
 	else
-		return 0;
+		return (0);
 }

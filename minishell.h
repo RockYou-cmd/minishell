@@ -53,11 +53,11 @@ void	which_one(char **str);
 int		ft_init(void);
 int		ft_echo(char **str, int i, int j, int s);
 int		ft_cd(char **str);
-int		ft_pwd(void);
-void	ft_unset(char **str);
+int		ft_pwd(char **str);
+int		ft_unset(char **str);
 void	check(void);
-int		ft_env(void);
-void	ft_exit(void);
+int		ft_env(char **str);
+void	ft_exit(char **str);
 void	exec(char **cmd);
 void	exec_v2(char **read);
 void	ft_free(char **s_cmd);
@@ -84,9 +84,10 @@ int		is_iq(char *str, int j);
 void	exp_to_env(void);
 void	exit_status(void);
 char	*add_spaces(char *str);
+int		not_arguments(char *str);
 
 /* export */
-int		ft_export(char **str, int i, int j, int p);
+int		ft_export(char **str, int i, int j);
 int		print_exp(void);
 void	updt_export(char *str, int t);
 void	set_export(char	*str, int i, int j);

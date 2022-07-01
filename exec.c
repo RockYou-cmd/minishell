@@ -111,10 +111,19 @@ int	ft_echo(char **str, int i, int j, int s)
 	return (0);
 }
 
-int	ft_pwd(void)
+int	ft_pwd(char **str)
 {
 	char	a[1024];
 
+	if (str[0])
+	{
+		if (str[0][0] == '-' && ((str[0][1] != '\0' && str[0][1] != '-') \
+			|| (str[0][1] == '-' && str[0][2] != '\0')))
+		{
+			printf("minishell: pwd: %s: invalid option\n", str[0]);
+			return (1);
+		}
+	}
 	if (getcwd(a, sizeof(a)))
 		printf("%s\n", a);
 	else

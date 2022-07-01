@@ -67,3 +67,17 @@ void	exit_status(void)
 	else if (g.state == 512)
 		g.state = 2;
 }
+
+int	not_arguments(char *str)
+{
+	if (str)
+	{
+		if (str[0] == '-' && ((str[1] != '\0' && str[1] != '-') \
+			|| (str[1] == '-' && str[2] != '\0')))
+		{
+			printf("minishell: pwd: %s: invalid option\n", str);
+			return (1);
+		}
+	}
+	return (1);
+}
