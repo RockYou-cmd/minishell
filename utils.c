@@ -55,3 +55,16 @@ char	*ft_rrealloc(char *str, int t)
 	free(str);
 	return (ret);
 }
+
+void exit_status()
+{
+	if (g.state == 0)
+		g.state = 0;
+	else if (g.state == 2)
+		g.state = 130;
+	else if (g.state == 256)
+		g.state = 127;
+	else if (g.state == 512)
+		g.state = 2;
+
+}

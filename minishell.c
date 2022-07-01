@@ -25,6 +25,7 @@ void handler(int signm)
 		rl_replace_line("",0);
 		rl_on_new_line();
 		rl_redisplay();
+		g.state = 1;
 	}
 	else if (signm == SIGINT)
 	{

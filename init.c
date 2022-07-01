@@ -10,13 +10,16 @@ char *v_env(char *str)
 	i = 0;
 	g.t = 0;
 	value = NULL;
+	// printf("|seeeegfault\n");
 	tmp = ft_calloc(ft_strlen(str), sizeof(char));
-	while (str[i ++] != '$' && str[i ++] != '\0');
-	if (str[i - 1] != '$')
+	while (str[i] != '$' && str[i] != '\0')
+		i ++;
+	if (str[i] != '$')
 	{
 		free(tmp);
-		return NULL;
+		return 0;
 	}
+	i ++;
 	if (!ft_isdigit(str[i]) && str[i] != '?')
 	{
 		while(str[i] && (ft_isalpha(str[i]) || ft_isdigit(str[i]) || str[i] == '_'))
@@ -34,6 +37,7 @@ char *v_env(char *str)
 			value = ft_itoa(g.state);
 		ft_free(s_env);
 	}
+	// printf("|seeeegfault222\n");
 	free(tmp);
 	return value;
 }
@@ -91,8 +95,9 @@ int ft_init()
 	g.fd_stdout = 1;
 	g.i = 0;
 	g.s_cmd = ft_split(g.input, '|');
-	if (!g.s_cmd )
+	if (!g.s_cmd)
 	{
+		g.state = 1;
 		free(g.input);
 		return 0;
 	}

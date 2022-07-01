@@ -29,7 +29,6 @@ int calc(char *str)
 	else
 		t += ft_strlen(tmp2);	
 	free(tmp2);
-
 	return t;
 }
 
@@ -278,4 +277,5 @@ void check()
 	}
 	free(g.input);
 	ft_free(g.s_cmd);
+	exit_status();
 }

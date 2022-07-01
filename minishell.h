@@ -60,7 +60,6 @@ void	ft_unset(char **str);
 void	check(void);
 int		ft_env(void);
 void	ft_exit(void);
-char	*get_bin(char *cmd);
 void	exec(char **cmd);
 void	exec_v2(char **read);
 void	ft_free(char **s_cmd);
@@ -85,5 +84,6 @@ char	*ft_rrealloc(char *str, int t);
 int		exp_sign(char **str);
 int		is_iq(char *str, int j);
 void	exp_to_env(void);
+void exit_status();
 
 #endif

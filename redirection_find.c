@@ -22,6 +22,7 @@ int red(char *str)
 	else if (red_check(str) == -1)
 	{
 		printf("parse error\n");
+		g.state = 258;
 		return -1;
 	}
 	else
