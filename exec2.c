@@ -2,9 +2,9 @@
 
 int	ft_export(char **str, int i, int j)
 {
-	if (no_arguments(*str))
-		return (1);
-	if (!str[0])
+	// if (no_arguments(*str))
+	// 	return (1);
+	if (!str[0] || (str[0][0] == '-' && str[0][1] == '-' && str[0][2] == '\0'))
 		return (print_exp()); 
 	if (!exp_sign(str))
 	{

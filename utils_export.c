@@ -39,6 +39,11 @@ int	print_exp(void)
 	export = sort_tab(0, -1, 0);
 	while (export[i])
 	{
+		if (export[i][0] == '_' && export[i][1] == '=')
+		{
+			i ++;
+			continue;
+		}
 		j = 0;
 		printf("declare -x ");
 		while (export[i][j] && export[i][j] != '=' )
@@ -61,7 +66,7 @@ void	updt_export(char *str, int t)
 
 	i = 0;
 	j = 0;
-	if (is_iq(str, 0) != 9 && g.i == 2)
+	if (is_iq(str, 0) != 9 && g.i == 2 && (str[0] != '_' && str[1] != '='))
 	{
 		free(g.env[t]);
 		g.env[t] = ft_strdup(str);

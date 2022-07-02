@@ -2,7 +2,7 @@
 
 int nrml_var(char *str, int j)
 {
-	if (!ft_isalpha(str[j++]) && str[j] != '_')
+	if (!ft_isalpha(str[j]) && str[j++] != '_')
 		return 0;
 	while(str[j])
 	{
