@@ -130,7 +130,7 @@ char	**ft_split(char const *s, char c)
 	w = count(s, c);
 	if (w == -1)
 		return (NULL);
-	split = (char **)malloc(sizeof(char *) * w + 1);
+	split = (char **)malloc(sizeof(char *) * (w + 1));
 	if (!split)
 		return (NULL);
 	write_sp(split, s, c, w);

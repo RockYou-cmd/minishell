@@ -12,33 +12,33 @@ int	spce_ned(char	*str)
 		if ((str[i] == '>' || str[i] == '<') && str[i + 1] != ' '
 			&& str[i + 1] != str[i])
 			len++;
-		if ((str[i] == '>' || str[i] == '<') && str[i - 1] != ' '
-			&& str[i - 1] != str[i])
-			len ++;
+		if (i > 0)
+		{
+			if ((str[i] == '>' || str[i] == '<') && str[i - 1] != ' '
+				&& str[i - 1] != str[i])
+				len ++;
+		}
 		i ++;
 	}
 	return (len);
 }
 
-char	*add_spaces(char *str)
+char	*add_spaces(char *str, int i, int t)
 {
-	int		i;
-	int		t;
 	char	*ret;
 	int		d;
 	int		s;
 
-	i = 0;
-	t = 0;
 	d = 0;
 	s = 0;
 	ret = malloc((spce_ned(str) + ft_strlen(str) + 1) * sizeof(char));
 	while (str[i])
 	{
 		ooc(str[i], &s, &d);
-		if ((str[i] == '>' || str[i] == '<') && str[i - 1] != ' '
-			&& str[i - 1] != str[i] && d == 0 && s == 0)
-			ret[t ++] = ' ';
+		if (i > 0)
+			if ((str[i] == '>' || str[i] == '<') && str[i - 1] != ' '
+				&& str[i - 1] != str[i] && d == 0 && s == 0)
+				ret[t ++] = ' ';
 		ret[t ++] = str[i];
 		if ((str[i] == '>' || str[i] == '<') && str[i + 1] != ' '
 			&& str[i + 1] != str[i] && d == 0 && s == 0)
@@ -80,11 +80,11 @@ void	find_red(char **str, int i, int *pipe)
 	if (ft_strcmp(str[i], "<<"))
 		exec_heredoc(str[i + 1]);
 	else if (ft_strcmp(str[i], ">>"))
-		exec_red_output_append(str[i + 1], pipe);
+		exec_red_output_append(rm(str[i + 1]), pipe);
 	else if (ft_strcmp(str[i], "<"))
-		exec_red_input(str[i + 1]);
+		exec_red_input(rm(str[i + 1]));
 	else if (ft_strcmp(str[i], ">"))
-		exec_red_output(str[i + 1], pipe);
+		exec_red_output(rm(str[i + 1]), pipe);
 }
 
 int	red(char *str)
@@ -92,7 +92,7 @@ int	red(char *str)
 	char	**ptp;
 	char	*tmp;
 
-	tmp = add_spaces(str);
+	tmp = add_spaces(str, 0, 0);
 	ptp = ft_split(tmp, ' ');
 	free(tmp);
 	g.i = 0;

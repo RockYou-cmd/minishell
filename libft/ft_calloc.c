@@ -22,7 +22,7 @@ void	*ft_calloc(size_t count, size_t size)
 		count = 1;
 		size = 1;
 	}
-	cal = (char *)malloc(size * count);
+	cal = (char *)malloc(size * (count + 1));
 	if (!cal)
 		return (NULL);
 	ft_bzero(cal, (count * size));

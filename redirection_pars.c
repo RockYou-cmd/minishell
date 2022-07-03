@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 int	cmd_len(char	**str)
 {
 	int	i;
@@ -11,7 +10,7 @@ int	cmd_len(char	**str)
 	while (str[i])
 	{
 		if ((ft_strcmp(str[i], "<<") || ft_strcmp(str[i], ">>")
-			|| ft_strcmp(str[i], "<") || ft_strcmp(str[i], ">") ))
+				|| ft_strcmp(str[i], "<") || ft_strcmp(str[i], ">")))
 			i ++;
 		else
 			l ++;
@@ -32,7 +31,7 @@ void	red_send(char *str, int pip)
 	i = 0;
 	t = 0;
 	output = 1;
-	tmp = add_spaces(str);
+	tmp = add_spaces(str, 0, 0);
 	red = ft_split(tmp, ' ');
 	free(tmp);
 	cmd = malloc((cmd_len(red) + 1) * sizeof(char *));
@@ -41,7 +40,7 @@ void	red_send(char *str, int pip)
 		if (ft_strcmp(red[i], "<<") || ft_strcmp(red[i], ">>") || ft_strcmp(red[i], "<") || ft_strcmp(red[i], ">"))
 			find_red(red, i++, &output);
 		else
-			cmd[t ++] = ft_strdup(red[i]);
+			cmd[t ++] = rm(red[i]);
 		i++;
 	}
 	cmd[t] = 0;

@@ -19,21 +19,20 @@ void	which_one(char **str)
 		ft_exit(str);
 }
 
-int	calc(char *str)
-{
-	char	*tmp2;
-	int		t;
+// int	calc(char *str)
+// {
+// 	char	*tmp2;
+// 	int		t;
 
-	t = 0;
-	tmp2 = v_env(str);
-	printf("|%s\n", tmp2);
-	if (!tmp2)
-		t += 0;
-	else
-		t += ft_strlen(tmp2);
-	free(tmp2);
-	return (t);
-}
+// 	t = 0;
+// 	tmp2 = v_env(str);
+// 	if (!tmp2)
+// 		t += 0;
+// 	else
+// 		t += ft_strlen(tmp2);
+// 	free(tmp2);
+// 	return (t);
+// }
 
 int	dolar(char *str, int s)
 {
@@ -63,11 +62,23 @@ int	dolar(char *str, int s)
 	return (s);
 }
 
+int fill_expend(char *str, int s)
+{
+	int		i;
+	int		p;
+
+	i = 0;
+	p = 0;
+	g.clr_cmd = ft_rrealloc(g.clr_cmd, ft_strlen(str));
+	while (str[p] != '\0')
+		g.clr_cmd[s ++] = str[p ++];
+	return (s);
+}
+
 int	dolar2(char *str, int s, int p, char *tmp2)
 {
 	char	**tmp;
 
-	printf("seg\n");
 	while (str[g.i] != '\"' && str[g.i] != '\'' && str[g.i] != '\0')
 	{
 		if (str[g.i] == '$' && str[g.i + 1] != ' ' && str[g.i + 1]
@@ -76,8 +87,7 @@ int	dolar2(char *str, int s, int p, char *tmp2)
 			tmp = ft_split(str + g.i, ' ');
 			tmp2 = v_env(tmp[0]);
 			if (tmp2)
-				while (tmp2[p] != '\0')
-					g.clr_cmd[s ++] = tmp2[p ++];
+				s = fill_expend(tmp2, s);
 			ft_free(tmp);
 			free(tmp2);
 			g.i += g.t + 1;
@@ -90,7 +100,6 @@ int	dolar2(char *str, int s, int p, char *tmp2)
 		else
 			g.clr_cmd[s ++] = str[g.i ++];
 	}
-	printf("seg\n");
 	return (s);
 }
 
@@ -127,8 +136,8 @@ char	*rm(char *str)
 
 	s = 0;
 	g.i = 0;
-	printf("|%d\n", calc(str));
-	g.clr_cmd = ft_calloc(ft_strlen(str) + calc(str), sizeof(char));
+	// printf("|%d\n", calc(str));
+	g.clr_cmd = ft_calloc(ft_strlen(str), sizeof(char));
 	while (str[g.i] != 0)
 	{
 		if (str[g.i] == '\'')

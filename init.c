@@ -38,7 +38,7 @@ char	*v_env(char *str)
 	return (value);
 }
 
-void comands()
+void	comands(void)
 {
 	g.command[0] = "echo";
 	g.command[1] = "cd";
@@ -50,16 +50,13 @@ void comands()
 	g.command[7] = 0;
 }
 
-int pipe_check()
+int	pipe_check(int i, int j)
 {
-	int i;
-	int j;
-
-	i = 0;
-	j = 1;
 	g.i = 0;
 	g.t = 0;
-	while(g.input[i])
+	if (g.input[0] == '|')
+		return (0);
+	while (g.input[i])
 	{
 		if (g.input[i] != '|' && g.input[i] != ' ')
 			j = 0;
@@ -68,44 +65,38 @@ int pipe_check()
 			g.i ++;
 			j = 1;
 		}
-		else if (g.input[i] == '|' && j == 1 && g.input[i - 1] != '|')
-			return 0;
-		else if (g.input[i] == '|' && j == 1 && g.input[i - 1] == '|' && g.input[i - 2] == '|')
-			return 0;
+		else if ((g.input[i] == '|' && j == 1 && g.input[i - 1] != '|')
+			|| (g.input[i] == '|' && j == 1
+				&& g.input[i - 1] == '|' && g.input[i - 2] == '|'))
+			return (0);
 		else if (g.input[i] == '|' && j == 1 && g.input[i - 1] == '|')
-		{
 			if (!g.t)
 				g.t = g.i;
-		}
-		
 		i++;
 	}
 	if (!g.input[i] && j == 1)
-		return 0;
-	return 1;
+		return (0);
+	return (1);
 }
 
-int ft_init()
+int ft_init(void)
 {
-	g.fd_stdin = 0;
-	g.fd_stdout = 1;
-	g.i = 0;
 	g.s_cmd = ft_split(g.input, '|');
 	if (!g.s_cmd)
 	{
 		g.state = 1;
 		free(g.input);
-		return 0;
+		return (0);
 	}
 	if (ft_strchr(g.input, '|'))
 	{
-		if (!pipe_check())
+		if (!pipe_check(0, 1))
 		{
 			free(g.input);
 			ft_free(g.s_cmd);
 			printf("minishell: syntax error: unexpected '|'\n");
 			g.state = 258;
-			return 0;
+			return (0);
 		}
 		g.pip = 1;
 	}
@@ -113,7 +104,7 @@ int ft_init()
 	{
 		free(g.input);
 		ft_free(g.s_cmd);
-		return 0;
+		return (0);
 	}
-	return 1;
+	return (1);
 }

@@ -46,7 +46,7 @@ char	*ft_rrealloc(char *str, int t)
 	ret = ft_calloc((i + t + 1), sizeof(char *));
 	t += i;
 	i = 0;
-	while (i < t)
+	while (i < t && str[i])
 	{
 		ret[i] = str[i];
 		i ++;

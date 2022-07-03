@@ -115,7 +115,6 @@ void	exec_v2(char	**s_cmd)
 	}
 	ft_free(s_cmd);
 	free(bin);
-	dup2(g.pipefd[0], 0);
 	close(g.pipefd[1]);
 	close(g.pipefd[0]);
 }

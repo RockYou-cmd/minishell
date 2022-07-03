@@ -107,6 +107,9 @@ int	main(int ac, char **av, char **env)
 		g.pid_ch = 1;
 		ft_read_line();
 		add_history(g.input);
+		g.fd_stdin = 0;
+		g.fd_stdout = 1;
+		g.i = 0;
 		if (!ft_init())
 			continue ;
 		check();

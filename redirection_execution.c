@@ -15,9 +15,12 @@ void	ft_herdoc(char *limeter)
 				write(1, "\033[1A> ", 6);
 				break ;
 			}
-			if (ft_strcmp(limeter, doc))
+			if (ft_strcmp(rm(limeter), doc))
 				break ;
-			write(g.fd_stdin, doc, ft_strlen(doc));
+			if (ft_strchr(limeter, '\"') || ft_strchr(limeter, '\''))
+				write(g.fd_stdin, doc, ft_strlen(doc));
+			else
+				write(g.fd_stdin, rm(doc), ft_strlen(rm(doc)));
 			write(g.fd_stdin, "\n", 1);
 			free(doc);
 		}

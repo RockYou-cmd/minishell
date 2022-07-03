@@ -86,7 +86,8 @@ int		exp_sign(char **str);
 int		is_iq(char *str, int j);
 void	exp_to_env(void);
 void	exit_status(void);
-char	*add_spaces(char *str);
+char	*add_spaces(char *str, int i, int t);
+char	*rm(char *str);
 
 /* export */
 int		ft_export(char **str, int i, int j);
