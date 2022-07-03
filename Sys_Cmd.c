@@ -89,7 +89,10 @@ void	exec(char	**s_cmd)
 	ft_free(s_cmd);
 	free(bin);
 	waitpid(g.pid_ch, &(g.state), 0);
-	printf("|%d\n", g.state);
+	if (g.state == SIGINT)
+		printf("\n");
+	if (g.state == SIGQUIT)
+		printf("Quit: 3\n");
 	g.pid_ch = 1337;
 }
 
@@ -108,6 +111,7 @@ void	exec_v2(char	**s_cmd)
 		close(g.pipefd[1]);
 		close(g.pipefd[0]);
 		ft_execve(bin, s_cmd, 1);
+		exit(1);
 	}
 	ft_free(s_cmd);
 	free(bin);

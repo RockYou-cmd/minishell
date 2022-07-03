@@ -31,29 +31,27 @@ char	**sort_tab(int i, int n, int j)
 
 int	print_exp(void)
 {
-	int		i;
-	int		j;
 	char	**export;
 
-	i = 0;
+	g.i = 0;
 	export = sort_tab(0, -1, 0);
-	while (export[i])
+	while (export[g.i])
 	{
-		if (export[i][0] == '_' && export[i][1] == '=')
+		if (export[g.i][0] == '_' && export[g.i][1] == '=')
 		{
-			i ++;
-			continue;
+			g.i ++;
+			continue ;
 		}
-		j = 0;
+		g.t = 0;
 		printf("declare -x ");
-		while (export[i][j] && export[i][j] != '=' )
-			printf("%c", export[i][j++]);
-		if (export[i][j] == '=' )
-			printf("%c", export[i][j++]);
-		if (export[i][j])
-			printf("\"%s\"", &export[i][j]);
+		while (export[g.i][g.t] && export[g.i][g.t] != '=' )
+			printf("%c", export[g.i][g.t++]);
+		if (export[g.i][g.t] == '=' )
+			printf("%c", export[g.i][g.t++]);
+		if (export[g.i][g.t])
+			printf("\"%s\"", &export[g.i][g.t]);
 		printf("\n");
-		i++;
+		g.i++;
 	}
 	ft_free(export);
 	return (0);

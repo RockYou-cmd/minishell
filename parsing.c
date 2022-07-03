@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void which_one(char **str)
+void	which_one(char **str)
 {
 	g.state = 0;
 	if (g.cmnd == 0)
@@ -19,36 +19,40 @@ void which_one(char **str)
 		ft_exit(str);
 }
 
-int calc(char *str)
+int	calc(char *str)
 {
-	char *tmp2;
-	int t;
+	char	*tmp2;
+	int		t;
+
 	t = 0;
-	if (!(tmp2 = v_env(str)))
+	tmp2 = v_env(str);
+	printf("|%s\n", tmp2);
+	if (!tmp2)
 		t += 0;
 	else
-		t += ft_strlen(tmp2);	
+		t += ft_strlen(tmp2);
 	free(tmp2);
-	return t;
+	return (t);
 }
 
-int dolar(char *str, int s)
+int	dolar(char *str, int s)
 {
-	int i;
-	int p;
-	char *tmp2;
+	int		i;
+	int		p;
+	char	*tmp2;
 
 	i = 0;
 	p = 0;
 	while (str[i] != '\"')
 	{
-		if (str[i] == '$' && str[i + 1] != ' ' && str[i + 1] != 0 && str[i + 1] != '\"' && (str[i + 2] != ' '  || str[i + 2] != '\0'))
+		if (str[i] == '$' && str[i + 1] != ' ' && str[i + 1] != 0
+			&& str[i + 1] != '\"' && str[i + 1] != '\''
+			&& (str[i + 2] != ' ' || str[i + 2] != '\0'))
 		{
-			if ((tmp2 = v_env(str + i)))
-			{
-				while(tmp2[p] != '\0')
-					g.clr_cmd[s ++] = tmp2[p ++];                                                                                                                                                          
-			}
+			tmp2 = v_env(str + i);
+			if (tmp2)
+				while (tmp2[p] != '\0')
+					g.clr_cmd[s ++] = tmp2[p ++];
 			i += g.t + 1;
 			p = 0;
 			free(tmp2);
@@ -56,73 +60,74 @@ int dolar(char *str, int s)
 		else
 			g.clr_cmd[s ++] = str[i ++];
 	}
-	return s;
+	return (s);
 }
 
-int dolar2(char *str, int s)
+int	dolar2(char *str, int s, int p, char *tmp2)
 {
-	int p;
-	char **tmp;
-	char *tmp2;
-	p = 0;
+	char	**tmp;
+
+	printf("seg\n");
 	while (str[g.i] != '\"' && str[g.i] != '\'' && str[g.i] != '\0')
 	{
-		if (str[g.i] == '$' && str[g.i + 1] != ' ' && str[g.i + 1] != 0 && str[g.i + 1] != '\"' && (str[g.i + 2] != ' '  || str[g.i + 2] != '\0'))
+		if (str[g.i] == '$' && str[g.i + 1] != ' ' && str[g.i + 1]
+			&& str[g.i + 1] != '\"' && (str[g.i + 2] != ' ' || str[g.i + 2]))
 		{
 			tmp = ft_split(str + g.i, ' ');
-			if ((tmp2 = v_env(tmp[0])))
-			{
-				while(tmp2[p] != '\0')
+			tmp2 = v_env(tmp[0]);
+			if (tmp2)
+				while (tmp2[p] != '\0')
 					g.clr_cmd[s ++] = tmp2[p ++];
-			}
 			ft_free(tmp);
 			free(tmp2);
 			g.i += g.t + 1;
 			p = 0;
 		}
-		else if (str[g.i] == ' ' && str[g.i + 1] == ' ')
+		else if ((str[g.i] == '$' && (str[g.i + 1] == '\''
+					|| str[g.i + 1] == '\"') && str[g.i + 1] != 0)
+			|| (str[g.i] == ' ' && str[g.i + 1] == ' '))
 			g.i ++;
 		else
 			g.clr_cmd[s ++] = str[g.i ++];
 	}
-	g.i --;
-	return s;
+	printf("seg\n");
+	return (s);
 }
 
-int squotes(int s, char *str)
+int	squotes(int s, char *str)
 {
-	int t;
+	int	t;
 
 	t = 0;
 	t = ++g.i;
-	while(str[g.i] != '\'' && str[g.i] != 0)
+	while (str[g.i] != '\'' && str[g.i] != 0)
 		g.i++;
 	if (str[g.i] == '\'')
-		while(str[t] != '\'')
+		while (str[t] != '\'')
 			g.clr_cmd[s++] = str[t++];
-	return s;
+	return (s);
 }
 
-int dquotes (int s , char *str)
+int	dquotes(int s , char *str)
 {
-	int t;
+	int	t;
 
 	t = 0;
 	t = ++g.i;
-
-	while(str[g.i] != '\"' && str[g.i] != 0)
+	while (str[g.i] != '\"' && str[g.i] != 0)
 		g.i++;
 	if (str[g.i] == '\"')
-		s = dolar(str + t , s);
-	return s;
+		s = dolar(str + t, s);
+	return (s);
 }
 
-char *rm(char *str)
+char	*rm(char *str)
 {
-	int s;
+	int	s;
 
 	s = 0;
 	g.i = 0;
+	printf("|%d\n", calc(str));
 	g.clr_cmd = ft_calloc(ft_strlen(str) + calc(str), sizeof(char));
 	while (str[g.i] != 0)
 	{
@@ -130,22 +135,26 @@ char *rm(char *str)
 			s = squotes(s, str);
 		else if (str[g.i] == '\"')
 			s = dquotes(s, str);
-		else if (str[g.i] == ' ' && str[g.i + 1] == ' ');
+		else if (str[g.i] == ' ' && str[g.i + 1] == ' ')
+			;
 		else
-			s = dolar2(str, s);
+		{
+			s = dolar2(str, s, 0, 0);
+			g.i --;
+		}
 		g.i ++;
 	}
 	g.clr_cmd[s] = 0;
 	g.i = 0;
-	return g.clr_cmd;
+	return (g.clr_cmd);
 }
 
-void ooc(char c, int *s, int *d)
+void	ooc(char c, int *s, int *d)
 {
 	if (c == '\"')
 	{
 		if (*d == 0 && *s == 0)
-			*d = 1; 
+			*d = 1;
 		else
 			*d = 0;
 	}
@@ -158,21 +167,10 @@ void ooc(char c, int *s, int *d)
 	}
 }
 
-// int err_check(char *str, int i, int d, int s)
-// {
-// 	i += 2;
-// 	while(str[i] != 0)
-// 	{
-// 		if (str[i] == '<')
-// 			return 44;
-// 	}
-// 	return i;
-// }
-
-int heredoc_check(char *str, int i)
+int	heredoc_check(char *str, int i)
 {
-	int d;
-	int s;
+	int	d;
+	int	s;
 
 	d = 0;
 	g.i = 0;
@@ -181,52 +179,46 @@ int heredoc_check(char *str, int i)
 	while (str[i] != 0)
 	{
 		ooc(str[i], &s, &d);
-		if (str[i] == '<' && str[i + 1] == '<' && str[i + 2] != '<' && str[i - 1] != '<' && d == 0 && s == 0)
+		if (str[i] == '<' && str[i + 1] == '<' && str[i + 2] != '<'
+			&& str[i - 1] != '<' && d == 0 && s == 0)
 		{
 			i ++;
 			g.t = 1;
 		}
 		i ++;
 		if (str[i] == '<')
-			return -1;
+			return (-1);
 	}
-	return 1;
+	return (1);
 }
 
-// int redirection_check(char *str)
-// {
-// 	if (heredoc_check(g.input, 0))
-// 	{
-
-// 	}
-// }
-
-char *heredoc_rm(char **str)
+char	*heredoc_rm(char **str)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(str[i + 1] != 0)
+	while (str[i + 1] != 0)
 	{
 		str[0] = ft_strjoin(str[0], " ");
 		str[0] = ft_strjoin(str[0], str[i + 1]);
 		i ++;
 	}
-	return rm(str[0]);
+	return (rm(str[0]));
 }
 
-char **esp_splt(char *str)
+char		**esp_splt(char *str)
 {
-	char **tmp;
-	char **ret;
-	int i;
+	char	**tmp;
+	char	**ret;
+	int		i;
 
 	i = 0;
 	tmp = ft_split(str, ' ');
-	while(tmp[i++]);
-	ret = malloc((i + 1 )* sizeof(char *));
+	while (tmp[i++])
+		;
+	ret = malloc((i + 1) * sizeof(char *));
 	i = 0;
-	while(tmp[i])
+	while (tmp[i])
 	{
 		ret[i] = rm(tmp[i]);
 		i ++;
@@ -236,42 +228,44 @@ char **esp_splt(char *str)
 	return (ret);
 }
 
-void check()
+void	ft_pipe(int r, int t)
 {
-	int i;
-	int r;
-	int t;
+	int	i;
 
 	i = 0;
-	r = 0;
-	t = g.t;
-	if (g.pip == 1)
+	while (g.s_cmd[i + 1] != 0 && t != 1 && (i + 1) != t)
 	{
-		while(g.s_cmd[i + 1] != 0 && t != 1 && (i + 1) != t)
-		{
-			r = red(g.s_cmd[i]);
-			if (r == -1)
-				break ;
-			else if (r)
-				red_send(g.s_cmd[i],1);
-			else
-				exec_v2(esp_splt(g.s_cmd[i]));
-			i ++;
-		}
 		r = red(g.s_cmd[i]);
-		if (r && r != -1)
-			red_send(g.s_cmd[i],0);
-		else if(r != -1)
-			exec(esp_splt(g.s_cmd[i]));		
-		dup2(g.i_stdin, 0);
-		dup2(g.i_stdout, 1);
-		g.pip = 0;
+		if (r == -1)
+			break ;
+		else if (r)
+			red_send(g.s_cmd[i], 1);
+		else
+			exec_v2(esp_splt(g.s_cmd[i]));
+		i ++;
 	}
+	r = red(g.s_cmd[i]);
+	if (r && r != -1)
+		red_send(g.s_cmd[i], 0);
+	else if (r != -1)
+		exec(esp_splt(g.s_cmd[i]));
+	dup2(g.i_stdin, 0);
+	dup2(g.i_stdout, 1);
+	g.pip = 0;
+}
+
+void	check(void)
+{
+	int	r;
+
+	r = 0;
+	if (g.pip == 1)
+		ft_pipe(r, g.t);
 	else
 	{
 		r = red(g.input);
 		if (r && r != -1)
-			red_send(g.input,0);
+			red_send(g.input, 0);
 		else if (r != -1)
 			exec(esp_splt(g.input));
 	}

@@ -1,34 +1,31 @@
 #include "minishell.h"
 
-char *v_env(char *str)
+char	*v_env(char *str)
 {
-	int i;
-	char *value;
-	char *tmp;
-	char **s_env;
+	int		i;
+	char	*value;
+	char	*tmp;
+	char	**s_env;
 
 	i = 0;
 	g.t = 0;
 	value = NULL;
-	// printf("|seeeegfault\n");
 	tmp = ft_calloc(ft_strlen(str), sizeof(char));
 	while (str[i] != '$' && str[i] != '\0')
 		i ++;
 	if (str[i] != '$')
 	{
 		free(tmp);
-		return 0;
+		return (0);
 	}
 	i ++;
 	if (!ft_isdigit(str[i]) && str[i] != '?')
-	{
-		while(str[i] && (ft_isalpha(str[i]) || ft_isdigit(str[i]) || str[i] == '_'))
+		while (str[i] && (ft_isalpha(str[i]) || ft_isdigit(str[i]) || str[i] == '_'))
 			tmp[g.t ++] = str[i++];
-	}
 	else
-			tmp[g.t ++] = str[i++];
+		tmp[g.t ++] = str[i++];
 	i = 0;
-	while(g.env[i])
+	while (g.env[i])
 	{
 		s_env = ft_split(g.env[i++], '=');
 		if (ft_strcmp(s_env[0], tmp))
@@ -37,9 +34,8 @@ char *v_env(char *str)
 			value = ft_itoa(g.state);
 		ft_free(s_env);
 	}
-	// printf("|seeeegfault222\n");
 	free(tmp);
-	return value;
+	return (value);
 }
 
 void comands()

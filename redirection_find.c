@@ -49,22 +49,16 @@ char	*add_spaces(char *str)
 	return (ret);
 }
 
-int	red_check(char *str)
+int	red_check(int i, char **ptp)
 {
-	int		i;
-	char	**ptp;
-	char	*tmp;
-
-	i = 0;
-	g.t = 0;
-	g.i = 0;
-	tmp = add_spaces(str);
-	ptp = ft_split(tmp, ' ');
 	while (ptp[i])
 	{
-		if ((ft_strchr(ptp[i], '>') || ft_strchr(ptp[i], '<')) && (!(ft_strchr(ptp[i], '\'')) && !(ft_strchr(ptp[i], '\"'))))
+		if ((ft_strchr(ptp[i], '>') || ft_strchr(ptp[i], '<'))
+			&& (!(ft_strchr(ptp[i], '\'')) && !(ft_strchr(ptp[i], '\"'))))
 		{
-			if ((ft_strcmp(ptp[i], "<<") || ft_strcmp(ptp[i], ">>") || ft_strcmp(ptp[i], "<") || ft_strcmp(ptp[i], ">") ) && g.t == 0)
+			if ((ft_strcmp(ptp[i], "<<") || ft_strcmp(ptp[i], ">>")
+					|| ft_strcmp(ptp[i], "<")
+					|| ft_strcmp(ptp[i], ">")) && g.t == 0)
 			{
 				g.i = 1;
 				g.t = 1;
@@ -76,8 +70,6 @@ int	red_check(char *str)
 			g.t = 0;
 		i ++;
 	}
-	ft_free(ptp);
-	free(tmp);
 	if (g.t == 1)
 		return (-1);
 	return (g.i);
@@ -97,14 +89,26 @@ void	find_red(char **str, int i, int *pipe)
 
 int	red(char *str)
 {
-	if (red_check(str) == 1)
-		return (1);
-	else if (red_check(str) == -1)
+	char	**ptp;
+	char	*tmp;
+
+	tmp = add_spaces(str);
+	ptp = ft_split(tmp, ' ');
+	free(tmp);
+	g.i = 0;
+	g.t = 0;
+	if (red_check(0, ptp) == 1)
 	{
+		ft_free(ptp);
+		return (1);
+	}
+	else if (red_check(0, ptp) == -1)
+	{
+		ft_free(ptp);
 		printf("parse error\n");
 		g.state = 258;
 		return (-1);
 	}
-	else
-		return (0);
+	ft_free(ptp);
+	return (0);
 }

@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 void	ft_herdoc(char *limeter)
@@ -8,7 +7,6 @@ void	ft_herdoc(char *limeter)
 	g.pid_ch = fork();
 	if (!g.pid_ch)
 	{
-		signal(SIGINT, SIG_DFL);
 		while (limeter)
 		{
 			doc = readline("> ");
@@ -25,7 +23,7 @@ void	ft_herdoc(char *limeter)
 		}
 		exit(0);
 	}
-	waitpid(g.pid_ch, NULL, 0);
+	waitpid(g.pid_ch, &g.state, 0);
 }
 
 void	exec_heredoc(char *limeter)
@@ -35,7 +33,6 @@ void	exec_heredoc(char *limeter)
 	if (g.fd_stdin != -1 && g.fd_stdout != -1)
 		g.fd_stdin = open("/tmp/.heredoc", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	ft_herdoc(limeter);
-	g.pid_ch = 1337;
 	if (g.fd_stdin != -1 && g.fd_stdout != -1)
 	{
 		close(g.fd_stdin);

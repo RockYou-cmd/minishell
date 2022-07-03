@@ -135,6 +135,5 @@ char	**ft_split(char const *s, char c)
 		return (NULL);
 	write_sp(split, s, c, w);
 	split[w] = 0;
-	
 	return (split);
 }
