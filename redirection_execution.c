@@ -17,7 +17,6 @@ void	ft_herdoc(char *limeter)
 	char	*doc;
 
 	g.pid_ch = fork();
-	g.sig = -1;
 	if (!g.pid_ch)
 	{
 		doc	= get_next_line(0);

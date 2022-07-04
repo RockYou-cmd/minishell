@@ -6,7 +6,7 @@
 /*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 18:43:09 by ael-korc          #+#    #+#             */
-/*   Updated: 2022/07/03 19:56:33 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 18:45:26 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*rm(char *str)
 			;
 		else
 		{
-			s = dolar2(str, s, 0, 0);
+			s = dolar2(str, s, 0);
 			g.i --;
 		}
 		g.i ++;
@@ -96,7 +96,7 @@ void	check(void)
 	{
 		r = red(g.input);
 		if (r && r != -1)
-			red_send(g.input, 0);
+			red_send(g.input, 0, 0, 0);
 		else if (r != -1)
 			exec(esp_splt(g.input));
 	}

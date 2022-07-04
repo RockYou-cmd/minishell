@@ -6,7 +6,7 @@
 /*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 18:43:12 by ael-korc          #+#    #+#             */
-/*   Updated: 2022/07/03 19:07:29 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 18:45:37 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,14 @@ void	ft_pipe(int r, int t)
 		if (r == -1)
 			break ;
 		else if (r)
-			red_send(g.s_cmd[i], 1);
+			red_send(g.s_cmd[i], 1, 0, 0);
 		else
 			exec_v2(esp_splt(g.s_cmd[i]));
 		i ++;
 	}
 	r = red(g.s_cmd[i]);
 	if (r && r != -1)
-		red_send(g.s_cmd[i], 0);
+		red_send(g.s_cmd[i], 0, 0, 0);
 	else if (r != -1)
 		exec(esp_splt(g.s_cmd[i]));
 	dup2(g.i_stdin, 0);

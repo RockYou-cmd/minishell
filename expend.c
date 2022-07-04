@@ -6,7 +6,7 @@
 /*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 18:42:37 by ael-korc          #+#    #+#             */
-/*   Updated: 2022/07/03 18:42:38 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 17:11:50 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,9 @@ int	dolar(char *str, int s)
 		{
 			tmp2 = v_env(str + i);
 			if (tmp2)
-				while (tmp2[p] != '\0')
-					g.clr_cmd[s ++] = tmp2[p ++];
+					s = fill_expend(tmp2, s);
 			i += g.t + 1;
 			p = 0;
-			free(tmp2);
 		}
 		else
 			g.clr_cmd[s ++] = str[i ++];
@@ -53,7 +51,7 @@ int	dolar(char *str, int s)
 	return (s);
 }
 
-int	dolar2(char *str, int s, int p, char *tmp2)
+int	dolar2(char *str, int s, char *tmp2)
 {
 	char	**tmp;
 
@@ -69,7 +67,6 @@ int	dolar2(char *str, int s, int p, char *tmp2)
 			ft_free(tmp);
 			free(tmp2);
 			g.i += g.t + 1;
-			p = 0;
 		}
 		else if ((str[g.i] == '$' && (str[g.i + 1] == '\''
 					|| str[g.i + 1] == '\"') && str[g.i + 1] != 0)

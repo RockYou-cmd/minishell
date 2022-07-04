@@ -6,7 +6,7 @@
 /*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 18:42:39 by ael-korc          #+#    #+#             */
-/*   Updated: 2022/07/03 18:42:40 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 17:13:10 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ char	*ft_getenv(char *tmp)
 	int		i;
 
 	i = 0;
+	value = NULL;
 	while (g.env[i])
 	{
 		s_env = ft_split(g.env[i++], '=');

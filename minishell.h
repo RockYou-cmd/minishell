@@ -6,7 +6,7 @@
 /*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:52:08 by rgatnaou          #+#    #+#             */
-/*   Updated: 2022/07/03 20:07:13 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 18:46:22 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	ft_heredoc(void);
 char	**esp_splt(char *str);
 void	red_output(char **str);
 int		red_check(int i, char **ptp);
-void	red_send(char *str, int pipe);
+void	red_send(char *str, int pipe , int i, int t);
 void	find_red(char **str, int i, int *pipe);
 void	exec_heredoc(char *limeter);
 int		red(char *str);
@@ -86,7 +86,7 @@ void	exit_status(void);
 char	*add_spaces(char *str, int i, int t);
 char	*rm(char *str);
 void	ft_pipe(int r, int t);
-int		dolar2(char *str, int s, int p, char *tmp2);
+int		dolar2(char *str, int s, char *tmp2);
 int		pipe_check(int i, int j);
 void	ooc(char c, int *s, int *d);
 char	*get_next_line(int fd);
