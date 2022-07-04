@@ -1,29 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/03 18:42:39 by ael-korc          #+#    #+#             */
+/*   Updated: 2022/07/03 18:42:40 by ael-korc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-char	*v_env(char *str)
+char	*ft_getenv(char *tmp)
 {
-	int		i;
-	char	*value;
-	char	*tmp;
 	char	**s_env;
+	char	*value;
+	int		i;
 
-	i = 0;
-	g.t = 0;
-	value = NULL;
-	tmp = ft_calloc(ft_strlen(str), sizeof(char));
-	while (str[i] != '$' && str[i] != '\0')
-		i ++;
-	if (str[i] != '$')
-	{
-		free(tmp);
-		return (0);
-	}
-	i ++;
-	if (!ft_isdigit(str[i]) && str[i] != '?')
-		while (str[i] && (ft_isalpha(str[i]) || ft_isdigit(str[i]) || str[i] == '_'))
-			tmp[g.t ++] = str[i++];
-	else
-		tmp[g.t ++] = str[i++];
 	i = 0;
 	while (g.env[i])
 	{
@@ -32,8 +26,35 @@ char	*v_env(char *str)
 			value = ft_strdup(s_env[1]);
 		else if (ft_strcmp("?", tmp))
 			value = ft_itoa(g.state);
-		ft_free(s_env);
 	}
+	return (value);
+}
+
+char	*v_env(char *str)
+{
+	int		i;
+	char	*value;
+	char	*tmp;
+
+	i = 0;
+	g.t = 0;
+	value = NULL;
+	tmp = ft_calloc(ft_strlen(str), sizeof(char));
+	while (str[i] != '$' && str[i] != '\0')
+		i ++;
+	if (str[i++] != '$')
+	{
+		free(tmp);
+		return (0);
+	}
+	if (!ft_isdigit(str[i]) && str[i] != '?')
+		while (str[i] && (ft_isalpha(str[i])
+				|| ft_isdigit(str[i]) || str[i] == '_'))
+			tmp[g.t ++] = str[i++];
+	else
+		tmp[g.t ++] = str[i++];
+	i = 0;
+	value = ft_getenv(tmp);
 	free(tmp);
 	return (value);
 }
@@ -50,36 +71,29 @@ void	comands(void)
 	g.command[7] = 0;
 }
 
-int	pipe_check(int i, int j)
+char	**esp_splt(char *str)
 {
-	g.i = 0;
-	g.t = 0;
-	if (g.input[0] == '|')
-		return (0);
-	while (g.input[i])
+	char	**tmp;
+	char	**ret;
+	int		i;
+
+	i = 0;
+	tmp = ft_split(str, ' ');
+	while (tmp[i++])
+		;
+	ret = malloc((i + 1) * sizeof(char *));
+	i = 0;
+	while (tmp[i])
 	{
-		if (g.input[i] != '|' && g.input[i] != ' ')
-			j = 0;
-		if (g.input[i] == '|' && j == 0)
-		{
-			g.i ++;
-			j = 1;
-		}
-		else if ((g.input[i] == '|' && j == 1 && g.input[i - 1] != '|')
-			|| (g.input[i] == '|' && j == 1
-				&& g.input[i - 1] == '|' && g.input[i - 2] == '|'))
-			return (0);
-		else if (g.input[i] == '|' && j == 1 && g.input[i - 1] == '|')
-			if (!g.t)
-				g.t = g.i;
-		i++;
+		ret[i] = rm(tmp[i]);
+		i ++;
 	}
-	if (!g.input[i] && j == 1)
-		return (0);
-	return (1);
+	ret[i] = 0;
+	ft_free(tmp);
+	return (ret);
 }
 
-int ft_init(void)
+int	ft_init(void)
 {
 	g.s_cmd = ft_split(g.input, '|');
 	if (!g.s_cmd)

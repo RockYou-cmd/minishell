@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/03 18:42:31 by ael-korc          #+#    #+#             */
+/*   Updated: 2022/07/03 18:42:32 by ael-korc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	nrml_var(char *str, int j)
@@ -26,10 +38,7 @@ int	is_iq(char *str, int j)
 	{
 		if (!ft_isalpha(str[j]) && !ft_isdigit(str[j])
 			&& str[j] != '_' && str[j] != '+')
-		{
-			printf("is_alpha and digit\n");
 			return (0);
-		}
 		if (str[j] == '+' && str[j + 1] != '=')
 			return (0);
 		else if (str[j] == '+' && str[j + 1] == '=')
@@ -51,11 +60,18 @@ int	exp_sign(char **str)
 	while (str[i])
 	{
 		j = 0;
-		j = nrml_var(str[i], j);
-		if (ft_strchr(str[i], '=') && !j)
-			return (0);
-		else if (!j)
-			return (0);
+		if (ft_strchr(str[i], '='))
+		{
+			j = is_iq(str[i], j);
+			if (!j)
+				return (0);
+		}
+		else
+		{
+			j = nrml_var(str[i], j);
+			if (!j)
+				return (0);
+		}
 		i ++;
 	}
 	return (1);

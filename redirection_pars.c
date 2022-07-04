@@ -1,4 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirection_pars.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/03 18:43:17 by ael-korc          #+#    #+#             */
+/*   Updated: 2022/07/04 15:41:50 by ael-korc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
+void	ooc(char c, int *s, int *d)
+{
+	if (c == '\"')
+	{
+		if (*d == 0 && *s == 0)
+			*d = 1;
+		else
+			*d = 0;
+	}
+	else if (c == '\'' && *d == 0)
+	{
+		if (*s == 0)
+			*s = 1;
+		else
+			*s = 0;
+	}
+}
+
 
 int	cmd_len(char	**str)
 {
@@ -30,7 +61,9 @@ void	red_send(char *str, int pip)
 
 	i = 0;
 	t = 0;
-	output = 1;
+	output = 0;
+	g.fd_stdin = 0;
+	g.fd_stdout = 1;
 	tmp = add_spaces(str, 0, 0);
 	red = ft_split(tmp, ' ');
 	free(tmp);
@@ -48,12 +81,12 @@ void	red_send(char *str, int pip)
 	{
 		dup2(g.fd_stdin, 0);
 		dup2(g.fd_stdout, 1);
-		if (pip && output)
+		if (pip && !output)
 			exec_v2(cmd);
 		else
 		{
 			exec(cmd);
-			if (!output && pip)
+			if (pip && output)
 			{
 				pipe(g.pipefd);
 				dup2(g.pipefd[0], 0);

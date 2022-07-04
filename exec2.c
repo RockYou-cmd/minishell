@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec2.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/03 18:42:36 by ael-korc          #+#    #+#             */
+/*   Updated: 2022/07/03 19:57:38 by ael-korc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ft_export(char **str, int i, int j)
@@ -34,7 +46,8 @@ void	ft_exit(char **str)
 
 	i = -1;
 	ft_free(g.env);
-	printf("exit\n");
+	if (!g.pip)
+		printf("exit\n");
 	if (!str[0])
 		exit(1);
 	if (str[1])
@@ -102,7 +115,7 @@ int	ft_unset(char	**str)
 		if (str[0][0] == '-' && ((str[0][1] != '\0' && str[0][1] != '-')
 			|| (str[0][1] == '-' && str[0][2] != '\0')))
 		{
-			printf("minishell: pwd: %s: invalid option\n", str[0]);
+			printf("minishell: unset: %s: invalid option\n", str[0]);
 			return (1);
 		}
 	}

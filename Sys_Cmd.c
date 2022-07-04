@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Sys_Cmd.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/03 18:43:19 by ael-korc          #+#    #+#             */
+/*   Updated: 2022/07/03 19:54:37 by ael-korc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*get_bin(char *cmd, int i)
@@ -5,6 +17,7 @@ char	*get_bin(char *cmd, int i)
 	char	*bin;
 	char	**path;
 
+	path = NULL;
 	if (!g.env)
 		return (NULL);
 	if (!access(cmd, X_OK))
@@ -62,6 +75,12 @@ void	ft_execve(char *bin, char **s_cmd, int pipe)
 		if (check)
 			exit(1);
 	}
+	else if(g.pip)
+	{
+		check = check_build_command(s_cmd);
+		if (check)
+			exit(1);
+	}
 	execve(bin, s_cmd, g.env);
 	write(2, "minishell :", 11);
 	write(2, s_cmd[0], ft_strlen(s_cmd[0]));
@@ -70,19 +89,21 @@ void	ft_execve(char *bin, char **s_cmd, int pipe)
 
 void	exec(char	**s_cmd)
 {
-	int		check;
 	char	*bin;
+	int		check;
 
 	if (!s_cmd || !s_cmd [0])
 		return ;
-	check = check_build_command(s_cmd);
+	if (g.pip)
+		check = 0;
+	else 
+		check = check_build_command(s_cmd);
 	if (check)
 		return ;
 	bin = get_bin(s_cmd[0], -1);
 	g.pid_ch = fork();
 	if (!g.pid_ch)
 	{
-		signal(SIGINT, &handler);
 		ft_execve(bin, s_cmd, 0);
 		exit(1);
 	}
@@ -107,14 +128,12 @@ void	exec_v2(char	**s_cmd)
 	g.pid_ch = fork();
 	if (!g.pid_ch)
 	{
-		dup2(g.pipefd[1], 1);
-		close(g.pipefd[1]);
-		close(g.pipefd[0]);
 		ft_execve(bin, s_cmd, 1);
 		exit(1);
 	}
 	ft_free(s_cmd);
 	free(bin);
+	dup2(g.pipefd[0], 0);
 	close(g.pipefd[1]);
 	close(g.pipefd[0]);
 }

@@ -1,12 +1,12 @@
-// /* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/11 12:06:09 by rgatnaou          #+#    #+#             */
-/*   Updated: 2022/05/18 17:35:55 by rgatnaou         ###   ########.fr       */
+/*   Created: 2022/07/03 18:43:00 by ael-korc          #+#    #+#             */
+/*   Updated: 2022/07/04 15:35:26 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,15 @@
 void	handler(int signm)
 {
 	if (signm == SIGINT && !g.pid_ch)
-		exit (1);
-	else if (signm == SIGINT && g.pid_ch == 1)
+		exit (2);
+	if (signm == SIGINT && g.pid_ch == 1)
 	{
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	if (signm == SIGQUIT)
-		return ;
 }
-
 void	ft_read_line(void)
 {
 	g.input = readline("minishell-3.2$ ");
@@ -107,8 +104,6 @@ int	main(int ac, char **av, char **env)
 		g.pid_ch = 1;
 		ft_read_line();
 		add_history(g.input);
-		g.fd_stdin = 0;
-		g.fd_stdout = 1;
 		g.i = 0;
 		if (!ft_init())
 			continue ;

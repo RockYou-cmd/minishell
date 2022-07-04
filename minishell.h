@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:52:08 by rgatnaou          #+#    #+#             */
-/*   Updated: 2022/05/20 12:50:52 by rgatnaou         ###   ########.fr       */
+/*   Updated: 2022/07/03 20:07:13 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ typedef struct s_data
 	char		**env;
 	char		*clr_cmd;
 	int			i_stdin;
-	int			i_stdi;
 	int			i_stdout;
-	int			i_stdou;
 	int			fd_stdin;
 	int			fd_stdout;
 	int			state;
@@ -69,7 +67,6 @@ int		dolar(char *str, int s);
 void	ft_heredoc(void);
 char	**esp_splt(char *str);
 void	red_output(char **str);
-void	ooc(char c, int *s, int *d);
 int		red_check(int i, char **ptp);
 void	red_send(char *str, int pipe);
 void	find_red(char **str, int i, int *pipe);
@@ -88,6 +85,12 @@ void	exp_to_env(void);
 void	exit_status(void);
 char	*add_spaces(char *str, int i, int t);
 char	*rm(char *str);
+void	ft_pipe(int r, int t);
+int		dolar2(char *str, int s, int p, char *tmp2);
+int		pipe_check(int i, int j);
+void	ooc(char c, int *s, int *d);
+char	*get_next_line(int fd);
+void	handler1();
 
 /* export */
 int		ft_export(char **str, int i, int j);

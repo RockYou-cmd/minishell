@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+         #
+#    By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/11 12:06:40 by rgatnaou          #+#    #+#              #
-#    Updated: 2022/05/16 20:58:48 by rgatnaou         ###   ########.fr        #
+#    Updated: 2022/07/03 20:03:51 by ael-korc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,9 @@ READLINE = $(shell brew --prefix readline)
 
 CC = cc -Wall -Wextra -Werror #-static-libsan -fsanitize=address
 
-SRC = minishell.c exec.c parsing.c exec2.c utils_export.c Sys_Cmd.c init.c utils.c redirection_pars.c redirection_find.c check.c redirection_execution.c 
+SRC = minishell.c exec.c parsing.c exec2.c utils_export.c Sys_Cmd.c init.c utils.c expend.c \
+		redirection_pars.c redirection_find.c pipe.c check.c redirection_execution.c \
+		get_next_line.c
 
 OBJ = $(SRC:.c=.o)
 

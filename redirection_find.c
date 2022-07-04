@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirection_find.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/03 18:43:16 by ael-korc          #+#    #+#             */
+/*   Updated: 2022/07/04 15:10:19 by ael-korc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	spce_ned(char	*str)
@@ -75,16 +87,16 @@ int	red_check(int i, char **ptp)
 	return (g.i);
 }
 
-void	find_red(char **str, int i, int *pipe)
+void	find_red(char **str, int i, int *output)
 {
 	if (ft_strcmp(str[i], "<<"))
 		exec_heredoc(str[i + 1]);
 	else if (ft_strcmp(str[i], ">>"))
-		exec_red_output_append(rm(str[i + 1]), pipe);
+		exec_red_output_append(rm(str[i + 1]), output);
 	else if (ft_strcmp(str[i], "<"))
 		exec_red_input(rm(str[i + 1]));
 	else if (ft_strcmp(str[i], ">"))
-		exec_red_output(rm(str[i + 1]), pipe);
+		exec_red_output(rm(str[i + 1]), output);
 }
 
 int	red(char *str)
