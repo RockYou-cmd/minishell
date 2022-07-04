@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 18:42:39 by ael-korc          #+#    #+#             */
-/*   Updated: 2022/07/04 21:26:35 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 22:56:57 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ char	*ft_getenv(char *tmp)
 			value = ft_strdup(s_env[1]);
 		else if (ft_strcmp("?", tmp))
 			value = ft_itoa(g_.state);
+		ft_free(s_env);
 	}
 	return (value);
 }

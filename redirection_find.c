@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_find.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 18:43:16 by ael-korc          #+#    #+#             */
-/*   Updated: 2022/07/04 21:26:35 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 22:41:50 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	find_red(char **str, int i, int *output)
 	else if (ft_strcmp(str[i], ">>"))
 		exec_red_output_append(rm(str[i + 1]), output);
 	else if (ft_strcmp(str[i], "<"))
-		exec_red_input(rm(str[i + 1]));
+		exec_red_input(str[i + 1]);
 	else if (ft_strcmp(str[i], ">"))
 		exec_red_output(rm(str[i + 1]), output);
 }

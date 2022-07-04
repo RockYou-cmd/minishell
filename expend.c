@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expend.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 18:42:37 by ael-korc          #+#    #+#             */
-/*   Updated: 2022/07/04 21:26:35 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 22:46:00 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	dolar(char *str, int s)
 					s = fill_expend(tmp2, s);
 			i += g_.t + 1;
 			p = 0;
+			free(tmp2);
 		}
 		else
 			g_.clr_cmd[s ++] = str[i ++];

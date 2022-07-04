@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_pars.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 18:43:17 by ael-korc          #+#    #+#             */
-/*   Updated: 2022/07/04 21:52:04 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 22:42:58 by rgatnaou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void	red_send(char *str, int pip, int i, int t)
 	int		output;
 
 	output = 0;
+	g_.file = NULL;
 	g_.fd_stdin = 0;
 	g_.fd_stdout = 1;
 	tmp = add_spaces(str, 0, 0);
