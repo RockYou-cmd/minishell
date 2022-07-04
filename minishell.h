@@ -6,12 +6,13 @@
 /*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:52:08 by rgatnaou          #+#    #+#             */
-/*   Updated: 2022/07/04 18:46:22 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 21:26:46 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
+
 # include <stdio.h>
 # include <stdlib.h>
 # include "libft/libft.h"
@@ -47,7 +48,7 @@ typedef struct s_data
 	int			pipefd[2];
 }t_data;
 
-t_data	g;
+t_data	g_;
 
 void	comands(void);
 void	which_one(char **str);
@@ -55,7 +56,7 @@ int		ft_init(void);
 int		ft_echo(char **str, int i, int j, int s);
 int		ft_cd(char **str);
 int		ft_pwd(char **str);
-int		ft_unset(char **str);
+int		ft_unset(char **str, int i, int j);
 void	check(void);
 int		ft_env(char **str);
 void	ft_exit(char **str);
@@ -68,7 +69,7 @@ void	ft_heredoc(void);
 char	**esp_splt(char *str);
 void	red_output(char **str);
 int		red_check(int i, char **ptp);
-void	red_send(char *str, int pipe , int i, int t);
+void	red_send(char *str, int pipe, int i, int t);
 void	find_red(char **str, int i, int *pipe);
 void	exec_heredoc(char *limeter);
 int		red(char *str);
@@ -79,7 +80,7 @@ void	exec_red_input(char *file);
 char	**ft_realloc(char **str, int t);
 void	fill_export(void);
 char	*ft_rrealloc(char *str, int t);
-int		exp_sign(char **str);
+int		exp_sign(char *str);
 int		is_iq(char *str, int j);
 void	exp_to_env(void);
 void	exit_status(void);
@@ -90,7 +91,8 @@ int		dolar2(char *str, int s, char *tmp2);
 int		pipe_check(int i, int j);
 void	ooc(char c, int *s, int *d);
 char	*get_next_line(int fd);
-void	handler1();
+int		unset_pars(char *str);
+void	rm_var(int j);
 
 /* export */
 int		ft_export(char **str, int i, int j);

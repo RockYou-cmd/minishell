@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+         #
+#    By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/07 11:36:40 by rgatnaou          #+#    #+#              #
-#    Updated: 2021/11/20 16:47:23 by rgatnaou         ###   ########.fr        #
+#    Updated: 2022/07/04 21:21:10 by ael-korc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ SRC =   ft_isalnum.c	\
 		ft_putnbr_fd.c	\
 		ft_putchar_fd.c	\
 		ft_itoa.c		\
+		utils.c			\
 		ft_strmapi.c	\
 		ft_striteri.c	\
 		ft_putstr_fd.c	\

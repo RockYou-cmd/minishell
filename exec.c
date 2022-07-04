@@ -6,7 +6,7 @@
 /*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 18:42:34 by ael-korc          #+#    #+#             */
-/*   Updated: 2022/07/03 19:56:50 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 21:48:23 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,23 @@ void	create_pwd(int s, int i, char *pwd, char *old_pwd)
 	int		j;
 
 	i = 0;
-	while (g.env[i])
+	while (g_.env[i])
 		i++;
 	env = malloc((i + 3) * sizeof(char *));
 	j = 0;
 	i = 0;
-	while (g.env[i])
+	while (g_.env[i])
 	{
 		if (j == 10 && (s == 1 || !s))
 			env[j++] = ft_strdup(pwd);
 		else if (j == 5 && (s == 2 || !s))
 			env[j++] = ft_strdup(old_pwd);
 		else
-			env[j++] = ft_strdup(g.env[i++]);
+			env[j++] = ft_strdup(g_.env[i++]);
 	}
 	env[j] = 0;
-	ft_free(g.env);
-	g.env = env;
+	ft_free(g_.env);
+	g_.env = env;
 }
 
 void	update_pwd(char *old, char *new, int s, int i)
@@ -44,18 +44,18 @@ void	update_pwd(char *old, char *new, int s, int i)
 
 	pwd = ft_strjoin(ft_strdup("PWD="), new);
 	old_pwd = ft_strjoin(ft_strdup("OLDPWD="), old);
-	while (g.env[++i])
+	while (g_.env[++i])
 	{
-		if (!strncmp(g.env[i], "PWD=", 4))
+		if (!strncmp(g_.env[i], "PWD=", 4))
 		{
-			free(g.env[i]);
-			g.env[i] = ft_strdup(pwd);
+			free(g_.env[i]);
+			g_.env[i] = ft_strdup(pwd);
 			s += 2;
 		}
-		else if (!strncmp(g.env[i], "OLDPWD=", 7))
+		else if (!strncmp(g_.env[i], "OLDPWD=", 7))
 		{
-			free(g.env[i]);
-			g.env[i] = ft_strdup(old_pwd);
+			free(g_.env[i]);
+			g_.env[i] = ft_strdup(old_pwd);
 			s += 1;
 		}
 		i++;
@@ -78,9 +78,9 @@ int	ft_cd(char	**str)
 	if (!str || !str[0])
 	{
 		i = -1;
-		while (g.env[++i])
-			if (!strncmp(g.env[i], "HOME=", 5))
-				path = g.env[i] + 5;
+		while (g_.env[++i])
+			if (!strncmp(g_.env[i], "HOME=", 5))
+				path = g_.env[i] + 5;
 	}
 	else
 		path = str[0];
@@ -118,7 +118,7 @@ int	ft_echo(char **str, int i, int j, int s)
 		if (str[i])
 			printf(" ");
 	}
-	if (s != -1)
+	if (s != -1 || g_.fd_stdout != 1)
 		printf("\n");
 	return (0);
 }

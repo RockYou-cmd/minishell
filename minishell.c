@@ -6,7 +6,7 @@
 /*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 18:43:00 by ael-korc          #+#    #+#             */
-/*   Updated: 2022/07/04 18:30:24 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 21:26:35 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	handler(int signm)
 {
-	if (signm == SIGINT && !g.pid_ch)
+	if (signm == SIGINT && !g_.pid_ch)
 		exit (2);
-	if (signm == SIGINT && g.pid_ch == 1)
+	if (signm == SIGINT && g_.pid_ch == 1)
 	{
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
@@ -24,16 +24,17 @@ void	handler(int signm)
 		rl_redisplay();
 	}
 }
+
 void	ft_read_line(void)
 {
-	g.input = readline("minishell-3.2$ ");
-	if (!g.input)
+	g_.input = readline("minishell-3.2$ ");
+	if (!g_.input)
 	{
-		if (g.env)
+		if (g_.env)
 			write(1, "\033[1A\033[15Cexit\n", 14);
 		else
 			write(1, " exit\n", 6);
-		ft_free(g.env);
+		ft_free(g_.env);
 		exit(1);
 	}
 }
@@ -48,18 +49,18 @@ void	shlvl(void)
 	v = 0;
 	i = 0;
 	k = 0;
-	while (g.env[i])
+	while (g_.env[i])
 	{
-		if (!strncmp(g.env[i], "SHLVL=", 6))
+		if (!strncmp(g_.env[i], "SHLVL=", 6))
 		{
-			v = ft_strchr(g.env[i], '=');
+			v = ft_strchr(g_.env[i], '=');
 			++v;
 			k = ft_atoi(v) + 1;
 			if (k < 0)
 				k = 0;
-			free(g.env[i]);
+			free(g_.env[i]);
 			s = ft_itoa(k);
-			g.env[i] = ft_strjoin(ft_strdup("SHLVL="), s);
+			g_.env[i] = ft_strjoin(ft_strdup("SHLVL="), s);
 			free(s);
 		}
 		i++;
@@ -68,21 +69,21 @@ void	shlvl(void)
 
 void	build_env(char **env)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!env[0])
 	{
-		g.env = NULL;
+		g_.env = NULL;
 		return ;
 	}
 	while (env[i])
 		i++;
-	g.env = malloc((i + 1) * sizeof(char *));
+	g_.env = malloc((i + 1) * sizeof(char *));
 	i = -1;
 	while (env[++i])
-		g.env[i] = ft_strdup(env[i]);
-	g.env[i] = 0;
+		g_.env[i] = ft_strdup(env[i]);
+	g_.env[i] = 0;
 	shlvl();
 }
 
@@ -91,23 +92,26 @@ int	main(int ac, char **av, char **env)
 	(void) av;
 	(void) ac;
 	build_env(env);
-	g.cmnd = -1;
-	g.state = 0;
+	g_.cmnd = -1;
+	g_.state = 0;
 	rl_catch_signals = 0;
-	g.i_stdin = dup(0);
-	g.i_stdout = dup(1);
+	g_.i_stdin = dup(0);
+	g_.i_stdout = dup(1);
 	signal(SIGINT, &handler);
 	signal(SIGQUIT, &handler);
 	comands();
 	while (1)
 	{
-		g.pid_ch = 1;
+		g_.pid_ch = 1;
 		ft_read_line();
-		add_history(g.input);
-		g.i = 0;
+		add_history(g_.input);
+		g_.i = 0;
 		if (!ft_init())
+		{
+			free(g_.input);
 			continue ;
+		}
 		check();
-		g.cmnd = -1;
+		g_.cmnd = -1;
 	}
 }

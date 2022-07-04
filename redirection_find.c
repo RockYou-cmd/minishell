@@ -6,7 +6,7 @@
 /*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 18:43:16 by ael-korc          #+#    #+#             */
-/*   Updated: 2022/07/04 15:10:19 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 21:26:35 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,21 +70,21 @@ int	red_check(int i, char **ptp)
 		{
 			if ((ft_strcmp(ptp[i], "<<") || ft_strcmp(ptp[i], ">>")
 					|| ft_strcmp(ptp[i], "<")
-					|| ft_strcmp(ptp[i], ">")) && g.t == 0)
+					|| ft_strcmp(ptp[i], ">")) && g_.t == 0)
 			{
-				g.i = 1;
-				g.t = 1;
+				g_.i = 1;
+				g_.t = 1;
 			}
 			else
 				return (-1);
 		}
 		else
-			g.t = 0;
+			g_.t = 0;
 		i ++;
 	}
-	if (g.t == 1)
+	if (g_.t == 1)
 		return (-1);
-	return (g.i);
+	return (g_.i);
 }
 
 void	find_red(char **str, int i, int *output)
@@ -107,8 +107,8 @@ int	red(char *str)
 	tmp = add_spaces(str, 0, 0);
 	ptp = ft_split(tmp, ' ');
 	free(tmp);
-	g.i = 0;
-	g.t = 0;
+	g_.i = 0;
+	g_.t = 0;
 	if (red_check(0, ptp) == 1)
 	{
 		ft_free(ptp);
@@ -118,7 +118,7 @@ int	red(char *str)
 	{
 		ft_free(ptp);
 		printf("parse error\n");
-		g.state = 258;
+		g_.state = 258;
 		return (-1);
 	}
 	ft_free(ptp);

@@ -6,7 +6,7 @@
 /*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 18:43:17 by ael-korc          #+#    #+#             */
-/*   Updated: 2022/07/04 18:47:33 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 21:52:04 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,19 @@ int	cmd_len(char	**str)
 
 void	ft_error(char	**cmd)
 {
-	dup2(g.i_stdin, 0);
-	dup2(g.i_stdout, 1);
-	close(g.fd_stdin);
-	printf("Error: no file descriptor : %s\n", g.file);
+	dup2(g_.i_stdin, 0);
+	dup2(g_.i_stdout, 1);
+	close(g_.fd_stdin);
+	printf("Error: no file descriptor : %s\n", g_.file);
 	ft_free(cmd);
 }
 
 void	exec_red(char **cmd, int pip, int output)
 {
-	if (g.fd_stdin != -1 && g.fd_stdout != -1)
+	if (g_.fd_stdin != -1 && g_.fd_stdout != -1)
 	{
-		dup2(g.fd_stdin, 0);
-		dup2(g.fd_stdout, 1);
+		dup2(g_.fd_stdin, 0);
+		dup2(g_.fd_stdout, 1);
 		if (pip && !output)
 			exec_v2(cmd);
 		else
@@ -71,18 +71,20 @@ void	exec_red(char **cmd, int pip, int output)
 			exec(cmd);
 			if (pip && output)
 			{
-				pipe(g.pipefd);
-				dup2(g.pipefd[0], 0);
-				close(g.pipefd[1]);
-				close(g.pipefd[0]);
+				pipe(g_.pipefd);
+				dup2(g_.pipefd[0], 0);
+				close(g_.pipefd[1]);
+				close(g_.pipefd[0]);
 			}
 			else
-				dup2(g.i_stdin, 0);
-			dup2(g.i_stdout, 1);
+				dup2(g_.i_stdin, 0);
+			dup2(g_.i_stdout, 1);
 		}
 	}
 	else
 		ft_error(cmd);
+	g_.fd_stdout = 1;
+	g_.fd_stdin = 0;
 }
 
 void	red_send(char *str, int pip, int i, int t)
@@ -93,8 +95,8 @@ void	red_send(char *str, int pip, int i, int t)
 	int		output;
 
 	output = 0;
-	g.fd_stdin = 0;
-	g.fd_stdout = 1;
+	g_.fd_stdin = 0;
+	g_.fd_stdout = 1;
 	tmp = add_spaces(str, 0, 0);
 	red = ft_split(tmp, ' ');
 	free(tmp);

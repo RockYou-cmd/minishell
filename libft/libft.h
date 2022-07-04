@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rgatnaou <rgatnaou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 11:47:28 by rgatnaou          #+#    #+#             */
-/*   Updated: 2021/11/19 18:53:30 by rgatnaou         ###   ########.fr       */
+/*   Updated: 2022/07/04 21:14:22 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,22 @@
 
 # include<stddef.h>
 # include <stdlib.h>
+# include <stdio.h>
 
 typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
 }	t_list;
+
+typedef struct s_var
+{
+	int	i;
+	int	j;
+	int	d;
+	int	l;
+	int	sq;
+}t_var;
 
 size_t	ft_strlen(const char *s);
 void	*ft_memset(void *b, int c, size_t len);
@@ -60,10 +70,8 @@ void	ft_putendl_fd(char *s, int fd);
 char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f)(unsigned	int, char));
 char	**ft_split(char const *s, char c);
-// char	**ft_split_v2(char const *s, char c);
-int	ft_strcmp(const char *s1, const char *s2);
-
-
+int		ft_strcmp(const char *s1, const char *s2);
+void	cote(int *d, int *sq, char c);
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);
 int		ft_lstsize(t_list *lst);

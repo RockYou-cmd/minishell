@@ -6,7 +6,7 @@
 /*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 18:43:20 by ael-korc          #+#    #+#             */
-/*   Updated: 2022/07/03 18:43:21 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 21:26:35 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ char	**sort_tab(int i, int n, int j)
 	char	*tmp;
 	char	**export;
 
-	while (g.env[i])
+	while (g_.env[i])
 		i++;
 	export = ft_calloc(i + 1, sizeof(char *));
-	while (g.env[++n])
-		export[n] = ft_strdup(g.env[n]);
+	while (g_.env[++n])
+		export[n] = ft_strdup(g_.env[n]);
 	i = 0;
 	while (i < n)
 	{
@@ -45,25 +45,25 @@ int	print_exp(void)
 {
 	char	**export;
 
-	g.i = 0;
+	g_.i = 0;
 	export = sort_tab(0, -1, 0);
-	while (export[g.i])
+	while (export[g_.i])
 	{
-		if (export[g.i][0] == '_' && export[g.i][1] == '=')
+		if (export[g_.i][0] == '_' && export[g_.i][1] == '=')
 		{
-			g.i ++;
+			g_.i ++;
 			continue ;
 		}
-		g.t = 0;
+		g_.t = 0;
 		printf("declare -x ");
-		while (export[g.i][g.t] && export[g.i][g.t] != '=' )
-			printf("%c", export[g.i][g.t++]);
-		if (export[g.i][g.t] == '=' )
-			printf("%c", export[g.i][g.t++]);
-		if (export[g.i][g.t])
-			printf("\"%s\"", &export[g.i][g.t]);
+		while (export[g_.i][g_.t] && export[g_.i][g_.t] != '=' )
+			printf("%c", export[g_.i][g_.t++]);
+		if (export[g_.i][g_.t] == '=' )
+			printf("%c", export[g_.i][g_.t++]);
+		if (export[g_.i][g_.t])
+			printf("\"%s\"", &export[g_.i][g_.t]);
 		printf("\n");
-		g.i++;
+		g_.i++;
 	}
 	ft_free(export);
 	return (0);
@@ -76,25 +76,25 @@ void	updt_export(char *str, int t)
 
 	i = 0;
 	j = 0;
-	if (is_iq(str, 0) != 9 && g.i == 2 && (str[0] != '_' && str[1] != '='))
+	if (is_iq(str, 0) != 9 && g_.i == 2 && (str[0] != '_' && str[1] != '='))
 	{
-		free(g.env[t]);
-		g.env[t] = ft_strdup(str);
+		free(g_.env[t]);
+		g_.env[t] = ft_strdup(str);
 	}
-	else if (g.i != 2 || (str[0] == '_' && str[1] == '='))
+	else if (g_.i != 2 || (str[0] == '_' && str[1] == '='))
 		return ;
 	else
 	{
-		while (g.env[t][i])
+		while (g_.env[t][i])
 			i ++;
 		while (str[j++] != '=')
 			;
-		g.env[t] = ft_rrealloc(g.env[t], ft_strlen(str + j));
-		if (!ft_strchr(g.env[t], '='))
-			g.env[t][i ++] = '=';
+		g_.env[t] = ft_rrealloc(g_.env[t], ft_strlen(str + j));
+		if (!ft_strchr(g_.env[t], '='))
+			g_.env[t][i ++] = '=';
 		while (str[j])
-			g.env[t][i ++] = str[j ++];
-		g.env[t][i + 1] = 0;
+			g_.env[t][i ++] = str[j ++];
+		g_.env[t][i + 1] = 0;
 	}
 }
 
@@ -102,28 +102,28 @@ void	set_export(char	*str, int i, int j)
 {
 	char	**tmp;
 
-	g.i = 0;
-	g.t = 0;
-	while (g.env[i])
+	g_.i = 0;
+	g_.t = 0;
+	while (g_.env[i])
 		i ++;
 	tmp = ft_split(str, '=');
 	if (ft_strchr(tmp[0], '+'))
 	{
-		g.env[i] = malloc((ft_strlen(str) + 1) * sizeof(char));
+		g_.env[i] = malloc((ft_strlen(str) + 1) * sizeof(char));
 		while (str[j])
 		{
-			if (str[j] == '+' && g.i != 1)
+			if (str[j] == '+' && g_.i != 1)
 			{
-				g.i = 1;
+				g_.i = 1;
 				j ++;
 			}
-			g.env[i][g.t ++] = str[j ++];
+			g_.env[i][g_.t ++] = str[j ++];
 		}
-		g.env[i][g.t] = 0;
+		g_.env[i][g_.t] = 0;
 	}
 	else
-		g.env[i] = ft_strdup(str);
-	g.env[i + 1] = 0;
+		g_.env[i] = ft_strdup(str);
+	g_.env[i + 1] = 0;
 	ft_free(tmp);
 }
 
@@ -132,18 +132,18 @@ int	var_check(char *var, int i)
 	char	*tmp;
 	char	**s_env;
 
-	g.i = 0;
+	g_.i = 0;
 	while (var[i] != '=' && var[i] != 0)
 		i ++;
 	tmp = malloc((i + 1) * sizeof(char));
 	i = 0;
 	while (var[i] != '=' && var[i] != '+' && var[i] != 0)
-		tmp[i++] = var[g.i++];
+		tmp[i++] = var[g_.i++];
 	tmp[i] = 0;
 	i = 0;
-	while (g.env[i])
+	while (g_.env[i])
 	{
-		s_env = ft_split(g.env[i++], '=');
+		s_env = ft_split(g_.env[i++], '=');
 		if (ft_strcmp(s_env[0], tmp))
 		{
 			ft_free(s_env);

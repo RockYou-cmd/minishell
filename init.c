@@ -6,7 +6,7 @@
 /*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 18:42:39 by ael-korc          #+#    #+#             */
-/*   Updated: 2022/07/04 17:13:10 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 21:26:35 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ char	*ft_getenv(char *tmp)
 
 	i = 0;
 	value = NULL;
-	while (g.env[i])
+	while (g_.env[i])
 	{
-		s_env = ft_split(g.env[i++], '=');
+		s_env = ft_split(g_.env[i++], '=');
 		if (ft_strcmp(s_env[0], tmp))
 			value = ft_strdup(s_env[1]);
 		else if (ft_strcmp("?", tmp))
-			value = ft_itoa(g.state);
+			value = ft_itoa(g_.state);
 	}
 	return (value);
 }
@@ -38,7 +38,7 @@ char	*v_env(char *str)
 	char	*tmp;
 
 	i = 0;
-	g.t = 0;
+	g_.t = 0;
 	value = NULL;
 	tmp = ft_calloc(ft_strlen(str), sizeof(char));
 	while (str[i] != '$' && str[i] != '\0')
@@ -51,9 +51,9 @@ char	*v_env(char *str)
 	if (!ft_isdigit(str[i]) && str[i] != '?')
 		while (str[i] && (ft_isalpha(str[i])
 				|| ft_isdigit(str[i]) || str[i] == '_'))
-			tmp[g.t ++] = str[i++];
+			tmp[g_.t ++] = str[i++];
 	else
-		tmp[g.t ++] = str[i++];
+		tmp[g_.t ++] = str[i++];
 	i = 0;
 	value = ft_getenv(tmp);
 	free(tmp);
@@ -62,14 +62,14 @@ char	*v_env(char *str)
 
 void	comands(void)
 {
-	g.command[0] = "echo";
-	g.command[1] = "cd";
-	g.command[2] = "pwd";
-	g.command[3] = "export";
-	g.command[4] = "unset";
-	g.command[5] = "env";
-	g.command[6] = "exit";
-	g.command[7] = 0;
+	g_.command[0] = "echo";
+	g_.command[1] = "cd";
+	g_.command[2] = "pwd";
+	g_.command[3] = "export";
+	g_.command[4] = "unset";
+	g_.command[5] = "env";
+	g_.command[6] = "exit";
+	g_.command[7] = 0;
 }
 
 char	**esp_splt(char *str)
@@ -96,29 +96,26 @@ char	**esp_splt(char *str)
 
 int	ft_init(void)
 {
-	g.s_cmd = ft_split(g.input, '|');
-	if (!g.s_cmd)
+	g_.s_cmd = ft_split(g_.input, '|');
+	if (!g_.s_cmd)
 	{
-		g.state = 1;
-		free(g.input);
+		g_.state = 1;
 		return (0);
 	}
-	if (ft_strchr(g.input, '|'))
+	if (ft_strchr(g_.input, '|'))
 	{
 		if (!pipe_check(0, 1))
 		{
-			free(g.input);
-			ft_free(g.s_cmd);
+			ft_free(g_.s_cmd);
 			printf("minishell: syntax error: unexpected '|'\n");
-			g.state = 258;
+			g_.state = 258;
 			return (0);
 		}
-		g.pip = 1;
+		g_.pip = 1;
 	}
-	if (!g.s_cmd[0])
+	if (!g_.s_cmd[0])
 	{
-		free(g.input);
-		ft_free(g.s_cmd);
+		ft_free(g_.s_cmd);
 		return (0);
 	}
 	return (1);

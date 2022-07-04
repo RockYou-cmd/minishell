@@ -6,7 +6,7 @@
 /*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 18:43:22 by ael-korc          #+#    #+#             */
-/*   Updated: 2022/07/04 16:42:47 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 21:26:35 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,14 @@ char	*ft_rrealloc(char *str, int t)
 
 void	exit_status(void)
 {
-	if (g.state == 0)
-		g.state = 0;
-	else if (g.state == 2)
-		g.state = 130;
-	else if (g.state == 256)
-		g.state = 127;
-	else if (g.state == 512)
-		g.state = 2;
+	if (g_.state == 0)
+		g_.state = 0;
+	else if (g_.state == 2)
+		g_.state = 130;
+	else if (g_.state == 256)
+		g_.state = 127;
+	else if (g_.state == 512)
+		g_.state = 2;
 }
 
 int	no_arguments(char *str)

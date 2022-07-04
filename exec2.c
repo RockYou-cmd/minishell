@@ -6,7 +6,7 @@
 /*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 18:42:36 by ael-korc          #+#    #+#             */
-/*   Updated: 2022/07/03 19:57:38 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 21:26:35 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,22 @@ int	ft_export(char **str, int i, int j)
 {
 	if (!str[0] || (str[0][0] == '-' && str[0][1] == '-' && str[0][2] == '\0'))
 		return (print_exp());
-	if (!exp_sign(str))
-	{
-		printf("minishell: export: not valid identifier\n");
-		return (0);
-	}
 	while (str[i])
 		if (var_check(str[i ++], 0) == -1)
 			j++;
 	i = 0;
-	while (g.env[i])
+	while (g_.env[i])
 		i ++;
-	g.env = ft_realloc(g.env, j);
+	g_.env = ft_realloc(g_.env, j);
 	i = 0;
 	while (str[i])
 	{
+		if (!exp_sign(str[i]))
+		{
+			printf("minishell: export: not valid identifier\n");
+			i ++;
+			continue ;
+		}
 		j = var_check(str[i], 0);
 		if (j != -1)
 			updt_export (str[i++], j);
@@ -45,8 +46,8 @@ void	ft_exit(char **str)
 	int	i;
 
 	i = -1;
-	ft_free(g.env);
-	if (!g.pip)
+	ft_free(g_.env);
+	if (!g_.pip)
 		printf("exit\n");
 	if (!str[0])
 		exit(1);
@@ -79,37 +80,19 @@ int	ft_env(char **str)
 		return (1);
 	}
 	i = 0;
-	if (!g.env)
+	if (!g_.env)
 		return (1);
-	while (g.env[i])
+	while (g_.env[i])
 	{
-		if (ft_strchr(g.env[i], '='))
-			printf("%s\n", g.env[i]);
+		if (ft_strchr(g_.env[i], '='))
+			printf("%s\n", g_.env[i]);
 		i++;
 	}
 	return (0);
 }
 
-void	rm_var(int j)
+int	ft_unset(char	**str, int i, int j)
 {
-	int	i;
-
-	if (!ft_strncmp(g.env[j], "_=", 2))
-		return ;
-	i = j + 1;
-	free(g.env[j]);
-	while (g.env[i])
-		g.env[j++] = g.env[i++];
-	g.env[j] = 0;
-}
-
-int	ft_unset(char	**str)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
 	if (str[0])
 	{
 		if (str[0][0] == '-' && ((str[0][1] != '\0' && str[0][1] != '-')
@@ -123,6 +106,11 @@ int	ft_unset(char	**str)
 		return (0);
 	while (str[i])
 	{
+		if (!unset_pars(str[i]))
+		{
+			printf("minishell: unset: %s: not valid identifier\n", str[i ++]);
+			continue ;
+		}
 		j = var_check(str[i ++], 0);
 		if (j != -1)
 			rm_var(j);

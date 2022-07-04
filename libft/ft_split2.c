@@ -6,30 +6,11 @@
 /*   By: ael-korc <ael-korc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 14:48:18 by rgatnaou          #+#    #+#             */
-/*   Updated: 2022/07/04 18:50:49 by ael-korc         ###   ########.fr       */
+/*   Updated: 2022/07/04 20:52:43 by ael-korc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
-
-void	cote(int *d, int *sq, char c)
-{
-	if (c == '\"' && *sq == 0)
-	{
-		if (*d == 0)
-			*d = 1;
-		else
-			*d = 0;
-	}
-	else if (c == '\'' && *d == 0)
-	{
-		if (*sq == 0)
-			*sq = 1;
-		else
-			*sq = 0;
-	}
-}
 
 static int	count(char const *s, char c )
 {
@@ -89,34 +70,30 @@ static void	leak(char **split, int l)
 
 static void	write_sp(char **split, char const *s, char c, int w)
 {
-	int	i;
-	int	j;
-	int	l;
-	int	d;
-	int	sq;
+	t_var	v;
 
-	d = 0;
-	sq = 0;
-	i = -1;
-	while (++i < w)
+	v.d = 0;
+	v.sq = 0;
+	v.i = -1;
+	while (++v.i < w)
 	{	
-		while (c == *s && sq == 0 && d == 0)
+		while (c == *s && v.sq == 0 && v.d == 0)
 		{
-			cote(&d, &sq, *s);
-			s++;
+			cote(&v.d, &v.sq, *s);
+			s ++;
 		}
-		l = len(s, c);
-		split[i] = (char *)malloc(sizeof(char) * l + 1);
-		if (!split[i])
-			leak(split, i);
-		j = 0;
-		while (j < l)
+		v.l = len(s, c);
+		split[v.i] = (char *)malloc(sizeof(char) * v.l + 1);
+		if (!split[v.i])
+			leak(split, v.i);
+		v.j = 0;
+		while (v.j < v.l)
 		{
-			cote(&d, &sq, *s);
-			split[i][j++] = *s++;
+			cote(&v.d, &v.sq, *s);
+			split[v.i][v.j++] = *s++;
 		}
-		cote(&d, &sq, *s);
-		split[i][j] = '\0';
+		cote(&v.d, &v.sq, *s);
+		split[v.i][v.j] = '\0';
 	}
 }
 
